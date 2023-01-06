@@ -1,7 +1,6 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper';
 import styled from 'styled-components';
-import ImgInSwiper from './ImgInSwiper';
 
 // Import Swiper styles
 import 'swiper/css';
