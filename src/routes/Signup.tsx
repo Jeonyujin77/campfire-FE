@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Logo from '../components/common/Logo';
 import SignupBox from '../components/users/signupBox';
 import { useEffect } from 'react';

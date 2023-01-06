@@ -1,5 +1,5 @@
 import Comment from './comment';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 

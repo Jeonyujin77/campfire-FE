@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import CampItemList from '../components/camps/campItemList';
 import searchIcon from '../asset/searchIcon.png';
 import { useLocation } from 'react-router-dom';

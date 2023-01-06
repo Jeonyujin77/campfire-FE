@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Logo from '../common/Logo';
 import Button from '../common/Button';
 import { useNavigate } from 'react-router-dom';

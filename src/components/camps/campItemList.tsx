@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import CampItem from './campItem';
 import { useEffect, useState, useCallback } from 'react';
 import { __getCampsByPageno } from '../../apis/campApi';

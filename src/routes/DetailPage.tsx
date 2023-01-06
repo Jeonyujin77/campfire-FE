@@ -1,7 +1,7 @@
 import DateChoiceModal from '../components/reservations/dateChoiceModal';
 import { useState, useEffect } from 'react';
 import ImgSwiper from '../components/reservations/imgSwiper';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import CommentList from '../components/reservations/commentList';
 import Button from '../components/common/Button';

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/esm/locale';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 interface MProps {
   isOpen: boolean;

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Logo from '../components/common/Logo';
 import LoginBox from '../components/users/loginBox';
 import Button from '../components/common/Button';

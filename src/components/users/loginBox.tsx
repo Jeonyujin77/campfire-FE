@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import Button from '../common/Button';
 import { Link } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import CAMPFIRElogo from '../../asset/CAMPFIRElogo.png';
 
 const Logo = () => {
