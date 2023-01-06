@@ -90,3 +90,18 @@ export const __signin = createAsyncThunk(
     }
   },
 );
+
+// 수정페이지 정보가져오기
+export const __getUser = createAsyncThunk(
+  'getUser',
+  async (payload: number, thunkAPI) => {
+    try {
+      const response = await api.get(`/api/users/${payload}`);
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
