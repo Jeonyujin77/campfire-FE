@@ -1,19 +1,19 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '../components/header/Layout';
-import MainPage from '../routes/MainPage';
 import DetailPage from '../routes/DetailPage';
 import ReservationDescpage from '../routes/ReservationDescpage';
 import MyPage from '../routes/MyPage';
 import Signup from '../routes/Signup';
 import Login from '../routes/Login';
 import ReservationPage from '../routes/ReservationPage';
+import Main from '../routes/Main';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/" element={<Main />} />
           <Route path="/camp/:campId" element={<DetailPage />} />
           <Route
             path="/camp/:campId/campdesc"

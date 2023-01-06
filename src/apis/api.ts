@@ -19,26 +19,26 @@ export const mainpageapi = axios.create({
 });
 
 api.interceptors.request.use(function (config: any) {
-  const accesstoken = localStorage.getItem('accesstoken');
-  const refreshtoken = localStorage.getItem('refreshtoken');
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
   //로컬스토리지 토큰을 헤더에 집어넣음
-  if (config.headers) {
-    config.headers.accesstoken = `${accesstoken}`;
-    config.headers.refreshtoken = `${refreshtoken}`;
+  if (config.headers && accessToken && refreshToken) {
+    config.headers.accesstoken = `${accessToken}`;
+    config.headers.refreshtoken = `${refreshToken}`;
   }
 
   return config;
 });
 
 api.interceptors.response.use(function (config: any) {
-  const accesstoken = localStorage.getItem('accesstoken');
-  const refreshtoken = localStorage.getItem('refreshtoken');
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
   //둘중하나라도 없으면 다시 저장
-  if (!accesstoken && !refreshtoken) {
+  if (!accessToken && !refreshToken) {
     const newAccesstoken = config.headers.accesstoken;
     const newRefreshtoken = config.headers.refreshtoken;
-    localStorage.setItem('accesstoken', newAccesstoken);
-    localStorage.setItem('refreshtoken', newRefreshtoken);
+    localStorage.setItem('accessToken', newAccesstoken);
+    localStorage.setItem('refreshToken', newRefreshtoken);
   }
 
   return config;
