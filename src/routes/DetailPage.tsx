@@ -14,6 +14,11 @@ interface dateType {
   endday?: any;
 }
 
+interface countType {
+  adult?: any;
+  child?: any;
+}
+
 const DetailPage = () => {
   //페이지 이동 시 스크롤 최상단
   const { pathname } = useLocation();
@@ -35,21 +40,6 @@ const DetailPage = () => {
       }
     });
   }, []);
-
-  const amenityDummy = [
-    '공용샤워실',
-    '공용화장실',
-    '놀이시설',
-    '개수대',
-    '바비큐장',
-    '공용주차장',
-    '편의점/매점',
-    '수영장',
-    '수영장',
-    '수영장',
-    '수영장',
-    '수영장',
-  ];
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -89,6 +79,13 @@ const DetailPage = () => {
   useEffect(() => {
     setDateObj({ ...dateObj, startday: start, endday: end });
   }, [start, end]);
+  const [countObj, setCountObj] = useState<countType>({
+    adult: adult,
+    child: child,
+  });
+  useEffect(() => {
+    setCountObj({ ...countObj, adult: adult, child: child });
+  }, [adult, child]);
 
   return camp ? (
     <Wrap>
@@ -181,7 +178,7 @@ const DetailPage = () => {
                 //navigate하면서 date값도 보내줌
                 onClick={() => {
                   navigate(`/camp/${params}/campdesc`, {
-                    state: { dateState: dateObj },
+                    state: { dateState: dateObj, countState: countObj },
                   });
                 }}
               >
@@ -204,8 +201,8 @@ const DetailPage = () => {
             부대시설
           </div>
           <Amenities>
-            {amenityDummy.map(amenity => (
-              <CampAmenities>{amenity}</CampAmenities>
+            {camp.campAmenities.map((amenity: any) => (
+              <CampAmenities key={amenity}>{amenity}</CampAmenities>
             ))}
           </Amenities>
         </AmenityWrap>
