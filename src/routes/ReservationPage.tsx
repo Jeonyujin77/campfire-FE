@@ -16,25 +16,25 @@ const ReservationPage = () => {
   const [roomCount, setRoomCount] = useState(1);
 
   //navigate로 받은 state
-  const location = useLocation();
-  const state = location.state as {
-    dateState: {
-      startday: any;
-      endday: any;
-      representStart: string;
-      representEnd: string;
-    };
-  };
+  // const location = useLocation();
+  // const state = location.state as {
+  //   dateState: {
+  //     startday: any;
+  //     endday: any;
+  //     representStart: string;
+  //     representEnd: string;
+  //   };
+  // };
 
-  //날짜 표시 State
-  const startday = state.dateState.startday;
-  const endday = state.dateState.endday;
-  const representStart = state.dateState.representStart;
-  const representEnd = state.dateState.representEnd;
+  // //날짜 표시 State
+  // const startday = state.dateState.startday;
+  // const endday = state.dateState.endday;
+  // const representStart = state.dateState.representStart;
+  // const representEnd = state.dateState.representEnd;
 
   //디데이 표시 계산
-  const userDate: any = new Date();
-  const dDay = '' + Math.ceil((startday - userDate) / (1000 * 60 * 60 * 24));
+  // const userDate: any = new Date();
+  // const dDay = '' + Math.ceil((startday - userDate) / (1000 * 60 * 60 * 24));
 
   //예약자 필수정보
   const [userName, setUserName] = useState('');
@@ -77,13 +77,13 @@ const ReservationPage = () => {
         <TextBoxBody>
           <TextBoxP fontSize="22px">캠핑장 이름</TextBoxP>
           <TextBoxP fontSize="18px">캠핑장 간단한 소개</TextBoxP>
-          <RepresentDate
+          {/* <RepresentDate
             representStart={representStart}
             representEnd={representEnd}
-          />
+          /> */}
         </TextBoxBody>
       </TextBox>
-      <DdayBox dDay={dDay} />
+      {/* <DdayBox dDay={dDay} /> */}
       <TextBox
         minHeight="150px"
         display="flex"

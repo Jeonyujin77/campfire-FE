@@ -7,6 +7,7 @@ import Signup from '../routes/Signup';
 import Login from '../routes/Login';
 import ReservationPage from '../routes/ReservationPage';
 import Main from '../routes/Main';
+import ProfileModify from '../routes/ProfileModify';
 
 const Router = () => {
   return (
@@ -24,6 +25,7 @@ const Router = () => {
             element={<ReservationPage />}
           />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/edit" element={<ProfileModify />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
         </Routes>

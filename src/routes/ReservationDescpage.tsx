@@ -5,6 +5,10 @@ import Button from '../components/common/Button';
 import TextModal from '../components/common/TextModal';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import RepresentDate from '../components/reservations/RepresentDate';
+import { useAppDispatch } from '../redux/store';
+import { __getCampsByParams } from '../apis/campApi';
+import DdayBox from '../components/reservations/DdayBox';
+import CheckBox from '../components/reservations/CheckBox';
 
 const ReservationDescpage = () => {
   const { pathname } = useLocation();
@@ -17,10 +21,14 @@ const ReservationDescpage = () => {
   //캠프 예약정보 페이지에 접근하는 방법이 디테일페이지를 타고 들어오는것 밖에 없다면
   //store에 저장하는 것이 맞고, 다른 방법이 있다면 여기서 다시 get하는게 맞을 것으로 보임
 
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const params = useParams().campId;
+  const params = Number(useParams().campId);
   const location = useLocation();
-  const state = location.state as { dateState: { startday: any; endday: any } };
+  const state = location.state as {
+    dateState: { startday: any; endday: any };
+    countState: { adult: any; child: any };
+  };
   const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
   const startday = state.dateState.startday;
   const endday = state.dateState.endday;
@@ -40,20 +48,58 @@ const ReservationDescpage = () => {
     ' (' +
     dayArr[endday.getDay()] +
     ')';
+  const adult = state.countState.adult;
+  const child = state.countState.child;
 
-  // 확인 console
-  // console.log(state);
-  // console.log(`startday: ${startday} \n endday: ${endday}`);
-  // console.log(`\n ${representStart} ${typeof representStart} \n ${representEnd} ${typeof representEnd}`);
+  //디데이 표시 계산
+  const userDate: any = new Date();
+  const dDay = '' + Math.ceil((startday - userDate) / (1000 * 60 * 60 * 24));
 
   const [headText, setHeadText] = useState('');
   const [bodyText, setBodyText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [cancleInfo, setCancleInfo] = useState(false);
 
-  useEffect(() => {}, []);
+  //해당 캠프 데이터 받아오기
+  const [camp, setCamp] = useState<any>();
+  useEffect(() => {
+    dispatch(__getCampsByParams(params)).then(res => {
+      const { payload, type }: any = res;
+      if (type === 'getCampsByParams/fulfilled') {
+        console.log(payload);
+        setCamp(payload.camp);
+      }
+    });
+  }, []);
 
-  return (
+  //약관 동의 체크박스
+  const [isAllChecked, setAllChecked] = useState(false);
+  const [checkedState, setCheckedState] = useState(new Array(5).fill(false));
+  const handleAllCheck = () => {
+    setAllChecked(prev => !prev);
+    let array = new Array(5).fill(!isAllChecked);
+    setCheckedState(array);
+  };
+
+  const handleMonoCheck = (position: number) => {
+    //각 체크박스별로 검사해서 누른 체크박스만 변하도록
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item,
+    );
+    setCheckedState(updatedCheckedState);
+    //위에서 map을 돌린 체크박스에 reduce를 사용해서 개수를 더한 값과
+    //체크된 박스의 개수가 같다면 Allchecked를 true로 바꾼다.
+    //(개별로 체크를 다 해도 전체체크박스가 자동으로 체크된다는 뜻)
+    const checkedLength = updatedCheckedState.reduce((sum, currentState) => {
+      if (currentState === true) {
+        return sum + 1;
+      }
+      return sum;
+    }, 0);
+    setAllChecked(checkedLength === updatedCheckedState.length);
+  };
+
+  return camp ? (
     <>
       <TextModal
         isOpen={isOpen}
@@ -62,10 +108,14 @@ const ReservationDescpage = () => {
         bodyText={bodyText}
       />
       <Wrap>
-        {/* <ImgSwiper /> */}
+        <ImgSwiper
+          campMainImage={camp.campMainImage}
+          campSubImages={camp.campSubImages}
+        />
         <TextBox minWidth="40px" fontWeight="bold">
           호스트가 적은 캠핑장 이름 및 간단한 정보 입력칸입니다.
         </TextBox>
+        <DdayBox dDay={dDay} />
         <TextBox>
           <TextBoxHeader>상품정보</TextBoxHeader>
           <div
@@ -142,6 +192,14 @@ const ReservationDescpage = () => {
             </Button>
           </div>
         </TextBox>
+        <CheckBox
+          isAllChecked={isAllChecked}
+          setAllChecked={setAllChecked}
+          checkedState={checkedState}
+          setCheckedState={setCheckedState}
+          handleAllCheck={handleAllCheck}
+          handleMonoCheck={handleMonoCheck}
+        />
         <CancleBox>
           <CancleTextBox onClick={() => setCancleInfo(!cancleInfo)}>
             <CancleText>취소 수수료 안내</CancleText>
@@ -184,11 +242,12 @@ const ReservationDescpage = () => {
         <ReservationPageNav>
           <Button
             onClick={() => {
-              navigate(`/camp/${params}/campreservation`, {
-                state: {
-                  dateState: { startday, endday, representStart, representEnd },
-                },
-              });
+              alert('onClick 결제 작업 필요');
+              // navigate(`/camp/${params}/campreservation`, {
+              //   state: {
+              //     dateState: { startday, endday, representStart, representEnd },
+              //   },
+              // });
             }}
             width="250px"
             height="50px"
@@ -200,7 +259,7 @@ const ReservationDescpage = () => {
         </ReservationPageNav>
       </Wrap>
     </>
-  );
+  ) : null;
 };
 
 const Wrap = styled.div`

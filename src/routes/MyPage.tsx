@@ -1,8 +1,11 @@
 import styled from '@emotion/styled';
 import noprofileImg from '../asset/noprofileImg.png';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MyReservationModal from '../components/users/MyreservationModal';
+import UserIcones from '../components/users/UserIcones';
+import { useAppDispatch } from '../redux/store';
+import { __getUser } from '../apis/userApi';
 
 const MyPage = () => {
   const { pathname } = useLocation();
@@ -10,24 +13,49 @@ const MyPage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
 
   const [accesstoken, setAccesstoken] = useState<string | null>(null);
+  const [refreshtoken, setRefreshtoken] = useState<string | null>(null);
   useEffect(() => {
-    setAccesstoken(localStorage.getItem('accesstoken'));
+    setAccesstoken(localStorage.getItem('accessToken'));
+    setRefreshtoken(localStorage.getItem('refreshToken'));
+  }, []);
+
+  const [userName, setUserName] = useState('');
+  const [represent, setRepresent] = useState<string | undefined>();
+
+  useEffect(() => {
+    dispatch(__getUser(Number(localStorage.getItem('userId')))).then(res => {
+      const { type, payload } = res;
+      //   console.log(type, payload);
+      const { userName, profileImg }: { userName: string; profileImg: string } =
+        payload.user;
+      //   console.log(userName, phoneNumber, profileImg);
+      setUserName(userName);
+      if (profileImg !== undefined) {
+        setRepresent(profileImg);
+      }
+    });
   }, []);
 
   return (
     <>
       <MyReservationModal isOpen={isOpen} setIsOpen={setIsOpen} />
       <Wrap>
-        {accesstoken && accesstoken !== 'undefined' ? (
+        {accesstoken &&
+        accesstoken !== 'undefined' &&
+        refreshtoken &&
+        refreshtoken !== 'undefined' &&
+        represent &&
+        userName ? (
           <div>
-            <ProfileImg src={noprofileImg} alt="유저 프로필이미지" />
+            <ProfileImg src={represent} alt="유저 프로필이미지" />
             <div>
-              <p>userName</p>
+              <p>{userName}</p>
             </div>
           </div>
         ) : (
@@ -64,7 +92,26 @@ const MyPage = () => {
             <Icon>~~~</Icon>
             <Icon>~~~</Icon>
             <Icon>~~~</Icon>
-            <Icon>~~~</Icon>
+            <Icon
+              onClick={() => {
+                // if (
+                //   accesstoken &&
+                //   accesstoken !== 'undefined' &&
+                //   refreshtoken &&
+                //   refreshtoken !== 'undefined'
+                // ) {
+                navigate('/mypage/edit');
+                // } else {
+                //   alert('로그인 해주세요!');
+                // }
+              }}
+            >
+              <img
+                src="https://via.placeholder.com/80"
+                alt="프로필수정 이미지"
+              />
+              <div>프로필 수정</div>
+            </Icon>
           </IconsTop>
         </IconsDiv>
       </Wrap>
@@ -131,6 +178,7 @@ const Icon = styled.div`
   align-items: center;
   justify-content: center;
   gap: 5px;
+  cursor: pointer;
 `;
 
 export default MyPage;
