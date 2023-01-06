@@ -8,7 +8,9 @@ interface ButtonProps {
   bgColor?: string;
   borderRadius?: string;
   fontSize?: string;
+  fontWeight?: string;
   onClick?: any;
+  display?: any;
 }
 
 const Button = ({
@@ -19,6 +21,8 @@ const Button = ({
   borderRadius,
   fontSize,
   onClick,
+  fontWeight,
+  display,
 }: ButtonProps) => {
   return (
     <Btn
@@ -27,7 +31,9 @@ const Button = ({
       bgColor={bgColor}
       borderRadius={borderRadius}
       fontSize={fontSize}
+      fontWeight={fontWeight}
       onClick={() => onClick()}
+      display={display}
     >
       {children}
     </Btn>
@@ -45,6 +51,8 @@ const Btn = styled.button<ButtonProps>`
     borderRadius ? borderRadius : '10px'};
   background-color: ${({ bgColor }) => (bgColor ? bgColor : 'lightgray')};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '15px')};
+  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 'normal')};
+  display: ${({ display }) => (display ? display : 'inline-block')};
   &:hover {
     filter: brightness(95%);
   }
