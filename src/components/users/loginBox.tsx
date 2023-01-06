@@ -1,86 +1,90 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from '@emotion/styled';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '../common/Button';
 import { Link } from 'react-router-dom';
-
-interface User {
-  email: string;
-  password: string;
-}
+import useInput from '../../hooks/useInput';
+import useInputValid from '../../hooks/useInputValid';
+import { emailValid, pwValid } from '../../utils/RegExp';
+import Input from '../common/Input';
+import { EMAIL_NOT_VALID, PW_NOT_VALID } from '../../constant/message';
+import { useAppDispatch } from '../../redux/store';
+import { __signin } from '../../apis/userApi';
 
 const LoginBox = () => {
-  //서버에 보낼 user객체
-  const [user, setUser] = useState<User>({
-    email: '',
-    password: '',
-  });
-
-  // 아이디, 비밀번호, 비밀번호 확인, 이름
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const dispatch = useAppDispatch();
+  // 아이디, 비밀번호
+  const [email, setEmail, emailHandler] = useInput('');
+  const [password, setPassword, passwordHandler] = useInput('');
 
   // 유효성 검사
-  const [isEmail, setIsEmail] = useState('');
-  const [isPassword, setIsPassword] = useState('');
+  const [emailValidFlag, emailFlagHandler] = useInputValid(email, emailValid); // 이메일검증 flag
+  const [pwValidFlag, pwFlagHandler] = useInputValid(password, pwValid); // 비밀번호검증 flag
 
-  //input value onChangeHandler
-  const userChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  };
-
-  //로그인하기버튼 onClickHandler
-  const onClickHandler = () => {
-    //아이디입력 유효성검사
-    if (!user.email) {
-      setIsEmail('아이디를 입력해주세요');
-    } else {
-      setIsEmail('');
-    }
-    //비밀번호입력 유효성검사
-    if (!user.password) {
-      setIsPassword('비밀번호를 입력해주세요');
-    } else {
-      setIsPassword('');
-    }
-    if (user.email && user.password) {
-      alert('로그인관련 dispatch 작성필요');
-      //값 받기 전 먼저 초기화 / 안하면 데이터가 두개들어감
-      localStorage.clear();
-      // dispatch(__~~~())
-    }
+  //로그인
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(__signin({ email, password })).then(res => {
+      const { type, payload } = res;
+      if (type === 'signin/fulfilled') {
+        alert('로그인에 성공하였습니다.');
+        window.location.href = '/';
+      } else if (type === 'signin/rejected') {
+        if (
+          payload.response.status === 400 ||
+          payload.response.status === 412 ||
+          payload.response.status === 419
+        ) {
+          alert(`${payload.response.data.errorMessage}`);
+        }
+      }
+    });
   };
 
   return (
     <>
-      <SignupWrap>
-        <InputWrap>
-          <InputTitle>아이디</InputTitle>
-          <Span>
-            <Input name="email" onChange={userChangeHandler} />
-          </Span>
-          <ErrorText>{isEmail}</ErrorText>
-          <InputTitle>비밀번호</InputTitle>
-          <SpanPswd>
-            <Input
-              type="password"
-              name="password"
-              onChange={userChangeHandler}
-            />
-          </SpanPswd>
-          <ErrorText>{isPassword}</ErrorText>
-        </InputWrap>
-      </SignupWrap>
-      <Button
-        width="430px"
-        height="40px"
-        bgColor="#f2f2f2"
-        borderRadius="10px"
-        fontSize="20px"
-        onClick={onClickHandler}
-      >
-        로그인하기
-      </Button>
+      <form onSubmit={onSubmit}>
+        <SignupWrap>
+          <InputWrap>
+            <InputTitle>아이디</InputTitle>
+            <Span>
+              <Input
+                type="email"
+                width="285px"
+                required
+                value={email}
+                onChange={emailHandler}
+                onBlur={emailFlagHandler}
+              />
+            </Span>
+            {!emailValidFlag ? <ErrorText>{EMAIL_NOT_VALID}</ErrorText> : <></>}
+            <InputTitle>비밀번호</InputTitle>
+            <SpanPswd>
+              <Input
+                type="password"
+                width="285px"
+                required
+                value={password}
+                onChange={passwordHandler}
+                onBlur={pwFlagHandler}
+              />
+            </SpanPswd>
+            {!pwValidFlag ? <ErrorText>{PW_NOT_VALID}</ErrorText> : <></>}
+          </InputWrap>
+        </SignupWrap>
+        <Button
+          width="430px"
+          height="40px"
+          bgColor="#f2f2f2"
+          borderRadius="10px"
+          fontSize="20px"
+          onClick={() => {
+            return;
+          }}
+        >
+          로그인하기
+        </Button>
+      </form>
       <BottomText>
         <div>아직 회원이 아니시라면? </div>
         <ToLogin to="/signup">회원가입하기</ToLogin>
@@ -122,19 +126,19 @@ const InputTitle = styled.div`
   font-size: 15px;
 `;
 
-const Input = styled.input`
-  margin-left: 5px;
-  border: none;
-  font-size: 13px;
-  font-weight: bold;
-  width: 285px;
-  height: 30px;
-  outline: none;
-`;
+// const Input = styled.input`
+//   margin-left: 5px;
+//   border: none;
+//   font-size: 13px;
+//   font-weight: bold;
+//   width: 285px;
+//   height: 30px;
+//   outline: none;
+// `;
 
-const InputBtn = styled.button`
-  margin-right: 5px;
-`;
+// const InputBtn = styled.button`
+//   margin-right: 5px;
+// `;
 
 const SpanPswd = styled.span`
   border: 1px solid black;

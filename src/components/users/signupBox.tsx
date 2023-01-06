@@ -89,6 +89,8 @@ const SignupBox = () => {
 
   // 닉네임 중복검사
   const checkNickDup = () => {
+    if (nickname === '') return;
+
     dispatch(__checkNickDup(nickname)).then(res => {
       const { type, payload } = res;
       if (type === 'checkNickDup/fulfilled') {
@@ -251,6 +253,9 @@ const SignupBox = () => {
         bgColor="#f2f2f2"
         borderRadius="10px"
         fontSize="20px"
+        onClick={() => {
+          return;
+        }}
       >
         가입하기
       </Button>

@@ -80,7 +80,7 @@ export const __signin = createAsyncThunk(
         if (accesstoken && refreshtoken && userId) {
           localStorage.setItem('accessToken', accesstoken);
           localStorage.setItem('refreshToken', refreshtoken);
-          localStorage.setItem('hostId', userId);
+          localStorage.setItem('userId', userId);
         }
 
         return thunkAPI.fulfillWithValue(response.data);

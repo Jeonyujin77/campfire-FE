@@ -11,8 +11,8 @@ const Header = () => {
   const [refreshtoken, setRefreshtoken] = useState<any>();
 
   useEffect(() => {
-    setAccesstoken(localStorage.getItem('accesstoken'));
-    setRefreshtoken(localStorage.getItem('refreshtoken'));
+    setAccesstoken(localStorage.getItem('accessToken'));
+    setRefreshtoken(localStorage.getItem('refreshToken'));
   }, []);
 
   return (

@@ -4,7 +4,7 @@ import searchIcon from '../asset/searchIcon.png';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-const MainPage = () => {
+const Home = () => {
   //페이지 이동 시 스크롤바 상단으로 이동
   const { pathname } = useLocation();
   useEffect(() => {
@@ -91,4 +91,4 @@ const Input = styled.input`
 
 const SearchIcon = styled.img``;
 
-export default MainPage;
+export default Home;
