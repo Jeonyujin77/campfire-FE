@@ -1,31 +1,22 @@
 import styled from 'styled-components';
 import Logo from '../components/common/Logo';
 import SignupBox from '../components/users/signupBox';
-import Button from '../components/common/Button';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Signup = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   const dispatch = useDispatch();
 
-  const onClickFunc = () => {
-    alert('회원가입관련 dispatch 작성필요');
-  };
   return (
     <Wrap>
       <Logo />
       <SignupBox />
-      <Button
-        width="430px"
-        height="40px"
-        bgColor="#f2f2f2"
-        borderRadius="10px"
-        fontSize="20px"
-        onClick={onClickFunc}
-      >
-        가입하기
-      </Button>
       <BottomText>
         <div>이미 회원이신가요? </div>
         <ToLogin to="/login">로그인하기</ToLogin>
