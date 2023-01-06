@@ -3,9 +3,14 @@ import Logo from '../components/common/Logo';
 import LoginBox from '../components/users/loginBox';
 import Button from '../components/common/Button';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Login = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const dispatch = useDispatch();
   return (
     <Wrap>
