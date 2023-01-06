@@ -45,6 +45,9 @@ const LoginBox = () => {
     }
     if (user.email && user.password) {
       alert('로그인관련 dispatch 작성필요');
+      //값 받기 전 먼저 초기화 / 안하면 데이터가 두개들어감
+      localStorage.clear();
+      // dispatch(__~~~())
     }
   };
 

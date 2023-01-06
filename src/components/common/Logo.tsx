@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import temporalLogo from '../../asset/temporalLogo.png';
+import CAMPFIRElogo from '../../asset/CAMPFIRElogo.png';
 
 const Logo = () => {
-  return <Image src={temporalLogo} alt="캠프파이어 로고사진" />;
+  return <Image src={CAMPFIRElogo} alt="캠프파이어 로고사진" />;
 };
 
 const Image = styled.img`
-  margin-bottom: 10px;
+  width: 378px;
+  height: 79px;
+  cursor: pointer;
 `;
 
 export default Logo;

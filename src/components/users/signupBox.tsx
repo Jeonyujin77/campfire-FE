@@ -1,19 +1,24 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import Button from '../common/Button';
+import { useDispatch } from 'react-redux';
 
 interface User {
   email: string;
   userName: string;
   password: string;
-  phoneNumber: number;
+  phoneNumber: string;
+  profileImg: string;
 }
 
 const SignupBox = () => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState<User>({
     email: '',
     userName: '',
     password: '',
-    phoneNumber: 0,
+    phoneNumber: '',
+    profileImg: '',
   });
 
   // 아이디, 비밀번호, 비밀번호 확인, 이름
@@ -35,7 +40,11 @@ const SignupBox = () => {
   const userChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
-    console.log(user);
+  };
+
+  const onClickFunc = () => {
+    alert('회원가입관련 dispatch 작성필요');
+    // dispatch(__getSignup(user))
   };
 
   return (
@@ -94,7 +103,23 @@ const SignupBox = () => {
             onChange={userChangeHandler}
           />
         </Span>
+        <input
+          style={{ marginTop: '10px' }}
+          type="file"
+          name="profileImg"
+          // onChange={userChangeHandler}
+        />
       </InputWrap>
+      <Button
+        width="430px"
+        height="40px"
+        bgColor="#f2f2f2"
+        borderRadius="10px"
+        fontSize="20px"
+        onClick={onClickFunc}
+      >
+        가입하기
+      </Button>
     </SignupWrap>
   );
 };
@@ -109,7 +134,7 @@ const SignupWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: row;
+  flex-direction: column;
 `;
 
 const InputWrap = styled.div`
