@@ -1,13 +1,55 @@
 import DateChoiceModal from '../components/reservations/dateChoiceModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ImgSwiper from '../components/reservations/imgSwiper';
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import CommentList from '../components/reservations/commentList';
+import Button from '../components/common/Button';
+import CampAmenities from '../components/reservations/campAmenities';
+import { useAppDispatch } from '../redux/store';
+import { __getCampsByParams } from '../apis/campApi';
+
+interface dateType {
+  startday?: any;
+  endday?: any;
+}
 
 const DetailPage = () => {
+  //페이지 이동 시 스크롤 최상단
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   const navigate = useNavigate();
-  const params = useParams().campId;
+  const params = Number(useParams().campId);
+  const dispatch = useAppDispatch();
+  const [camp, setCamp] = useState<any>();
+
+  useEffect(() => {
+    dispatch(__getCampsByParams(params)).then(res => {
+      const { payload, type }: any = res;
+      if (type === 'getCampsByParams/fulfilled') {
+        console.log(payload);
+        setCamp(payload.camp);
+      }
+    });
+  }, []);
+
+  const amenityDummy = [
+    '공용샤워실',
+    '공용화장실',
+    '놀이시설',
+    '개수대',
+    '바비큐장',
+    '공용주차장',
+    '편의점/매점',
+    '수영장',
+    '수영장',
+    '수영장',
+    '수영장',
+    '수영장',
+  ];
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,7 +82,15 @@ const DetailPage = () => {
     setIsCmtOpen(!isCmtOpen);
   };
 
-  return (
+  const [dateObj, setDateObj] = useState<dateType>({
+    startday: '',
+    endday: '',
+  });
+  useEffect(() => {
+    setDateObj({ ...dateObj, startday: start, endday: end });
+  }, [start, end]);
+
+  return camp ? (
     <Wrap>
       <DateChoiceModal
         setStart={setStart}
@@ -48,13 +98,16 @@ const DetailPage = () => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
-      <ImgSwiper />
+      <ImgSwiper
+        campMainImage={camp.campMainImage}
+        campSubImages={camp.campSubImages}
+      />
       <DescWrap>
         <div>
           <div>
-            <div>name</div>
-            <div>address</div>
-            <div>phonenumber</div>
+            <CampName>{camp.campName}</CampName>
+            <CampDesc>{camp.campAddress}</CampDesc>
+            <CampDesc>campPhonenumber</CampDesc>
           </div>
         </div>
         <DateText
@@ -70,64 +123,101 @@ const DetailPage = () => {
         </DateText>
         <HeadCountWrap>
           <div>방문하시는 인원을 선택하세요</div>
-          <div>
-            <HeadCount>
-              <div>
-                성인
-                <button
-                  onClick={() => {
-                    adultMinusButton();
-                  }}
-                >
-                  -
-                </button>
-                {adult}
-                <button
-                  onClick={() => {
-                    adultPlusButton();
-                  }}
-                >
-                  +
-                </button>
-              </div>
-              <div>
-                아동
-                <button
-                  onClick={() => {
-                    childMinusButton();
-                  }}
-                >
-                  -
-                </button>
-                {child}
-                <button
-                  onClick={() => {
-                    childPlusButton();
-                  }}
-                >
-                  +
-                </button>
-              </div>
-              <button
-                // 예약페이지 만든 후 수정필요
+          <HeadCount>
+            <CountWrap>
+              성인
+              <Button
+                width="25px"
+                height="25px"
+                bgColor="transparent"
+                borderRadius="5px"
+                fontSize="16px"
                 onClick={() => {
-                  navigate(`/camp/${params}/campdesc`);
+                  adultMinusButton();
+                }}
+              >
+                -
+              </Button>
+              {adult}
+              <Button
+                width="25px"
+                height="25px"
+                bgColor="transparent"
+                borderRadius="5px"
+                fontSize="16px"
+                onClick={() => {
+                  adultPlusButton();
+                }}
+              >
+                +
+              </Button>
+              아동
+              <Button
+                width="25px"
+                height="25px"
+                bgColor="transparent"
+                borderRadius="5px"
+                fontSize="16px"
+                onClick={() => {
+                  childMinusButton();
+                }}
+              >
+                -
+              </Button>
+              {child}
+              <Button
+                width="25px"
+                height="25px"
+                bgColor="transparent"
+                borderRadius="5px"
+                fontSize="16px"
+                onClick={() => {
+                  childPlusButton();
+                }}
+              >
+                +
+              </Button>
+              <Button
+                //navigate하면서 date값도 보내줌
+                onClick={() => {
+                  navigate(`/camp/${params}/campdesc`, {
+                    state: { dateState: dateObj },
+                  });
                 }}
               >
                 예약하기
-              </button>
-            </HeadCount>
-          </div>
+              </Button>
+            </CountWrap>
+          </HeadCount>
         </HeadCountWrap>
+        <AmenityWrap>
+          <div
+            style={{
+              width: '100px',
+              height: '30px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: '5px',
+            }}
+          >
+            부대시설
+          </div>
+          <Amenities>
+            {amenityDummy.map(amenity => (
+              <CampAmenities>{amenity}</CampAmenities>
+            ))}
+          </Amenities>
+        </AmenityWrap>
         {isCmtOpen ? (
-          <CmtBox onClick={() => isCmtOpenChange()}>열기🔽</CmtBox>
+          <CmtBox onClick={() => isCmtOpenChange()}>열기 🔽</CmtBox>
         ) : (
-          <CmtBox onClick={() => isCmtOpenChange()}>접기🔼</CmtBox>
+          <CmtBox onClick={() => isCmtOpenChange()}>접기 🔼</CmtBox>
         )}
         <CommentList isCmtOpen={isCmtOpen} setIsCmtOpen={setIsCmtOpen} />
       </DescWrap>
     </Wrap>
-  );
+  ) : null;
 };
 
 const Wrap = styled.div`
@@ -142,10 +232,20 @@ const Wrap = styled.div`
 `;
 
 const DescWrap = styled.div`
-  padding: 15px;
+  padding: 15px 30px 15px 30px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const CampName = styled.div`
+  font-size: 30px;
+  font-weight: bold;
+`;
+
+const CampDesc = styled.div`
+  font-size: 25px;
+  font-weight: 500;
 `;
 
 const DateText = styled.div`
@@ -165,7 +265,6 @@ const DateText = styled.div`
 const HeadCountWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
 `;
 
 const HeadCount = styled.div`
@@ -173,10 +272,33 @@ const HeadCount = styled.div`
   gap: 5px;
 `;
 
+const CountWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`;
+
+const AmenityWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 5px;
+`;
+
+const Amenities = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 5px;
+`;
+
 const CmtBox = styled.div`
   border: 1px solid lightgray;
   text-align: center;
-  font-size: 25px;
+  font-size: 23px;
   height: 50px;
   display: flex;
   justify-content: center;
