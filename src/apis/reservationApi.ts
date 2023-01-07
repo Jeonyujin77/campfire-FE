@@ -1,19 +1,24 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ReserveInfo } from '../interfaces/Reservations';
 import api from './api';
 
-// 예시
-// export const __getPosts = createAsyncThunk(
-//   "getPosts",
-//   async (payload, thunkAPI) => {
-//     try {
-//       const response = await api.get(`/api/posts`);
-//       return thunkAPI.fulfillWithValue(response.data);
-//     } catch (error) {
-//       const { status, data } = error.response;
-//       if (status === 404) {
-//         alert(data.errorMessage);
-//       }
-//       return thunkAPI.rejectWithValue(error);
-//     }
-//   }
-// );
+// 캠핑장예약
+export const __reserveCamps = createAsyncThunk(
+  'reserveCamps',
+  async (payload: ReserveInfo, thunkAPI) => {
+    const { campId, checkInDate, checkOutDate, adults, children } = payload;
+    try {
+      const response = await api.post(`/api/camps/${campId}/books`, {
+        checkInDate,
+        checkOutDate,
+        adults,
+        children,
+      });
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
