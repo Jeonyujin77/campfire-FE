@@ -7,34 +7,24 @@ import RoomCount from '../components/reservations/RoomCount';
 import ClientInfo from '../components/reservations/ClientInfo';
 import CheckBox from '../components/reservations/CheckBox';
 import Button from '../components/common/Button';
+import useReserveInfo from '../hooks/useReserveInfo';
+import { useAppDispatch } from '../redux/store';
+import { __reserveCamps } from '../apis/reservationApi';
 
 const ReservationPage = () => {
+  const dispatch = useAppDispatch();
+  const location = useLocation();
   const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
   const [roomCount, setRoomCount] = useState(1);
-
-  //navigate로 받은 state
-  // const location = useLocation();
-  // const state = location.state as {
-  //   dateState: {
-  //     startday: any;
-  //     endday: any;
-  //     representStart: string;
-  //     representEnd: string;
-  //   };
-  // };
-
-  // //날짜 표시 State
-  // const startday = state.dateState.startday;
-  // const endday = state.dateState.endday;
-  // const representStart = state.dateState.representStart;
-  // const representEnd = state.dateState.representEnd;
-
-  //디데이 표시 계산
-  // const userDate: any = new Date();
-  // const dDay = '' + Math.ceil((startday - userDate) / (1000 * 60 * 60 * 24));
+  // 상세페이지에서 넘어온 예약정보
+  const state = location.state as {
+    dateState: { startday: any; endday: any };
+    countState: { adult: any; child: any };
+    campId: number;
+  };
+  // 시작일, 종료일, 화면에 표시되는 시작/종료일, 디데이, 성인수, 아동수
+  const [startday, endday, representStart, representEnd, dDay, adult, child] =
+    useReserveInfo(state);
 
   //예약자 필수정보
   const [userName, setUserName] = useState('');
@@ -46,6 +36,11 @@ const ReservationPage = () => {
   //약관 동의 체크박스
   const [isAllChecked, setAllChecked] = useState(false);
   const [checkedState, setCheckedState] = useState(new Array(5).fill(false));
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   const handleAllCheck = () => {
     setAllChecked(prev => !prev);
     let array = new Array(5).fill(!isAllChecked);
@@ -70,20 +65,50 @@ const ReservationPage = () => {
     setAllChecked(checkedLength === updatedCheckedState.length);
   };
 
+  // 예약하기
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('캠핑장아이디: ', state.campId);
+    console.log('시작일: ', startday);
+    console.log('종료일: ', endday);
+    console.log('성인수: ', adult);
+    console.log('아동수: ', child);
+
+    const reserveInfo = {
+      campId: state.campId,
+      checkInDate: startday,
+      checkOutDate: endday,
+      adults: adult,
+      children: child,
+    };
+    dispatch(__reserveCamps(reserveInfo)).then(res => {
+      const { type, payload } = res;
+      if (type === 'reserveCamps/fulfilled') {
+        alert(`${payload.message}`);
+        window.location.href = '/';
+      } else if (
+        type === 'reserveCamps/rejected' &&
+        payload.response.status === 400
+      ) {
+        alert(`${payload.response.data.errorMessage}`);
+      }
+    });
+  };
+
   return (
-    <Wrap>
+    <Wrap onSubmit={onSubmit}>
       <TextBox>
         <TextBoxHeader>상품정보</TextBoxHeader>
         <TextBoxBody>
           <TextBoxP fontSize="22px">캠핑장 이름</TextBoxP>
           <TextBoxP fontSize="18px">캠핑장 간단한 소개</TextBoxP>
-          {/* <RepresentDate
+          <RepresentDate
             representStart={representStart}
             representEnd={representEnd}
-          /> */}
+          />
         </TextBoxBody>
       </TextBox>
-      {/* <DdayBox dDay={dDay} /> */}
+      <DdayBox dDay={dDay} />
       <TextBox
         minHeight="150px"
         display="flex"
@@ -125,7 +150,7 @@ const ReservationPage = () => {
       <Button
         width="200px"
         onClick={() => {
-          alert('결제작업!');
+          return;
         }}
       >
         예약 결제하기
@@ -134,7 +159,7 @@ const ReservationPage = () => {
   );
 };
 
-const Wrap = styled.div`
+const Wrap = styled.form`
   /* 헤더 크기에 따라 수정 필요 */
   margin: 0px auto;
   /* 헤더 아래 출력되도록 */

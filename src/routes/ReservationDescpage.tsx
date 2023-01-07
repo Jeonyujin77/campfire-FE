@@ -9,59 +9,41 @@ import { useAppDispatch } from '../redux/store';
 import { __getCampsByParams } from '../apis/campApi';
 import DdayBox from '../components/reservations/DdayBox';
 import CheckBox from '../components/reservations/CheckBox';
+import useReserveInfo from '../hooks/useReserveInfo';
 
+/* DetailPage에서 서버로부터 get한 해당 camp의 데이터를 store에 저장해두고
+  store에서 params === campId 인 데이터를 가져와서 뿌려주는 형식으로 해야할 것 같음
+  혹은 여기서 다시 서버에 get요청을 해도 되는데 효율적인 행동인지?
+  캠프 예약정보 페이지에 접근하는 방법이 디테일페이지를 타고 들어오는것 밖에 없다면
+  store에 저장하는 것이 맞고, 다른 방법이 있다면 여기서 다시 get하는게 맞을 것으로 보임 */
 const ReservationDescpage = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  //DetailPage에서 서버로부터 get한 해당 camp의 데이터를 store에 저장해두고
-  //store에서 params === campId 인 데이터를 가져와서 뿌려주는 형식으로 해야할 것 같음
-  //혹은 여기서 다시 서버에 get요청을 해도 되는데 효율적인 행동인지?
-  //캠프 예약정보 페이지에 접근하는 방법이 디테일페이지를 타고 들어오는것 밖에 없다면
-  //store에 저장하는 것이 맞고, 다른 방법이 있다면 여기서 다시 get하는게 맞을 것으로 보임
-
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const params = Number(useParams().campId);
   const location = useLocation();
-  const state = location.state as {
-    dateState: { startday: any; endday: any };
-    countState: { adult: any; child: any };
-  };
-  const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
-  const startday = state.dateState.startday;
-  const endday = state.dateState.endday;
-  const representStart =
-    startday.getMonth() +
-    1 +
-    '.' +
-    startday.getDate() +
-    ' (' +
-    dayArr[startday.getDay()] +
-    ')';
-  const representEnd =
-    endday.getMonth() +
-    1 +
-    '.' +
-    endday.getDate() +
-    ' (' +
-    dayArr[endday.getDay()] +
-    ')';
-  const adult = state.countState.adult;
-  const child = state.countState.child;
-
-  //디데이 표시 계산
-  const userDate: any = new Date();
-  const dDay = '' + Math.ceil((startday - userDate) / (1000 * 60 * 60 * 24));
-
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const params = Number(useParams().campId);
+  const { pathname } = useLocation();
   const [headText, setHeadText] = useState('');
   const [bodyText, setBodyText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [cancleInfo, setCancleInfo] = useState(false);
-
   //해당 캠프 데이터 받아오기
   const [camp, setCamp] = useState<any>();
+  //약관 동의 체크박스
+  const [isAllChecked, setAllChecked] = useState(false);
+  const [checkedState, setCheckedState] = useState(new Array(5).fill(false));
+  // 상세페이지에서 넘어온 예약정보
+  const state = location.state as {
+    dateState: { startday: any; endday: any };
+    countState: { adult: any; child: any };
+  };
+  // 캠핑장아이디,시작일, 종료일, 화면에 표시되는 시작/종료일, 디데이, 성인수, 아동수
+  const [startday, endday, representStart, representEnd, dDay, adult, child] =
+    useReserveInfo(state);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   useEffect(() => {
     dispatch(__getCampsByParams(params)).then(res => {
       const { payload, type }: any = res;
@@ -72,9 +54,6 @@ const ReservationDescpage = () => {
     });
   }, []);
 
-  //약관 동의 체크박스
-  const [isAllChecked, setAllChecked] = useState(false);
-  const [checkedState, setCheckedState] = useState(new Array(5).fill(false));
   const handleAllCheck = () => {
     setAllChecked(prev => !prev);
     let array = new Array(5).fill(!isAllChecked);
@@ -242,12 +221,13 @@ const ReservationDescpage = () => {
         <ReservationPageNav>
           <Button
             onClick={() => {
-              alert('onClick 결제 작업 필요');
-              // navigate(`/camp/${params}/campreservation`, {
-              //   state: {
-              //     dateState: { startday, endday, representStart, representEnd },
-              //   },
-              // });
+              navigate(`/camp/${params}/campreservation`, {
+                state: {
+                  dateState: { startday, endday, representStart, representEnd },
+                  countState: { adult, child },
+                  campId: camp.campId,
+                },
+              });
             }}
             width="250px"
             height="50px"
