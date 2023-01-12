@@ -91,7 +91,8 @@ const ModalBackground = styled.div<{ isOpen: boolean }>`
 
 const ModalWrap = styled.div<{ isOpen: boolean }>`
   border: 1px solid red;
-  position: absolute;
+  position: fixed;
+  margin: auto;
   top: calc(50vh - 170px);
   left: calc(50vw - 150px);
   background-color: white;

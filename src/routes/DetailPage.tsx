@@ -7,7 +7,13 @@ import CommentList from '../components/reservations/commentList';
 import Button from '../components/common/Button';
 import CampAmenities from '../components/reservations/campAmenities';
 import { useAppDispatch } from '../redux/store';
-import { __getCampsByParams } from '../apis/campApi';
+import {
+  __getCampsByParams,
+  __getCampSitesByParams,
+  __likeCampByParams,
+} from '../apis/campApi';
+import { SiteList, SiteListsRes } from '../interfaces/camp';
+import Sites from '../components/camps/Sites';
 
 interface dateType {
   startday?: any;
@@ -76,6 +82,36 @@ const DetailPage = () => {
     startday: '',
     endday: '',
   });
+
+  const [sites, setSites] = useState<SiteList>();
+  //사이트 검색 버튼 onClick
+  const getCampSites = () => {
+    dispatch(__getCampSitesByParams(params)).then(res => {
+      console.log(res);
+      const { type, payload }: any = res;
+      console.log('type:', type);
+      console.log('payload:', payload);
+      if (type === 'getCampSitesByParams/fulfilled') {
+        setSites(payload);
+      }
+    });
+  };
+
+  const [like, setLike] = useState(false);
+  useEffect(() => {});
+  //찜하기, 찜취소하기 버튼 onClick
+  const likeCamp = () => {
+    dispatch(__likeCampByParams(params)).then(res => {
+      const { type, payload }: any = res;
+      if (type === 'likeCampByParams/fulfilled') {
+        console.log('res:', res);
+        console.log('type:', type);
+        console.log('payload:', payload);
+      } else {
+      }
+    });
+  };
+
   useEffect(() => {
     setDateObj({ ...dateObj, startday: start, endday: end });
   }, [start, end]);
@@ -83,6 +119,7 @@ const DetailPage = () => {
     adult: adult,
     child: child,
   });
+
   useEffect(() => {
     setCountObj({ ...countObj, adult: adult, child: child });
   }, [adult, child]);
@@ -99,10 +136,32 @@ const DetailPage = () => {
         campMainImage={camp.campMainImage}
         campSubImages={camp.campSubImages}
       />
+      <button
+        onClick={() => {
+          console.log('dateObj:', dateObj);
+          console.log('countObj:', countObj);
+        }}
+      ></button>
       <DescWrap>
         <div>
           <div>
-            <CampName>{camp.campName}</CampName>
+            <div
+              style={{
+                display: 'flex',
+                alignContent: 'center',
+                justifyContent: 'space-between',
+                width: '1130px',
+                border: '1px solid red',
+              }}
+            >
+              <CampName>{camp.campName}</CampName>
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/14/14815.png"
+                width="40px"
+                height="40px"
+                alt="좋아요버튼"
+              />
+            </div>
             <CampDesc>{camp.campAddress}</CampDesc>
             <CampDesc>campPhonenumber</CampDesc>
           </div>
@@ -176,36 +235,61 @@ const DetailPage = () => {
               </Button>
               <Button
                 //navigate하면서 date값도 보내줌
-                onClick={() => {
-                  navigate(`/camp/${params}/campdesc`, {
-                    state: { dateState: dateObj, countState: countObj },
-                  });
-                }}
+                // onClick={() => {
+                //   navigate(`/camp/${params}/campdesc`, {
+                //     state: { dateState: dateObj, countState: countObj },
+                //   });
+                // }}
+                onClick={getCampSites}
               >
-                예약하기
+                검색하기
               </Button>
             </CountWrap>
           </HeadCount>
         </HeadCountWrap>
-        <AmenityWrap>
-          <div
-            style={{
-              width: '100px',
-              height: '30px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: '5px',
-            }}
-          >
-            부대시설
-          </div>
-          <Amenities>
-            {camp.campAmenities.map((amenity: any) => (
-              <CampAmenities key={amenity}>{amenity}</CampAmenities>
-            ))}
-          </Amenities>
-        </AmenityWrap>
+        {camp.campAmenities ? (
+          <AmenityWrap>
+            <div
+              style={{
+                width: '100px',
+                height: '30px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: '5px',
+              }}
+            >
+              부대시설
+            </div>
+            {camp.campAmenities ? (
+              <Amenities>
+                {camp.campAmenities.map((amenity: any) => (
+                  <CampAmenities key={amenity}>{amenity}</CampAmenities>
+                ))}
+              </Amenities>
+            ) : (
+              <></>
+            )}
+          </AmenityWrap>
+        ) : (
+          <></>
+        )}
+        <SiteLists sites={sites}>
+          {sites ? (
+            sites.sites.map(site => (
+              <Sites
+                key={site.siteId}
+                theme={camp.themeLists}
+                type={camp.typeLists}
+                dateObj={dateObj}
+                countObj={countObj}
+                site={site}
+              />
+            ))
+          ) : (
+            <></>
+          )}
+        </SiteLists>
         {isCmtOpen ? (
           <CmtBox onClick={() => isCmtOpenChange()}>열기 🔽</CmtBox>
         ) : (
@@ -290,6 +374,16 @@ const Amenities = styled.div`
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 5px;
+`;
+
+const SiteLists = styled.div<{ sites: any }>`
+  display: ${({ sites }) => (sites ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  padding: 20px 0px 20px 0px;
+  gap: 15px;
 `;
 
 const CmtBox = styled.div`
