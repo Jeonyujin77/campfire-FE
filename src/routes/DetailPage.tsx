@@ -14,6 +14,7 @@ import {
 } from '../apis/campApi';
 import { SiteList, SiteListsRes } from '../interfaces/camp';
 import Sites from '../components/camps/Sites';
+import CheckAuth from '../components/common/CheckAuth';
 
 interface dateType {
   startday?: any;
@@ -41,7 +42,6 @@ const DetailPage = () => {
     dispatch(__getCampsByParams(params)).then(res => {
       const { payload, type }: any = res;
       if (type === 'getCampsByParams/fulfilled') {
-        console.log(payload);
         setCamp(payload.camp);
       }
     });
@@ -291,11 +291,15 @@ const DetailPage = () => {
           )}
         </SiteLists>
         {isCmtOpen ? (
-          <CmtBox onClick={() => isCmtOpenChange()}>열기 🔽</CmtBox>
-        ) : (
           <CmtBox onClick={() => isCmtOpenChange()}>접기 🔼</CmtBox>
+        ) : (
+          <CmtBox onClick={() => isCmtOpenChange()}>열기 🔽</CmtBox>
         )}
-        <CommentList isCmtOpen={isCmtOpen} setIsCmtOpen={setIsCmtOpen} />
+        <CommentList
+          isCmtOpen={isCmtOpen}
+          setIsCmtOpen={setIsCmtOpen}
+          campId={params}
+        />
       </DescWrap>
     </Wrap>
   ) : null;

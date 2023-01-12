@@ -1,5 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { PagenoCamps, SiteDesc, SiteList } from '../interfaces/camp';
+import {
+  Comment,
+  GetComments,
+  ModifyOrDeleteComment,
+} from '../interfaces/Comment';
 import api from './api';
 
 // 메인 데이터 가져오기
@@ -71,6 +76,81 @@ export const __likeCampByParams = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } else {
       return thunkAPI.rejectWithValue(response.data);
+    }
+  },
+);
+
+// 캠핑장 리뷰 등록
+export const __writeCampReview = createAsyncThunk(
+  'writeCampReview',
+  async (payload: Comment, thunkAPI) => {
+    const { campId, content } = payload;
+    try {
+      const response = await api.post(`api/camps/${campId}/reviews`, {
+        content,
+      });
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 캠핑장 리뷰 수정
+export const __modifyCampReview = createAsyncThunk(
+  'modifyCampReview',
+  async (payload: ModifyOrDeleteComment, thunkAPI) => {
+    const { campId, reviewId, content } = payload;
+    try {
+      const response = await api.put(
+        `api/camps/${campId}/reviews/${reviewId}`,
+        {
+          content,
+        },
+      );
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 캠핑장 리뷰 삭제
+export const __deleteCampReview = createAsyncThunk(
+  'deleteCampReview',
+  async (payload: ModifyOrDeleteComment, thunkAPI) => {
+    const { campId, reviewId } = payload;
+    try {
+      const response = await api.delete(
+        `api/camps/${campId}/reviews/${reviewId}`,
+      );
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 캠핑장 리뷰 조회-페이지네이션
+export const __getCampReviews = createAsyncThunk(
+  'getCampReviews',
+  async (payload: GetComments, thunkAPI) => {
+    const { campId, pageno } = payload;
+    try {
+      const response = await api.get(
+        `api/camps/${campId}/reviews/page?pageno=${pageno}`,
+      );
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   },
 );

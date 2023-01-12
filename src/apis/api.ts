@@ -30,18 +30,4 @@ api.interceptors.request.use(function (config: any) {
   return config;
 });
 
-api.interceptors.response.use(function (config: any) {
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
-  //둘중하나라도 없으면 다시 저장
-  if (!accessToken && !refreshToken) {
-    const newAccesstoken = config.headers.accesstoken;
-    const newRefreshtoken = config.headers.refreshtoken;
-    localStorage.setItem('accessToken', newAccesstoken);
-    localStorage.setItem('refreshToken', newRefreshtoken);
-  }
-
-  return config;
-});
-
 export default api;
