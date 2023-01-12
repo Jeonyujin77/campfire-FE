@@ -10,6 +10,8 @@ import Input from '../common/Input';
 import { EMAIL_NOT_VALID, PW_NOT_VALID } from '../../constant/message';
 import { useAppDispatch } from '../../redux/store';
 import { __signin } from '../../apis/userApi';
+import kakao_login_medium_wide from '../../asset/kakao_login_medium_wide.png';
+import { KAKAO_AUTH_URL } from '../../apis/loginkeys';
 
 const LoginBox = () => {
   const dispatch = useAppDispatch();
@@ -41,9 +43,24 @@ const LoginBox = () => {
     });
   };
 
+  //카카오
+  // REST_API_KEY={process.env.REACT_APP_KAKAO_REST_API_KEY}
+  // REDIRECT_URI={process.env.REACT_APP_LOGIN_REDIRECT_URI}
+  // kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code
+  // const { Kakao } = window;
+  // const loginWithKakao = () => {
+  //   Kakao.Auth.authorize({
+  //     redirectUri: `http://localhost:3000/login/oauth`,
+  //     scope: 'profile_nickname,profile_image,account_email',
+  //   });
+  // };
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   return (
-    <>
-      <form onSubmit={onSubmit}>
+    <Wrap>
+      <FormWrap onSubmit={onSubmit}>
         <SignupWrap>
           <InputWrap>
             <InputTitle>아이디</InputTitle>
@@ -84,14 +101,24 @@ const LoginBox = () => {
         >
           로그인하기
         </Button>
-      </form>
+      </FormWrap>
+      <KakaoBtn onClick={handleKakaoLogin}>
+        <Kakao src={kakao_login_medium_wide} />
+      </KakaoBtn>
       <BottomText>
         <div>아직 회원이 아니시라면? </div>
         <ToLogin to="/signup">회원가입하기</ToLogin>
       </BottomText>
-    </>
+    </Wrap>
   );
 };
+
+const Wrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
 
 const SignupWrap = styled.div`
   /* 헤더 크기에 따라 수정 필요 */
@@ -104,6 +131,13 @@ const SignupWrap = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+`;
+
+const FormWrap = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const InputWrap = styled.div`
@@ -173,6 +207,21 @@ const BottomText = styled.div`
   align-items: center;
   flex-direction: row;
   gap: 10px;
+`;
+
+const KakaoBtn = styled.button`
+  padding: 0px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const Kakao = styled.img`
+  width: 400px;
+  height: 59px;
+  &:hover {
+    filter: brightness(95%);
+  }
 `;
 
 export default LoginBox;

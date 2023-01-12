@@ -8,6 +8,7 @@ import Login from '../routes/Login';
 import ReservationPage from '../routes/ReservationPage';
 import Main from '../routes/Main';
 import ProfileModify from '../routes/ProfileModify';
+import OAuthKakao from '../routes/OAuthKakao';
 
 const Router = () => {
   return (
@@ -17,17 +18,18 @@ const Router = () => {
           <Route path="/" element={<Main />} />
           <Route path="/camp/:campId" element={<DetailPage />} />
           <Route
-            path="/camp/:campId/campdesc"
+            path="/camp/:campId/sitedesc/:siteId"
             element={<ReservationDescpage />}
           />
           <Route
-            path="/camp/:campId/campreservation"
+            path="/camp/:campId/sitereservation/:siteId"
             element={<ReservationPage />}
           />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/edit" element={<ProfileModify />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/api/auths/kakao" element={<OAuthKakao />} />
         </Routes>
       </Layout>
     </BrowserRouter>
