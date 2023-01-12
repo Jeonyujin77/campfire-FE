@@ -18,6 +18,7 @@ export interface CampType {
   cretedAt: any;
   hostId: number;
   updatedAt: any;
+  typeLists: [];
 }
 
 let pageno = 1;
@@ -89,6 +90,11 @@ const CampItemList = () => {
 
   return camps ? (
     <Wrap>
+      {/* <button
+        onClick={() => {
+          console.log(camps);
+        }}
+      ></button> */}
       <ListWrap>
         {/* <button
         onClick={() => {
@@ -114,6 +120,9 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* border: 1px solid red; */
+  max-height: 100%;
+  min-height: 100vh;
 `;
 
 const ListWrap = styled.div`
