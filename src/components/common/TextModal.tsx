@@ -48,8 +48,10 @@ const ModalBackground = styled.div<{ isOpen: boolean }>`
 `;
 
 const ModalWrap = styled.div<{ isOpen: boolean }>`
-  position: absolute;
-  top: calc(50vh-);
+  /* position: absolute; */
+  position: fixed;
+  margin: auto;
+  top: calc(50vh - 40vh);
   left: calc(50vw - 300px);
   background-color: white;
   width: 600px;
@@ -96,6 +98,8 @@ const ModalBody = styled.div`
   //줄바꿈도 인식하면서 긴 문자열은 자동 줄바꿈처리해줌
   word-break: break-all;
   white-space: pre-wrap;
+  line-height: 30px;
+  overflow-y: scroll;
 `;
 
 export default TextModal;
