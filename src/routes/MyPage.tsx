@@ -6,6 +6,7 @@ import MyReservationModal from '../components/users/MyreservationModal';
 import UserIcones from '../components/users/UserIcones';
 import { useAppDispatch } from '../redux/store';
 import { __getUser } from '../apis/userApi';
+import WithdrawalModal from '../components/users/WithdrawalModal';
 
 const MyPage = () => {
   const { pathname } = useLocation();
@@ -17,6 +18,7 @@ const MyPage = () => {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isWithdrawalOpen, setIsWithdrawalOpen] = useState(false);
 
   const [accesstoken, setAccesstoken] = useState<string | null>(null);
   const [refreshtoken, setRefreshtoken] = useState<string | null>(null);
@@ -45,6 +47,10 @@ const MyPage = () => {
   return (
     <>
       <MyReservationModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <WithdrawalModal
+        isWithdrawalOpen={isWithdrawalOpen}
+        setIsWithdrawalOpen={setIsWithdrawalOpen}
+      />
       <Wrap>
         {accesstoken &&
         accesstoken !== 'undefined' &&
@@ -78,13 +84,31 @@ const MyPage = () => {
             <Icon
               onClick={() => {
                 setIsOpen(!isOpen);
-                alert('내 예약 불러오기 get명령 필요!');
               }}
             >
               <img src="https://via.placeholder.com/80" alt="내예약 이미지" />
               <div>내 예약</div>
             </Icon>
-            <Icon>~~~</Icon>
+            <Icon
+              onClick={() => {
+                if (
+                  accesstoken &&
+                  accesstoken !== 'undefined' &&
+                  refreshtoken &&
+                  refreshtoken !== 'undefined'
+                ) {
+                  navigate('/mypage/edit');
+                } else {
+                  alert('로그인 해주세요!');
+                }
+              }}
+            >
+              <img
+                src="https://via.placeholder.com/80"
+                alt="프로필수정 이미지"
+              />
+              <div>프로필 수정</div>
+            </Icon>
             <Icon>~~~</Icon>
             <Icon>~~~</Icon>
           </IconsTop>
@@ -94,23 +118,14 @@ const MyPage = () => {
             <Icon>~~~</Icon>
             <Icon
               onClick={() => {
-                // if (
-                //   accesstoken &&
-                //   accesstoken !== 'undefined' &&
-                //   refreshtoken &&
-                //   refreshtoken !== 'undefined'
-                // ) {
-                navigate('/mypage/edit');
-                // } else {
-                //   alert('로그인 해주세요!');
-                // }
+                setIsWithdrawalOpen(!isWithdrawalOpen);
               }}
             >
               <img
                 src="https://via.placeholder.com/80"
                 alt="프로필수정 이미지"
               />
-              <div>프로필 수정</div>
+              <div>회원 탈퇴</div>
             </Icon>
           </IconsTop>
         </IconsDiv>

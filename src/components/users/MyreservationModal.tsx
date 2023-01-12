@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Button from '../common/Button';
+import { useAppDispatch } from '../../redux/store';
+import { __reserveUser } from '../../apis/reservationApi';
+import { Reservation, ReservationList } from '../../interfaces/Users';
+import { useNavigate } from 'react-router-dom';
+import ReservationItem from './ReservationItem';
 
 interface MRProps {
   isOpen: boolean;
@@ -8,7 +13,29 @@ interface MRProps {
 }
 
 const MyReservationModal = (props: MRProps) => {
-  useEffect(() => {}, []);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
+
+  const [display, setDisplay] = useState(1);
+
+  // const representStart =
+  // const representEnd =
+
+  useEffect(() => {
+    dispatch(__reserveUser()).then(res => {
+      const { type, payload }: any = res;
+      console.log('res:', res);
+      console.log('type:', type);
+      console.log('payload:', payload);
+      if (type === 'reserveUser/fulfilled') {
+        setBooks(payload);
+      }
+    });
+  }, []);
+
+  const [books, setBooks] = useState<ReservationList>();
 
   return (
     <>
@@ -28,51 +55,13 @@ const MyReservationModal = (props: MRProps) => {
             x
           </ModalCloseBtn>
         </ModalHeader>
-        {/* {__.map(reserveation=> ( */}
-        <ReserveWrap>
-          <div>
-            <img
-              src="https://via.placeholder.com/500x260"
-              alt="캠핑장 이미지"
-            />
-          </div>
-          <CampDesc>
-            <DescText height="30px">캠핑장이름</DescText>
-            <DescText height="30px">startday / endday</DescText>
-            <DescText height="70px">campName</DescText>
-            <DescText height="100px">campdesc</DescText>
-          </CampDesc>
-        </ReserveWrap>
-        {/* ))} */}
-        <PagenoBtnWrap>
-          <Button
-            width="30px"
-            bgColor="#e5e5e5f"
-            onClick={() => {
-              alert('pageno에 따른 예약내역 2개씩 불러오기!');
-            }}
-          >
-            1
-          </Button>
-          <Button
-            width="30px"
-            bgColor="#e5e5e5f"
-            onClick={() => {
-              alert('pageno에 따른 예약내역 2개씩 불러오기!');
-            }}
-          >
-            2
-          </Button>
-          <Button
-            width="30px"
-            bgColor="#e5e5e5f"
-            onClick={() => {
-              alert('pageno에 따른 예약내역 2개씩 불러오기!');
-            }}
-          >
-            3
-          </Button>
-        </PagenoBtnWrap>
+        {books ? (
+          books.books.map(book => (
+            <ReservationItem key={book.bookId} book={book} />
+          ))
+        ) : (
+          <></>
+        )}
       </ModalWrap>
     </>
   );
@@ -91,13 +80,14 @@ const ModalBackground = styled.div<{ isOpen: boolean }>`
 
 const ModalWrap = styled.div<{ isOpen: boolean }>`
   border: 1px solid red;
-  position: absolute;
-  top: calc(50vh-500px);
+  position: fixed;
+  margin: auto;
+  top: calc(50vh - 45vh);
   left: calc(50vw - 500px);
   background-color: white;
   width: 1000px;
-  max-height: 100%;
-  min-height: 80vh;
+  /* max-height: 100%; */
+  height: 90vh;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
@@ -105,6 +95,7 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   gap: 10px;
   z-index: 2000;
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  overflow-y: scroll;
 `;
 
 const ModalHeader = styled.div`
@@ -132,11 +123,32 @@ const ReserveWrap = styled.div`
   padding: 10px;
   width: 930px;
   height: 260px;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 1px 1px 1px 1px #c0bdbd;
+  }
   border: 1px solid black;
 `;
 
+const MainImg = styled.img`
+  width: 500px;
+  height: 260px;
+`;
+
+const SiteName = styled.div`
+  width: 400px;
+  height: 30px;
+  padding: 5px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 22px;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+`;
+
 const CampDesc = styled.div`
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   width: 400px;
   padding: 10px;
   min-height: 240px;
@@ -144,7 +156,7 @@ const CampDesc = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 `;
 
 const DescText = styled.div<{ height: string }>`
@@ -154,6 +166,33 @@ const DescText = styled.div<{ height: string }>`
   width: 400px;
   height: ${({ height }) => height};
   border-bottom: 1px solid black;
+  padding-bottom: 7px;
+`;
+
+const SiteDesc = styled.div`
+  white-space: pre-wrap;
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 400px;
+  height: 80px;
+  border-bottom: 1px solid black;
+`;
+
+const SiteInfo = styled.div`
+  white-space: pre-wrap;
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 400px;
+  height: 77px;
+  margin-bottom: 7px;
 `;
 
 const PagenoBtnWrap = styled.div``;
