@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import RepresentDate from '../components/reservations/RepresentDate';
 import DdayBox from '../components/reservations/DdayBox';
@@ -15,6 +15,10 @@ const ReservationPage = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const { pathname } = useLocation();
+  const campparams = Number(useParams().campId);
+  const siteparams = Number(useParams().siteId);
+  console.log('campparams:', campparams);
+  console.log('siteparams:', siteparams);
   const [roomCount, setRoomCount] = useState(1);
   // 상세페이지에서 넘어온 예약정보
   const state = location.state as {
@@ -75,7 +79,8 @@ const ReservationPage = () => {
     console.log('아동수: ', child);
 
     const reserveInfo = {
-      campId: state.campId,
+      campId: campparams,
+      siteId: siteparams,
       checkInDate: startday,
       checkOutDate: endday,
       adults: adult,
