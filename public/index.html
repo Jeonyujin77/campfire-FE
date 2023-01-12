@@ -11,6 +11,28 @@
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <style>
+      .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+        bottom: 0px;
+      }
+      .swiper-pagination-horizontal {
+        opacity: 0.5;
+      }
+      .swiper-button-next {
+        --swiper-theme-color: rgb(72, 70, 66);
+      }
+      .swiper-button-prev {
+        --swiper-theme-color: rgb(72, 70, 66);
+      }
+      .swiper-pagination-bullet-active {
+        --swiper-theme-color: rgb(184, 133, 39);
+      }
+    </style>
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script>
+      Kakao.init('%REACT_APP_KAKAO_JS_SDK_KEY%');
+      console.log(Kakao.isInitialized);
+    </script>
     <title>React App</title>
   </head>
   <body>
