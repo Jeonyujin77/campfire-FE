@@ -28,6 +28,7 @@ const Header = () => {
         <Button
           onClick={() => {
             localStorage.clear();
+            navigate('/');
             window.location.reload();
           }}
           bgColor="white"

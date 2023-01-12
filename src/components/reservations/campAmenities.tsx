@@ -16,7 +16,9 @@ const Amenity = styled.div`
   text-align: center;
   background-color: #f1efef;
   border-radius: 10px;
-  width: 100px;
+  padding: 0px 10px;
+  max-width: 100%;
+  min-width: 60px;
   height: 30px;
 `;
 

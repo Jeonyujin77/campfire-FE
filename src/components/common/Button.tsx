@@ -11,6 +11,7 @@ interface ButtonProps {
   fontWeight?: string;
   onClick?: any;
   display?: any;
+  margin?: string;
 }
 
 const Button = ({
@@ -23,6 +24,7 @@ const Button = ({
   onClick,
   fontWeight,
   display,
+  margin,
 }: ButtonProps) => {
   return (
     <Btn
@@ -34,6 +36,7 @@ const Button = ({
       fontWeight={fontWeight}
       onClick={() => onClick()}
       display={display}
+      margin={margin}
     >
       {children}
     </Btn>
@@ -41,7 +44,7 @@ const Button = ({
 };
 
 const Btn = styled.button<ButtonProps>`
-  margin: 10px;
+  margin: ${({ margin }) => (margin ? margin : '10px')};
   border: none;
   cursor: pointer;
   user-select: none;

@@ -1,5 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { UserInfo, UserLogin } from '../interfaces/Users';
+import {
+  DeleteUser,
+  PutUserInfo,
+  UserInfo,
+  UserLogin,
+} from '../interfaces/Users';
 import api from './api';
 
 // 이메일 중복확인
@@ -67,6 +72,7 @@ export const __signin = createAsyncThunk(
   async (payload: UserLogin, thunkAPI) => {
     try {
       const { email, password } = payload;
+      localStorage.clear();
 
       const response = await api.post('/api/users/login', {
         email,
@@ -97,6 +103,61 @@ export const __getUser = createAsyncThunk(
   async (payload: number, thunkAPI) => {
     try {
       const response = await api.get(`/api/users/${payload}`);
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 수정페이지 정보수정하기
+export const __putUser = createAsyncThunk(
+  'putUser',
+  async (payload: PutUserInfo, thunkAPI) => {
+    const { userId, formData } = payload;
+    try {
+      const response = await api.put(`/api/users/${userId}`, formData, {
+        headers: { 'content-type': 'multipart/form-data' },
+      });
+      console.log(response);
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 회원탈퇴하기
+export const __withdrawalUser = createAsyncThunk(
+  'withdrawalUser',
+  async (payload: DeleteUser, thunkAPI) => {
+    const { userId, password } = payload;
+    console.log(password);
+    try {
+      const response = await api.delete(`/api/users/${userId}`, {
+        data: { password },
+      });
+      console.log(response);
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+//카카오로그인
+export const __kakaoLogin = createAsyncThunk(
+  'withdrawalUser',
+  async (payload: any, thunkAPI) => {
+    try {
+      const response = await api.get<any>(`/api/auths/kakao?code=${payload}`);
+      console.log(response);
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue(response.data);
       }

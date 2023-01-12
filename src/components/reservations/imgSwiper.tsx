@@ -27,7 +27,7 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
         pagination={{ clickable: true }}
       >
         {images.map(image => (
-          <StyledSwiperSlide key={image}>
+          <StyledSwiperSlide key={image + Math.random()}>
             <CampImg src={image} />
           </StyledSwiperSlide>
         ))}

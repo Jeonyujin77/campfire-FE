@@ -6,28 +6,26 @@ import TextModal from '../components/common/TextModal';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import RepresentDate from '../components/reservations/RepresentDate';
 import { useAppDispatch } from '../redux/store';
-import { __getCampsByParams } from '../apis/campApi';
+import { __getCampsByParams, __getSiteByParams } from '../apis/campApi';
 import DdayBox from '../components/reservations/DdayBox';
 import CheckBox from '../components/reservations/CheckBox';
 import useReserveInfo from '../hooks/useReserveInfo';
 
-/* DetailPage에서 서버로부터 get한 해당 camp의 데이터를 store에 저장해두고
-  store에서 params === campId 인 데이터를 가져와서 뿌려주는 형식으로 해야할 것 같음
-  혹은 여기서 다시 서버에 get요청을 해도 되는데 효율적인 행동인지?
-  캠프 예약정보 페이지에 접근하는 방법이 디테일페이지를 타고 들어오는것 밖에 없다면
-  store에 저장하는 것이 맞고, 다른 방법이 있다면 여기서 다시 get하는게 맞을 것으로 보임 */
 const ReservationDescpage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const params = Number(useParams().campId);
+  const campparams = Number(useParams().campId);
+  const siteparams = Number(useParams().siteId);
+  console.log('campparams:', campparams);
+  console.log('siteparams:', siteparams);
   const { pathname } = useLocation();
   const [headText, setHeadText] = useState('');
   const [bodyText, setBodyText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [cancleInfo, setCancleInfo] = useState(false);
   //해당 캠프 데이터 받아오기
-  const [camp, setCamp] = useState<any>();
+  const [site, setSite] = useState<any>();
   //약관 동의 체크박스
   const [isAllChecked, setAllChecked] = useState(false);
   const [checkedState, setCheckedState] = useState(new Array(5).fill(false));
@@ -45,11 +43,13 @@ const ReservationDescpage = () => {
   }, [pathname]);
 
   useEffect(() => {
-    dispatch(__getCampsByParams(params)).then(res => {
+    dispatch(__getSiteByParams({ campparams, siteparams })).then(res => {
       const { payload, type }: any = res;
-      if (type === 'getCampsByParams/fulfilled') {
-        console.log(payload);
-        setCamp(payload.camp);
+      console.log('res:', res);
+      console.log('payload:', payload);
+      console.log('type:', type);
+      if (type === 'getSiteByParams/fulfilled') {
+        setSite(payload.site);
       }
     });
   }, []);
@@ -78,7 +78,7 @@ const ReservationDescpage = () => {
     setAllChecked(checkedLength === updatedCheckedState.length);
   };
 
-  return camp ? (
+  return site ? (
     <>
       <TextModal
         isOpen={isOpen}
@@ -88,11 +88,11 @@ const ReservationDescpage = () => {
       />
       <Wrap>
         <ImgSwiper
-          campMainImage={camp.campMainImage}
-          campSubImages={camp.campSubImages}
+          campMainImage={site.siteMainImage}
+          campSubImages={site.siteSubImages}
         />
-        <TextBox minWidth="40px" fontWeight="bold">
-          호스트가 적은 캠핑장 이름 및 간단한 정보 입력칸입니다.
+        <TextBox minWidth="40px" fontSize="33px" fontWeight="bold">
+          {site.siteName}
         </TextBox>
         <DdayBox dDay={dDay} />
         <TextBox>
@@ -102,19 +102,17 @@ const ReservationDescpage = () => {
               margin: '10px 10px 10px 10px',
             }}
           >
-            <CampIntro></CampIntro>
+            <CampIntro>{site.siteDesc}</CampIntro>
           </div>
         </TextBox>
         <TextBox>
           <TextBoxHeader>상품소개</TextBoxHeader>
           <div
             style={{
-              margin: '10px 10px 10px 10px',
+              margin: '10px 10px 0px 10px',
             }}
           >
-            <p>※빠른 입실 원하시는 경우 업체로 직접 문의 바람</p>
-            <p>※※늦은 퇴실 원하시는 경우 다음날 예약자 없을시에만 가능</p>
-            <p>(빠른입실, 늦은 퇴실 모두 추가비용 발생 할 수 있음)</p>
+            <CampInfo>{site.siteDesc}</CampInfo>
           </div>
           <div
             style={{
@@ -126,11 +124,12 @@ const ReservationDescpage = () => {
             <Button
               onClick={() => {
                 setHeadText('캠핑장 이용안내');
-                setBodyText('문자열 내 줄바꿈 처리 어떻게 해야하지');
+                setBodyText(`${site.siteDesc}`);
                 setIsOpen(!isOpen);
               }}
               width="150px"
               height="40px"
+              margin="0px 0px 10px 0px"
             >
               상세보기
             </Button>
@@ -143,11 +142,7 @@ const ReservationDescpage = () => {
               margin: '10px 10px 10px 10px',
             }}
           >
-            <p>
-              주의사항을 읽지 않고 이용 시 발생하는 불이익에 대해 책임지지
-              않습니다. 꼭 읽어주세요.
-            </p>
-            <p>자세한 내용은 아래 상세보기 버튼을 눌러 확인해주세요.</p>
+            <CampInfo>{site.siteInfo}</CampInfo>
           </div>
           <div
             style={{
@@ -159,9 +154,7 @@ const ReservationDescpage = () => {
             <Button
               onClick={() => {
                 setHeadText('캠핑장 이용 주의사항');
-                setBodyText(
-                  '문자열 내 줄바꿈 처리 어떻게 해야하지123123123해야하지12312312\n해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123해야하지123123123',
-                );
+                setBodyText(`${site.siteInfo}`);
                 setIsOpen(!isOpen);
               }}
               width="150px"
@@ -171,14 +164,14 @@ const ReservationDescpage = () => {
             </Button>
           </div>
         </TextBox>
-        <CheckBox
+        {/* <CheckBox
           isAllChecked={isAllChecked}
           setAllChecked={setAllChecked}
           checkedState={checkedState}
           setCheckedState={setCheckedState}
           handleAllCheck={handleAllCheck}
           handleMonoCheck={handleMonoCheck}
-        />
+        /> */}
         <CancleBox>
           <CancleTextBox onClick={() => setCancleInfo(!cancleInfo)}>
             <CancleText>취소 수수료 안내</CancleText>
@@ -221,11 +214,11 @@ const ReservationDescpage = () => {
         <ReservationPageNav>
           <Button
             onClick={() => {
-              navigate(`/camp/${params}/campreservation`, {
+              navigate(`/camp/${campparams}/sitereservation/${siteparams}`, {
                 state: {
                   dateState: { startday, endday, representStart, representEnd },
                   countState: { adult, child },
-                  campId: camp.campId,
+                  campId: site.siteId,
                 },
               });
             }}
@@ -239,7 +232,14 @@ const ReservationDescpage = () => {
         </ReservationPageNav>
       </Wrap>
     </>
-  ) : null;
+  ) : (
+    <button
+      style={{ marginTop: '100px' }}
+      onClick={() => {
+        console.log(site);
+      }}
+    ></button>
+  );
 };
 
 const Wrap = styled.div`
@@ -268,15 +268,31 @@ const TextBox = styled.div<{
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '16px')};
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 'normal')};
   margin-bottom: 5px;
+  padding: 10px;
   word-break: break-all;
   word-wrap: break-word;
 `;
 
 const TextBoxHeader = styled.div`
   margin: 10px 10px 0px 10px;
+  font-size: 25px;
+  font-weight: bold;
+`;
+
+const CampInfo = styled.p`
+  white-space: pre-wrap;
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 75px;
+  margin-bottom: 0px;
 `;
 
 const CampIntro = styled.div`
+  white-space: pre-wrap;
   display: flex;
   align-items: center;
   gap: 10px;

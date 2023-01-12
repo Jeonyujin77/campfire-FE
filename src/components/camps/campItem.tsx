@@ -19,6 +19,7 @@ const CampItem = ({ camp }: { camp: CampType }) => {
   // cretedAt: any;
   // hostId: number;
   // updatedAt: any;
+  // campTypeLists: [string];
 
   const campMinAddress = camp.campAddress.split(' ');
 
@@ -28,12 +29,19 @@ const CampItem = ({ camp }: { camp: CampType }) => {
         navigate(`/camp/${camp.campId}`);
       }}
     >
+      {/* <button
+        onClick={() => {
+          console.log(camp);
+        }}
+      ></button> */}
       <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
       <CampDescWrap>
         <CampHeadDesc>{camp.campName}</CampHeadDesc>
         <CampDescBody>
           <CampDescLeft>
-            <CampDescL>캠핑, 글램핑</CampDescL>
+            <CampDescL>
+              {camp.typeLists ? camp.typeLists.join(', ') : '캠핑장'}
+            </CampDescL>
             <CampDescL>
               {campMinAddress[0]} {campMinAddress[1]}
             </CampDescL>
@@ -124,6 +132,7 @@ const CampDescL = styled.div`
   word-wrap: break-word;
   width: 177px;
   font-size: 16px;
+  display: flex;
   /* border: 1px solid gray; */
 `;
 
