@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { CampType } from './campItemList';
 import starImg from '../../asset/starImg.png';
 import styled from '@emotion/styled';
+import likeOn from '../../asset/likeOn.png';
+import Liked from './Liked';
 
 const CampItem = ({ camp }: { camp: CampType }) => {
   const navigate = useNavigate();
@@ -20,8 +22,17 @@ const CampItem = ({ camp }: { camp: CampType }) => {
   // hostId: number;
   // updatedAt: any;
   // campTypeLists: [string];
+  // likes: number;
 
   const campMinAddress = camp.campAddress.split(' ');
+
+  const countR = () => {
+    if (camp.countReviews >= 100) {
+      return '📃 99+';
+    } else {
+      return `📃 ${camp.countReviews}`;
+    }
+  };
 
   return (
     <ItemWrap
@@ -34,29 +45,34 @@ const CampItem = ({ camp }: { camp: CampType }) => {
           console.log(camp);
         }}
       ></button> */}
-      <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
+      <div style={{ position: 'relative' }}>
+        <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
+        {/* <Liked /> */}
+      </div>
+      {/* </CampImg> */}
       <CampDescWrap>
         <CampHeadDesc>{camp.campName}</CampHeadDesc>
         <CampDescBody>
           <CampDescLeft>
+            <CampDescLAddress>
+              {campMinAddress[0]} {campMinAddress[1]}
+            </CampDescLAddress>
             <CampDescL>
               {camp.typeLists ? camp.typeLists.join(', ') : '캠핑장'}
-            </CampDescL>
-            <CampDescL>
-              {campMinAddress[0]} {campMinAddress[1]}
             </CampDescL>
           </CampDescLeft>
           <CampDescRight>
             <CampDescR>
-              <img
-                style={{ width: '22px', height: '22px' }}
-                src={starImg}
-                alt="별점이미지"
-              />
-              <StarRate>4.5</StarRate>
-              <div>99+</div>
+              <div style={{ display: 'flex', gap: '5px' }}>
+                <img
+                  style={{ width: '22px', height: '22px' }}
+                  src={likeOn}
+                  alt="하트"
+                />
+                <StarRate>{camp.likes}</StarRate>
+              </div>
+              <StarRate>{countR()}</StarRate>
             </CampDescR>
-            <CampPrice>{camp.campPrice}~</CampPrice>
           </CampDescRight>
         </CampDescBody>
       </CampDescWrap>
@@ -74,6 +90,11 @@ const ItemWrap = styled.div`
   justify-content: center;
   margin-bottom: 40px;
   cursor: pointer;
+  border-radius: 19px;
+  box-shadow: 5px 5px 5px 0px #d9d9d9;
+  &:hover {
+    box-shadow: 5px 5px 5px 0px #c6c6c6;
+  }
 `;
 
 const CampImg = styled.img`
@@ -98,7 +119,7 @@ const CampHeadDesc = styled.div`
   word-wrap: break-word;
   font-size: 20px;
   font-weight: bold;
-  margin: 13px 13px 18px 13px;
+  margin: 13px 13px 13px 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -117,6 +138,7 @@ const CampDescLeft = styled.div`
   justify-content: center;
   margin-left: 13px;
   align-items: center;
+  gap: 5px;
 `;
 
 const CampDescRight = styled.div`
@@ -124,22 +146,37 @@ const CampDescRight = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-right: 13px;
+  gap: 5px;
   align-items: center;
 `;
 
-const CampDescL = styled.div`
+const CampDescLAddress = styled.div`
   word-break: break-all;
   word-wrap: break-word;
   width: 177px;
   font-size: 16px;
   display: flex;
+  color: #888888;
   /* border: 1px solid gray; */
+`;
+
+const CampDescL = styled.div`
+  width: 160px;
+  height: 22px;
+  margin-right: 17px;
+  font-size: 16px;
+  /* border: 1px solid black; */
+  /* display: flex; */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 const CampDescR = styled.div`
   word-break: break-all;
   word-wrap: break-word;
   display: flex;
+  flex-direction: column;
   width: 82px;
   /* height: 24px; */
   font-size: 16px;

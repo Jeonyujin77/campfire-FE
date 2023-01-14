@@ -19,6 +19,8 @@ export interface CampType {
   hostId: number;
   updatedAt: any;
   typeLists: [];
+  likes: number;
+  countReviews: number;
 }
 
 let pageno = 1;
@@ -97,16 +99,16 @@ const CampItemList = () => {
       ></button> */}
       <ListWrap>
         {/* <button
-        onClick={() => {
-          console.log(camps);
-        }}
-      ></button> */}
+          onClick={() => {
+            console.log(camps);
+          }}
+        ></button> */}
         {camps?.map(camp => (
           <CampItem key={camp.campId} camp={camp} />
         ))}
       </ListWrap>
       {camps?.length !== 0 ? (
-        <Footer ref={setTarget}>{isLoaded && <br />}</Footer>
+        <Footer ref={setTarget}>{isLoaded && <br />}▽ 더보기</Footer>
       ) : (
         <>등록된 캠핑장이 없습니다.</>
       )}
@@ -135,8 +137,10 @@ const ListWrap = styled.div`
 `;
 
 const Footer = styled.div`
-  border: 1px solid black;
   height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default CampItemList;

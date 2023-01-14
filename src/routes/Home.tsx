@@ -3,6 +3,7 @@ import CampItemList from '../components/camps/campItemList';
 import searchIcon from '../asset/searchIcon.png';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Liked from '../components/camps/Liked';
 
 const Home = () => {
   //페이지 이동 시 스크롤바 상단으로 이동
@@ -33,8 +34,11 @@ const Home = () => {
     }
   };
 
+  const moveToTop = () => (document.documentElement.scrollTop = 0);
+
   return (
     <Wrap>
+      <HomeTitle>쉽고 편한 캠핑장 예약 시스템 캠프파이어</HomeTitle>
       <SearchWrap>
         <Input
           placeholder="검색어를 입력하세요"
@@ -58,15 +62,24 @@ const Wrap = styled.div`
   /* 헤더 크기에 따라 수정 필요 */
   margin: 0px auto;
   /* 헤더 아래 출력되도록 */
-  margin-top: 100px;
+  margin-top: 120px;
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;
   /* border: 1px solid red; */
 `;
 
+const HomeTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+  color: rgb(254, 128, 44);
+`;
+
 const SearchWrap = styled.div`
-  margin-top: 50px;
+  margin-top: 30px;
   height: 44px;
   display: flex;
   align-items: center;
