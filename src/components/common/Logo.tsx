@@ -6,8 +6,8 @@ const Logo = () => {
 };
 
 const Image = styled.img`
-  width: 378px;
-  height: 79px;
+  width: 286px;
+  height: 43px;
   cursor: pointer;
 `;
 
