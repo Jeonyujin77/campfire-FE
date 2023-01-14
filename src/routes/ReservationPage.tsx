@@ -91,10 +91,7 @@ const ReservationPage = () => {
       if (type === 'reserveCamps/fulfilled') {
         alert(`${payload.message}`);
         window.location.href = '/';
-      } else if (
-        type === 'reserveCamps/rejected' &&
-        payload.response.status === 400
-      ) {
+      } else if (type === 'reserveCamps/rejected') {
         alert(`${payload.response.data.errorMessage}`);
       }
     });

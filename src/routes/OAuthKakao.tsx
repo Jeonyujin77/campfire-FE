@@ -7,10 +7,16 @@ const OAuthKakao = () => {
   const kakaoLogin = (payload: any) => {
     dispatch(__kakaoLogin(payload)).then(res => {
       console.log(res);
-      const { payload }: any = res;
+      const { type, payload }: any = res;
       console.log(payload);
-      localStorage.setItem('userId', payload.userId);
-      window.location.href = 'http://localhost:3000/';
+      if (type === 'kakaoLogin/fulfilled') {
+        localStorage.setItem('userId', payload.userId);
+        window.location.href = 'http://localhost:3000/';
+      }
+      // 에러처리
+      else if (type === 'kakaoLogin/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
+      }
     });
   };
 

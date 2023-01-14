@@ -32,13 +32,7 @@ const LoginBox = () => {
         alert('로그인에 성공하였습니다.');
         window.location.href = '/';
       } else if (type === 'signin/rejected') {
-        if (
-          payload.response.status === 400 ||
-          payload.response.status === 412 ||
-          payload.response.status === 419
-        ) {
-          alert(`${payload.response.data.errorMessage}`);
-        }
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   };

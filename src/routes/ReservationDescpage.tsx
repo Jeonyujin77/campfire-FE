@@ -51,6 +51,10 @@ const ReservationDescpage = () => {
       if (type === 'getSiteByParams/fulfilled') {
         setSite(payload.site);
       }
+      // 에러처리
+      else if (type === 'getSiteByParams/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
+      }
     });
   }, []);
 

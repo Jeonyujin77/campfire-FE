@@ -11,13 +11,15 @@ import api from './api';
 export const __getCampsByPageno = createAsyncThunk(
   'getCampsByPageno',
   async (payload: number, thunkAPI) => {
-    const response = await api.get<PagenoCamps>(
-      `api/camps/page?pageno=${payload}`,
-    );
-    if (response.status === 200) {
-      return thunkAPI.fulfillWithValue(response.data);
-    } else {
-      return thunkAPI.rejectWithValue(response.data);
+    try {
+      const response = await api.get<PagenoCamps>(
+        `api/camps/page?pageno=${payload}`,
+      );
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   },
 );
@@ -26,11 +28,13 @@ export const __getCampsByPageno = createAsyncThunk(
 export const __getCampsByParams = createAsyncThunk(
   'getCampsByParams',
   async (payload: number, thunkAPI) => {
-    const response = await api.get<PagenoCamps>(`api/camps/${payload}`);
-    if (response.status === 200) {
-      return thunkAPI.fulfillWithValue(response.data);
-    } else {
-      return thunkAPI.rejectWithValue(response.data);
+    try {
+      const response = await api.get<PagenoCamps>(`api/camps/${payload}`);
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   },
 );
@@ -39,13 +43,13 @@ export const __getCampsByParams = createAsyncThunk(
 export const __getCampSitesByParams = createAsyncThunk(
   'getCampSitesByParams',
   async (payload: number, thunkAPI) => {
-    const response = await api.get<SiteList>(`api/camps/${payload}/sites`);
-    if (response.status === 200) {
-      return thunkAPI.fulfillWithValue(response.data);
-    } else {
-      return thunkAPI.rejectWithValue(response.data);
-      // if (response.status === 400) {}
-      // if (response.status === 404) {}
+    try {
+      const response = await api.get<SiteList>(`api/camps/${payload}/sites`);
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   },
 );
@@ -54,14 +58,16 @@ export const __getCampSitesByParams = createAsyncThunk(
 export const __getSiteByParams = createAsyncThunk(
   'getSiteByParams',
   async (payload: {}, thunkAPI) => {
-    const { campparams, siteparams }: any = payload;
-    const response = await api.get<SiteDesc>(
-      `api/camps/${campparams}/sites/${siteparams}`,
-    );
-    if (response.status === 200) {
-      return thunkAPI.fulfillWithValue(response.data);
-    } else {
-      return thunkAPI.rejectWithValue(response.data);
+    try {
+      const { campparams, siteparams }: any = payload;
+      const response = await api.get<SiteDesc>(
+        `api/camps/${campparams}/sites/${siteparams}`,
+      );
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   },
 );
@@ -70,11 +76,13 @@ export const __getSiteByParams = createAsyncThunk(
 export const __likeCampByParams = createAsyncThunk(
   'likeCampByParams',
   async (payload: number, thunkAPI) => {
-    const response = await api.put(`api/likes/${payload}`);
-    if (response.status === 201) {
-      return thunkAPI.fulfillWithValue(response.data);
-    } else {
-      return thunkAPI.rejectWithValue(response.data);
+    try {
+      const response = await api.put(`api/likes/${payload}`);
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
   },
 );

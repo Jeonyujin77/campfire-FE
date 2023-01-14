@@ -35,13 +35,20 @@ const MyPage = () => {
   useEffect(() => {
     dispatch(__getUser(Number(localStorage.getItem('userId')))).then(res => {
       const { type, payload } = res;
-      //   console.log(type, payload);
-      const { userName, profileImg }: { userName: string; profileImg: string } =
-        payload.user;
-      //   console.log(userName, phoneNumber, profileImg);
-      setUserName(userName);
-      if (profileImg !== undefined) {
-        setRepresent(profileImg);
+
+      if (type === 'getUser/fulfilled') {
+        const {
+          userName,
+          profileImg,
+        }: { userName: string; profileImg: string } = payload.user;
+        setUserName(userName);
+        if (profileImg !== undefined) {
+          setRepresent(profileImg);
+        }
+      }
+      // 에러처리
+      else if (type === 'getUser/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   }, []);

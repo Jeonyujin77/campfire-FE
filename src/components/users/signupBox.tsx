@@ -77,12 +77,7 @@ const SignupBox = () => {
         alert(`${payload.message}`);
       } else if (type === 'checkEmailDup/rejected') {
         setEmailDupFlag(false);
-        if (
-          payload.response.status === 400 ||
-          payload.response.status === 412
-        ) {
-          alert(`${payload.response.data.errorMessage}`);
-        }
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   };
@@ -98,12 +93,7 @@ const SignupBox = () => {
         alert(`${payload.message}`);
       } else if (type === 'checkNickDup/rejected') {
         setNickDupFlag(false);
-        if (
-          payload.response.status === 400 ||
-          payload.response.status === 412
-        ) {
-          alert(`${payload.response.data.errorMessage}`);
-        }
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   };
@@ -134,10 +124,7 @@ const SignupBox = () => {
           alert(`${payload.message}`);
           localStorage.clear();
           navigate('/login');
-        } else if (
-          type === 'signup/rejected' &&
-          payload.response.status === 400
-        ) {
+        } else if (type === 'signup/rejected') {
           localStorage.clear();
           alert(`${payload.response.data.errorMessage}`);
         }

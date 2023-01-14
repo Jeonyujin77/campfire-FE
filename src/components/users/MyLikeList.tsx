@@ -34,6 +34,7 @@ const MyLikeList = (props: MLProps) => {
         setLikeList(payload);
       } else if (type === 'likeCamps/rejected') {
         console.log(payload);
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   }, []);
