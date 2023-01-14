@@ -7,6 +7,7 @@ import UserIcones from '../components/users/UserIcones';
 import { useAppDispatch } from '../redux/store';
 import { __getUser } from '../apis/userApi';
 import WithdrawalModal from '../components/users/WithdrawalModal';
+import MyLikeList from '../components/users/MyLikeList';
 
 const MyPage = () => {
   const { pathname } = useLocation();
@@ -18,6 +19,7 @@ const MyPage = () => {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isLikeOpen, setIsLikeOpen] = useState(false);
   const [isWithdrawalOpen, setIsWithdrawalOpen] = useState(false);
 
   const [accesstoken, setAccesstoken] = useState<string | null>(null);
@@ -47,6 +49,7 @@ const MyPage = () => {
   return (
     <>
       <MyReservationModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <MyLikeList isLikeOpen={isLikeOpen} setIsLikeOpen={setIsLikeOpen} />
       <WithdrawalModal
         isWithdrawalOpen={isWithdrawalOpen}
         setIsWithdrawalOpen={setIsWithdrawalOpen}
@@ -83,7 +86,16 @@ const MyPage = () => {
           <IconsTop>
             <Icon
               onClick={() => {
-                setIsOpen(!isOpen);
+                if (
+                  accesstoken &&
+                  accesstoken !== 'undefined' &&
+                  refreshtoken &&
+                  refreshtoken !== 'undefined'
+                ) {
+                  setIsOpen(!isOpen);
+                } else {
+                  alert('로그인 해주세요!');
+                }
               }}
             >
               <img src="https://via.placeholder.com/80" alt="내예약 이미지" />
@@ -109,7 +121,23 @@ const MyPage = () => {
               />
               <div>프로필 수정</div>
             </Icon>
-            <Icon>~~~</Icon>
+            <Icon
+              onClick={() => {
+                if (
+                  accesstoken &&
+                  accesstoken !== 'undefined' &&
+                  refreshtoken &&
+                  refreshtoken !== 'undefined'
+                ) {
+                  setIsLikeOpen(!isOpen);
+                } else {
+                  alert('로그인 해주세요!');
+                }
+              }}
+            >
+              <img src="https://via.placeholder.com/80" alt="찜한 캠핑장" />
+              <div>찜한 캠핑장</div>
+            </Icon>
             <Icon>~~~</Icon>
           </IconsTop>
           <IconsTop>
@@ -138,7 +166,7 @@ const Wrap = styled.div`
   /* 헤더 크기에 따라 수정 필요 */
   margin: 0px auto;
   /* 헤더 아래 출력되도록 */
-  margin-top: 100px;
+  margin-top: 120px;
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;

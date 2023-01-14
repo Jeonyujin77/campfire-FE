@@ -2,44 +2,84 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { Reservation, ReservationList } from '../../interfaces/Users';
+import { useAppDispatch } from '../../redux/store';
+import { __cancelReservation } from '../../apis/reservationApi';
 
 const ReservationItem = ({ book }: { book: Reservation }) => {
-  const navigate = useNavigate();
-  //   const [book, setBook] = useState<Reservation>();
+  const dispatch = useAppDispatch();
   const [display, setDisplay] = useState(1);
+
+  const cancleR = (payload: number) => {
+    dispatch(__cancelReservation(payload)).then(res => {
+      const { type, payload } = res;
+      if (type === 'cancelReservation/fulfilled') {
+        if (
+          payload.message === '예약 취소 할 수 없습니다. 호스트에게 문의하세요.'
+        ) {
+          alert(
+            `${payload.message} \n캠핑장 전화번호: ${payload.hostPhoneNumber}`,
+          );
+        }
+        if (payload.message === '예약을 취소하였습니다') {
+          alert(`${payload.message}`);
+          window.location.reload();
+        }
+      }
+    });
+  };
 
   return (
     <div>
-      <ReserveWrap
-        onClick={() => {
-          if (display === 0) {
-            setDisplay(1);
-          } else if (display === 1) {
-            setDisplay(0);
-          }
-        }}
-        key={book.bookId}
-        // onMouseOver={() => {
-        //   setDisplay(0);
-        //   console.log(display);
-        // }}
-      >
+      <ReserveWrap key={book.bookId}>
         <div>
-          <MainImg src={book.siteMainImage} alt="캠핑장 메인 이미지" />
+          <MainImg
+            src={book.siteMainImage}
+            alt="캠핑장 메인 이미지"
+            onClick={() => {
+              if (display === 0) {
+                setDisplay(1);
+              } else if (display === 1) {
+                setDisplay(0);
+              }
+            }}
+          />
         </div>
         <CampDesc>
-          <SiteName>{book.siteName}</SiteName>
-          <DescText height="30px">
-            {book.checkInDate.split(' ')[0] +
-              ' ~ ' +
-              book.checkInDate.split(' ')[0]}
-          </DescText>
-          <SiteDesc>
-            <p>{book.siteDesc}</p>
-          </SiteDesc>
-          <SiteInfo>
-            <p>{book.siteInfo}</p>
-          </SiteInfo>
+          <SiteName>
+            <div
+              onClick={() => {
+                if (display === 0) {
+                  setDisplay(1);
+                } else if (display === 1) {
+                  setDisplay(0);
+                }
+              }}
+            >
+              {book.siteName}{' '}
+            </div>
+            <button onClick={() => cancleR(book.bookId)}>예약취소</button>
+          </SiteName>
+          <div
+            onClick={() => {
+              if (display === 0) {
+                setDisplay(1);
+              } else if (display === 1) {
+                setDisplay(0);
+              }
+            }}
+          >
+            <DescText height="30px">
+              {book.checkInDate.split(' ')[0] +
+                ' ~ ' +
+                book.checkInDate.split(' ')[0]}
+            </DescText>
+            <SiteDesc>
+              <p>{book.siteDesc}</p>
+            </SiteDesc>
+            <SiteInfo>
+              <p>{book.siteInfo}</p>
+            </SiteInfo>
+          </div>
         </CampDesc>
       </ReserveWrap>
       <DropdownWrap display={display}>
@@ -116,11 +156,16 @@ const SiteName = styled.div`
   height: 30px;
   padding: 5px 10px 10px 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
   font-size: 22px;
   font-weight: bold;
   border-bottom: 1px solid black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const CampDesc = styled.div`

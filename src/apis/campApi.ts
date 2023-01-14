@@ -70,8 +70,7 @@ export const __getSiteByParams = createAsyncThunk(
 export const __likeCampByParams = createAsyncThunk(
   'likeCampByParams',
   async (payload: number, thunkAPI) => {
-    const { campparams }: any = payload;
-    const response = await api.put(`api/likes/${campparams}`);
+    const response = await api.put(`api/likes/${payload}`);
     if (response.status === 201) {
       return thunkAPI.fulfillWithValue(response.data);
     } else {

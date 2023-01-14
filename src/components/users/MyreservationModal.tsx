@@ -2,10 +2,21 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Button from '../common/Button';
 import { useAppDispatch } from '../../redux/store';
-import { __reserveUser } from '../../apis/reservationApi';
-import { Reservation, ReservationList } from '../../interfaces/Users';
+import {
+  __reserveCanceled,
+  __reserveCompleted,
+  __reserveUser,
+} from '../../apis/reservationApi';
+import {
+  CanceledReservationList,
+  CompletedReservationList,
+  Reservation,
+  ReservationList,
+} from '../../interfaces/Users';
 import { useNavigate } from 'react-router-dom';
 import ReservationItem from './ReservationItem';
+import CompReserveItem from './CompReserveItem';
+import CancReserveItem from './CancReserveItem';
 
 interface MRProps {
   isOpen: boolean;
@@ -14,15 +25,17 @@ interface MRProps {
 
 const MyReservationModal = (props: MRProps) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
-  const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
+  const [books, setBooks] = useState<ReservationList>(); //예약내역
+  const [completedBooks, setCompletedBooks] =
+    useState<CompletedReservationList>(); //이용 완료내역
+  const [canceledBooks, setCanceledBooks] = useState<CanceledReservationList>(); //예약 취소내역
 
-  const [display, setDisplay] = useState(1);
+  const [selectBooks, setSelectBooks] = useState(true); //예약내역선택
+  const [selectCompleted, setSelectCompleted] = useState(false); //이용 완료내역선택
+  const [selectCanceled, setSelectCanceled] = useState(false); //예약 취소내역 선택
 
-  // const representStart =
-  // const representEnd =
-
+  //페이지 진입 시 예약내역부터 불러오고, 예약내역이 선택될 때마다 데이터를 불러옴
   useEffect(() => {
     dispatch(__reserveUser()).then(res => {
       const { type, payload }: any = res;
@@ -33,9 +46,27 @@ const MyReservationModal = (props: MRProps) => {
         setBooks(payload);
       }
     });
-  }, []);
+  }, [selectBooks]);
 
-  const [books, setBooks] = useState<ReservationList>();
+  //페이지 진입 시 완료내역 한번 불러오고, 완료내역이 선택될 때마다 데이터를 불러옴
+  useEffect(() => {
+    dispatch(__reserveCompleted()).then(res => {
+      const { type, payload }: any = res;
+      if (type === 'reserveCompleted/fulfilled') {
+        setCompletedBooks(payload);
+      }
+    });
+  }, [selectCompleted]);
+
+  //페이지 진입 시 취소내역 한번 불러오고, 취소내역이 선택될 때마다 데이터를 불러옴
+  useEffect(() => {
+    dispatch(__reserveCanceled()).then(res => {
+      const { type, payload }: any = res;
+      if (type === 'reserveCanceled/fulfilled') {
+        setCanceledBooks(payload);
+      }
+    });
+  }, [selectCanceled]);
 
   return (
     <>
@@ -55,10 +86,68 @@ const MyReservationModal = (props: MRProps) => {
             x
           </ModalCloseBtn>
         </ModalHeader>
-        {books ? (
-          books.books.map(book => (
-            <ReservationItem key={book.bookId} book={book} />
-          ))
+        <TitleWrap>
+          <ReserveTitle
+            selectBooks={selectBooks}
+            onClick={() => {
+              setSelectBooks(true);
+              setSelectCompleted(false);
+              setSelectCanceled(false);
+            }}
+          >
+            예약 내역
+          </ReserveTitle>
+          <CompleteTitle
+            selectCompleted={selectCompleted}
+            onClick={() => {
+              setSelectBooks(false);
+              setSelectCompleted(true);
+              setSelectCanceled(false);
+            }}
+          >
+            이용 완료내역
+          </CompleteTitle>
+          <CancleTitle
+            selectCanceled={selectCanceled}
+            onClick={() => {
+              setSelectBooks(false);
+              setSelectCompleted(false);
+              setSelectCanceled(true);
+            }}
+          >
+            예약 취소내역
+          </CancleTitle>
+        </TitleWrap>
+        {selectBooks ? (
+          books ? (
+            books.books.map(book => (
+              <ReservationItem key={book.bookId} book={book} />
+            ))
+          ) : (
+            <></>
+          )
+        ) : (
+          <></>
+        )}
+        {selectCompleted ? (
+          completedBooks ? (
+            completedBooks.expiredBooks.map(book => (
+              <CompReserveItem key={book.bookId} book={book} />
+            ))
+          ) : (
+            <></>
+          )
+        ) : (
+          <></>
+        )}
+        {selectCanceled ? (
+          canceledBooks ? (
+            canceledBooks.cancelBooks.map(book => (
+              <CancReserveItem key={book.bookId} book={book} />
+            ))
+          ) : (
+            <></>
+          )
         ) : (
           <></>
         )}
@@ -83,9 +172,9 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   position: fixed;
   margin: auto;
   top: calc(50vh - 45vh);
-  left: calc(50vw - 500px);
+  left: calc(50vw - 550px);
   background-color: white;
-  width: 1000px;
+  width: 1100px;
   /* max-height: 100%; */
   height: 90vh;
   flex-direction: column;
@@ -101,9 +190,65 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
 const ModalHeader = styled.div`
   border: 1px solid green;
   width: 980px;
+  margin: 10px;
+  margin-top: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const TitleWrap = styled.div`
+  width: 980px;
+  height: 50px;
+  border: 1px solid black;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+`;
+
+const ReserveTitle = styled.div<{ selectBooks: boolean }>`
+  width: 320px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+  background-color: ${({ selectBooks }) => (selectBooks ? '#dddddd' : 'white')};
+  &:hover {
+    background-color: #f7f3f3;
+  }
+`;
+
+const CompleteTitle = styled.div<{ selectCompleted: boolean }>`
+  width: 320px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+  background-color: ${({ selectCompleted }) =>
+    selectCompleted ? '#dddddd' : 'white'};
+  &:hover {
+    background-color: #f7f3f3;
+  }
+`;
+
+const CancleTitle = styled.div<{ selectCanceled: boolean }>`
+  width: 320px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+  background-color: ${({ selectCanceled }) =>
+    selectCanceled ? '#dddddd' : 'white'};
+  &:hover {
+    background-color: #f7f3f3;
+  }
 `;
 
 const ModalCloseBtn = styled.button`
@@ -114,87 +259,5 @@ const ModalCloseBtn = styled.button`
   font-size: 15px;
   cursor: pointer;
 `;
-
-const ReserveWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 10px;
-  width: 930px;
-  height: 260px;
-  cursor: pointer;
-  &:hover {
-    box-shadow: 1px 1px 1px 1px #c0bdbd;
-  }
-  border: 1px solid black;
-`;
-
-const MainImg = styled.img`
-  width: 500px;
-  height: 260px;
-`;
-
-const SiteName = styled.div`
-  width: 400px;
-  height: 30px;
-  padding: 5px 10px 10px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 22px;
-  font-weight: bold;
-  border-bottom: 1px solid black;
-`;
-
-const CampDesc = styled.div`
-  /* border: 1px solid blue; */
-  width: 400px;
-  padding: 10px;
-  min-height: 240px;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* justify-content: space-between; */
-`;
-
-const DescText = styled.div<{ height: string }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 400px;
-  height: ${({ height }) => height};
-  border-bottom: 1px solid black;
-  padding-bottom: 7px;
-`;
-
-const SiteDesc = styled.div`
-  white-space: pre-wrap;
-  display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 400px;
-  height: 80px;
-  border-bottom: 1px solid black;
-`;
-
-const SiteInfo = styled.div`
-  white-space: pre-wrap;
-  display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 400px;
-  height: 77px;
-  margin-bottom: 7px;
-`;
-
-const PagenoBtnWrap = styled.div``;
 
 export default MyReservationModal;

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   DeleteUser,
+  LikesCamp,
   PutUserInfo,
   UserInfo,
   UserLogin,
@@ -153,10 +154,30 @@ export const __withdrawalUser = createAsyncThunk(
 
 //카카오로그인
 export const __kakaoLogin = createAsyncThunk(
-  'withdrawalUser',
+  'kakaoLogin',
   async (payload: any, thunkAPI) => {
+    console.log(payload);
     try {
       const response = await api.get<any>(`/api/auths/kakao?code=${payload}`);
+      console.log(response);
+      if (response.status === 200) {
+        const { accesstoken, refreshtoken }: any = response.headers;
+        localStorage.setItem('accessToken', accesstoken);
+        localStorage.setItem('refreshToken', refreshtoken);
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+//찜한 캠핑장 불러오기
+export const __likeCamps = createAsyncThunk(
+  'likeCamps',
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get<LikesCamp>(`/api/likes`);
       console.log(response);
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue(response.data);

@@ -1,3 +1,5 @@
+import { AnyListenerPredicate } from '@reduxjs/toolkit';
+
 // 유저 회원가입 정보
 export interface UserInfo {
   email: string;
@@ -48,6 +50,61 @@ export interface ReservationList {
       siteInfo: string;
       sitePrice: number;
       siteMainImage: string;
+      confirmBook: boolean;
+    },
+  ];
+}
+// 유저 이용완료 내역
+export interface CompletedReservationList {
+  expiredBooks: [
+    {
+      Camp_checkIn: string;
+      Camp_checkOut: string;
+      bookId: number;
+      userId: number;
+      hostId: number;
+      campId: number;
+      siteId: number;
+      checkInDate: any;
+      checkOutDate: any;
+      adults: number;
+      children: number;
+      totalPeople: number;
+      createdAt: any;
+      updatedAt: any;
+      siteName: string;
+      siteDesc: string;
+      siteInfo: string;
+      sitePrice: number;
+      siteMainImage: string;
+      expiredBooks: boolean;
+    },
+  ];
+}
+// 유저 예약취소내역
+export interface CanceledReservationList {
+  cancelBooks: [
+    {
+      Camp_checkIn: string;
+      Camp_checkOut: string;
+      bookId: number;
+      userId: number;
+      hostId: number;
+      campId: number;
+      siteId: number;
+      checkInDate: any;
+      checkOutDate: any;
+      adults: number;
+      children: number;
+      totalPeople: number;
+      createdAt: any;
+      updatedAt: any;
+      siteName: string;
+      siteDesc: string;
+      siteInfo: string;
+      sitePrice: number;
+      siteMainImage: string;
+      cancleBooks: boolean;
     },
   ];
 }
@@ -77,4 +134,79 @@ export interface Reservation {
   siteInfo: string;
   sitePrice: number;
   siteMainImage: string;
+}
+
+export interface compreser {
+  Camp_checkIn: string;
+  Camp_checkOut: string;
+  bookId: number;
+  userId: number;
+  hostId: number;
+  campId: number;
+  siteId: number;
+  checkInDate: any;
+  checkOutDate: any;
+  adults: number;
+  children: number;
+  totalPeople: number;
+  createdAt: any;
+  updatedAt: any;
+  siteName: string;
+  siteDesc: string;
+  siteInfo: string;
+  sitePrice: number;
+  siteMainImage: string;
+  expiredBooks: boolean;
+}
+
+export interface cancreser {
+  Camp_checkIn: string;
+  Camp_checkOut: string;
+  bookId: number;
+  userId: number;
+  hostId: number;
+  campId: number;
+  siteId: number;
+  checkInDate: any;
+  checkOutDate: any;
+  adults: number;
+  children: number;
+  totalPeople: number;
+  createdAt: any;
+  updatedAt: any;
+  siteName: string;
+  siteDesc: string;
+  siteInfo: string;
+  sitePrice: number;
+  siteMainImage: string;
+  cancleBooks: boolean;
+}
+
+// 유저 찜내역 정보
+export interface LikesCamp {
+  Likes: [
+    {
+      likeId: number;
+      userId: number;
+      campId: number;
+      campName: string;
+      createdAt: any;
+      updatedAt: any;
+      campMainImage: string;
+      campAddress: string;
+      typeLists: [string];
+    },
+  ];
+}
+
+export interface Like {
+  likeId: number;
+  userId: number;
+  campId: number;
+  campName: string;
+  createdAt: any;
+  updatedAt: any;
+  campMainImage: string;
+  campAddress: string;
+  typeLists: [string];
 }
