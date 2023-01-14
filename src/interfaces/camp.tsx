@@ -14,6 +14,11 @@ export interface PagenoCamps {
       checkOut: string;
       createdAt: Date;
       updatedAt: Date;
+      envLists: [string];
+      typeLists: [string];
+      themeLists: [string];
+      likeStatus: boolean;
+      likes: number;
     },
   ];
 }
