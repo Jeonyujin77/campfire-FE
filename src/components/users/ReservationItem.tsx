@@ -24,6 +24,9 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
           alert(`${payload.message}`);
           window.location.reload();
         }
+      } // 에러처리
+      else if (type === 'cancelReservation/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   };

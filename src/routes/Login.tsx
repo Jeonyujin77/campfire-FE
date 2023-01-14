@@ -1,14 +1,13 @@
 import styled from '@emotion/styled';
 import Logo from '../components/common/Logo';
 import LoginBox from '../components/users/loginBox';
-import Button from '../components/common/Button';
-import { useDispatch } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const Login = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -19,7 +18,7 @@ const Login = () => {
       navigate('/');
     }
   }, []);
-  const dispatch = useDispatch();
+
   return (
     <Wrap>
       <Logo />

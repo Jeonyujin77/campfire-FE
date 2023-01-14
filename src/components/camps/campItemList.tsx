@@ -39,6 +39,10 @@ const CampItemList = () => {
       if (type === 'getCampsByPageno/fulfilled') {
         setCamps(payload.camps);
       }
+      // 에러처리
+      else if (type === 'getCampsByPageno/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
+      }
     });
     setIsLoaded(false);
   };

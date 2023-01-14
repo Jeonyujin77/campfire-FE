@@ -47,6 +47,10 @@ const DetailPage = () => {
         setCamp(payload.camp);
         setLike(payload.camp.likeStatus);
       }
+      // 에러처리
+      else if (type === 'getCampsByParams/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
+      }
     });
   }, []);
 
@@ -97,6 +101,10 @@ const DetailPage = () => {
       if (type === 'getCampSitesByParams/fulfilled') {
         setSites(payload);
       }
+      // 에러처리
+      else if (type === 'getCampSitesByParams/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
+      }
     });
   };
 
@@ -117,7 +125,10 @@ const DetailPage = () => {
         if (payload.message === '좋아요 취소!') {
           setLike(false);
         }
-      } else {
+      }
+      // 에러처리
+      else if (type === 'likeCampByParams/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   };

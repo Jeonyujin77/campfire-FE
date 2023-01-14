@@ -15,12 +15,10 @@ import Input from '../components/common/Input';
 import { NICK_NOT_VALID, TELNUM_NOT_VALID } from '../constant/message';
 
 const ProfileModify = () => {
-  //페이지 이동 시 스크롤바 상단으로 이동
   const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const formData = new FormData();
   const [prevName, setPrevName] = useState(''); //비교할 이전이름
   const [userName, setUserName] = useState(''); //사용자 이름
   const [phoneNumber, setPhoneNumber] = useState(''); //전화번호
@@ -28,6 +26,52 @@ const ProfileModify = () => {
   const [represent, setRepresent] = useState<any>(); //보여줄 사진
   // const [prevFile, setPrevFile] = useState<File | string | null | any>(); //이전 적용되어있던 사진파일
   const [nickDupFlag, setNickDupFlag] = useState(false); // 닉네임중복확인 flag
+  const [userNameVal, setUserNameVal] = useState(''); //이름 유효성검사
+  const [phoneNumberVal, setPhoneNumberVal] = useState(''); //번호 유효성검사
+  // const [profileImgVal, setProfileImgVal] = useState(''); //이미지 유효성검사
+  const [userNameValidFlag, userNameFlagHandler] = useInputValid(
+    userName,
+    userNameValid,
+  ); // 닉네임검증 flag
+  const [phoneNumberValidFlag, setphoneNumberValidFlag] = useInputValid(
+    phoneNumber,
+    phoneNumberValid,
+  ); // 전화번호검증 flag
+
+  //페이지 이동 시 스크롤바 상단으로 이동
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
+    dispatch(__getUser(Number(localStorage.getItem('userId')))).then(res => {
+      const { type, payload } = res;
+      //   console.log(type, payload);
+      if (type === 'getUser/fulfilled') {
+        const {
+          userName,
+          phoneNumber,
+          profileImg,
+        }: { userName: string; phoneNumber: string; profileImg: string } =
+          payload.user;
+        //   console.log(userName, phoneNumber, profileImg);
+        setUserName(userName);
+        setPhoneNumber(phoneNumber);
+        setPrevName(userName);
+        // url file 컨버터 작동해야 함
+        // setProfileImg(profileImg);
+        // let a = convertURLtoFile(profileImg);
+        if (profileImg !== undefined) {
+          setRepresent(profileImg);
+        }
+      }
+      // 에러처리
+      else if (type === 'getUser/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
+      }
+    });
+  }, []);
+
   // 닉네임 중복검사
   const checkNickDup = () => {
     if (userName === '') return;
@@ -47,45 +91,10 @@ const ProfileModify = () => {
         alert(`${payload.message}`);
       } else if (type === 'checkNickDup/rejected') {
         setNickDupFlag(false);
-        if (
-          payload.response.status === 400 ||
-          payload.response.status === 412
-        ) {
-          alert(`${payload.response.data.errorMessage}`);
-        }
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   };
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const formData = new FormData();
-
-  let a;
-  let b;
-
-  useEffect(() => {
-    dispatch(__getUser(Number(localStorage.getItem('userId')))).then(res => {
-      const { type, payload } = res;
-      //   console.log(type, payload);
-      const {
-        userName,
-        phoneNumber,
-        profileImg,
-      }: { userName: string; phoneNumber: string; profileImg: string } =
-        payload.user;
-      //   console.log(userName, phoneNumber, profileImg);
-      setUserName(userName);
-      setPhoneNumber(phoneNumber);
-      setPrevName(userName);
-      // url file 컨버터 작동해야 함
-      // setProfileImg(profileImg);
-      // let a = convertURLtoFile(profileImg);
-      if (profileImg !== undefined) {
-        setRepresent(profileImg);
-      }
-    });
-  }, []);
 
   // let fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf)$/;
   const ImgChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,19 +132,6 @@ const ProfileModify = () => {
   const pNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhoneNumber(e.target.value + '');
   };
-
-  const [userNameVal, setUserNameVal] = useState(''); //이름 유효성검사
-  const [phoneNumberVal, setPhoneNumberVal] = useState(''); //번호 유효성검사
-  // const [profileImgVal, setProfileImgVal] = useState(''); //이미지 유효성검사
-
-  const [userNameValidFlag, userNameFlagHandler] = useInputValid(
-    userName,
-    userNameValid,
-  ); // 닉네임검증 flag
-  const [phoneNumberValidFlag, setphoneNumberValidFlag] = useInputValid(
-    phoneNumber,
-    phoneNumberValid,
-  ); // 전화번호검증 flag
 
   const SubmitProfile = () => {
     //데이터 안넣을 때 유효성 검사

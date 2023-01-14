@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import Logo from '../components/common/Logo';
 import SignupBox from '../components/users/signupBox';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 const Signup = () => {
@@ -10,8 +9,6 @@ const Signup = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
-  const dispatch = useDispatch();
 
   return (
     <Wrap>

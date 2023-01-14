@@ -3,7 +3,6 @@ import { ReserveInfo } from '../interfaces/Reservations';
 import {
   CanceledReservationList,
   CompletedReservationList,
-  Reservation,
   ReservationList,
 } from '../interfaces/Users';
 import api from './api';

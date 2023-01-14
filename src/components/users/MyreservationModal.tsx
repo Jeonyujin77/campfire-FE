@@ -45,6 +45,10 @@ const MyReservationModal = (props: MRProps) => {
       if (type === 'reserveUser/fulfilled') {
         setBooks(payload);
       }
+      // 에러처리
+      else if (type === 'reserveUser/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
+      }
     });
   }, [selectBooks]);
 
@@ -55,6 +59,10 @@ const MyReservationModal = (props: MRProps) => {
       if (type === 'reserveCompleted/fulfilled') {
         setCompletedBooks(payload);
       }
+      // 에러처리
+      else if (type === 'reserveCompleted/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
+      }
     });
   }, [selectCompleted]);
 
@@ -64,6 +72,10 @@ const MyReservationModal = (props: MRProps) => {
       const { type, payload }: any = res;
       if (type === 'reserveCanceled/fulfilled') {
         setCanceledBooks(payload);
+      }
+      // 에러처리
+      else if (type === 'reserveCanceled/rejected') {
+        alert(`${payload.response.data.errorMessage}`);
       }
     });
   }, [selectCanceled]);
