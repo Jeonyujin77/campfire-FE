@@ -132,15 +132,18 @@ const SignupBox = () => {
         const { type, payload } = res;
         if (type === 'signup/fulfilled') {
           alert(`${payload.message}`);
+          localStorage.clear();
           navigate('/login');
         } else if (
           type === 'signup/rejected' &&
           payload.response.status === 400
         ) {
+          localStorage.clear();
           alert(`${payload.response.data.errorMessage}`);
         }
       });
     } else {
+      localStorage.clear();
       alert('중복확인 및 입력 형식을 확인해주세요.');
     }
   };
