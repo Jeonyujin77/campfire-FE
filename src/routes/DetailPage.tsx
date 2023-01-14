@@ -15,6 +15,8 @@ import {
 import { SiteList, SiteListsRes } from '../interfaces/camp';
 import Sites from '../components/camps/Sites';
 import CheckAuth from '../components/common/CheckAuth';
+import likeOn from '../asset/likeOn.png';
+import likeOff from '../asset/likeOff.png';
 
 interface dateType {
   startday?: any;
@@ -43,6 +45,7 @@ const DetailPage = () => {
       const { payload, type }: any = res;
       if (type === 'getCampsByParams/fulfilled') {
         setCamp(payload.camp);
+        setLike(payload.camp.likeStatus);
       }
     });
   }, []);
@@ -97,16 +100,23 @@ const DetailPage = () => {
     });
   };
 
-  const [like, setLike] = useState(false);
+  const [like, setLike] = useState<boolean>();
+
   useEffect(() => {});
   //찜하기, 찜취소하기 버튼 onClick
   const likeCamp = () => {
     dispatch(__likeCampByParams(params)).then(res => {
       const { type, payload }: any = res;
       if (type === 'likeCampByParams/fulfilled') {
-        console.log('res:', res);
-        console.log('type:', type);
-        console.log('payload:', payload);
+        // console.log('res:', res);
+        // console.log('type:', type);
+        // console.log('payload:', payload);
+        if (payload.message === '좋아요 성공!') {
+          setLike(true);
+        }
+        if (payload.message === '좋아요 취소!') {
+          setLike(false);
+        }
       } else {
       }
     });
@@ -155,12 +165,23 @@ const DetailPage = () => {
               }}
             >
               <CampName>{camp.campName}</CampName>
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/14/14815.png"
-                width="40px"
-                height="40px"
-                alt="좋아요버튼"
-              />
+              <div style={{ cursor: 'pointer' }} onClick={likeCamp}>
+                {like ? (
+                  <img
+                    src={likeOn}
+                    width="40px"
+                    height="40px"
+                    alt="좋아요버튼"
+                  />
+                ) : (
+                  <img
+                    src={likeOff}
+                    width="40px"
+                    height="40px"
+                    alt="좋아요버튼"
+                  />
+                )}
+              </div>
             </div>
             <CampDesc>{camp.campAddress}</CampDesc>
             <CampDesc>campPhonenumber</CampDesc>
