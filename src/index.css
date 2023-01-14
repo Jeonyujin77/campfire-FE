@@ -1,12 +1,3 @@
-body {
-  /* 배경화면설정 */
-  background-image: url(./asset/backgroundImg.png);
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: contain;
-  background-attachment: fixed;
-}
-
 body::-webkit-scrollbar {
   width: 8px; /* 스크롤바의 너비 */
 }
