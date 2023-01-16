@@ -12,6 +12,8 @@ interface ButtonProps {
   onClick?: any;
   display?: any;
   margin?: string;
+  fontFamily?: string;
+  color?: string;
 }
 
 const Button = ({
@@ -25,6 +27,8 @@ const Button = ({
   fontWeight,
   display,
   margin,
+  fontFamily,
+  color,
 }: ButtonProps) => {
   return (
     <Btn
@@ -37,6 +41,8 @@ const Button = ({
       onClick={() => onClick()}
       display={display}
       margin={margin}
+      fontFamily={fontFamily}
+      color={color}
     >
       {children}
     </Btn>
@@ -55,7 +61,11 @@ const Btn = styled.button<ButtonProps>`
   background-color: ${({ bgColor }) => (bgColor ? bgColor : 'lightgray')};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '15px')};
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 'normal')};
+  font-family: ${({ fontFamily }) => (fontFamily ? fontFamily : 'NanumSquare')};
+  color: ${({ color }) => (color ? color : 'black')};
   display: ${({ display }) => (display ? display : 'inline-block')};
+  align-items: center;
+  justify-content: center;
   &:hover {
     filter: brightness(95%);
   }
