@@ -35,52 +35,60 @@ const CampItem = ({ camp }: { camp: CampType }) => {
   };
 
   return (
-    <ItemWrap
-      onClick={() => {
-        navigate(`/camp/${camp.campId}`);
-      }}
-    >
-      {/* <button
-        onClick={() => {
-          console.log(camp);
-        }}
-      ></button> */}
-      <div style={{ position: 'relative' }}>
-        <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
-        {/* <Liked /> */}
-      </div>
-      {/* </CampImg> */}
-      <CampDescWrap>
-        <CampHeadDesc>{camp.campName}</CampHeadDesc>
-        <CampDescBody>
-          <CampDescLeft>
-            <CampDescLAddress>
-              {campMinAddress[0]} {campMinAddress[1]}
-            </CampDescLAddress>
-            <CampDescL>
-              {camp.typeLists ? camp.typeLists.join(', ') : '캠핑장'}
-            </CampDescL>
-          </CampDescLeft>
-          <CampDescRight>
-            <CampDescR>
-              <div style={{ display: 'flex', gap: '5px' }}>
-                <img
-                  style={{ width: '22px', height: '22px' }}
-                  src={likeOn}
-                  alt="하트"
-                />
-                <StarRate>{camp.likes}</StarRate>
-              </div>
-              <StarRate>{countR()}</StarRate>
-            </CampDescR>
-          </CampDescRight>
-        </CampDescBody>
-      </CampDescWrap>
-    </ItemWrap>
+    <>
+      <ItemWrap>
+        <Liked campId={camp.campId} likeStatus={camp.likeStatus} />
+        {/* <button
+          onClick={() => {
+            console.log(camp);
+          }}
+        ></button> */}
+        <div
+          style={{ position: 'relative' }}
+          onClick={() => {
+            navigate(`/camp/${camp.campId}`);
+          }}
+        >
+          <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
+        </div>
+        {/* </CampImg> */}
+        <CampDescWrap
+          onClick={() => {
+            navigate(`/camp/${camp.campId}`);
+          }}
+        >
+          <CampHeadDesc>{camp.campName}</CampHeadDesc>
+          <CampDescBody>
+            <CampDescLeft>
+              <CampDescLAddress>
+                {campMinAddress[0]} {campMinAddress[1]}
+              </CampDescLAddress>
+              <CampDescL>
+                {camp.typeLists ? camp.typeLists.join(', ') : '캠핑장'}
+              </CampDescL>
+            </CampDescLeft>
+            <CampDescRight>
+              <CampDescR>
+                <div style={{ display: 'flex', gap: '5px' }}>
+                  <img
+                    style={{ width: '22px', height: '22px' }}
+                    src={likeOn}
+                    alt="하트"
+                  />
+                  <StarRate>{camp.likes}</StarRate>
+                </div>
+                <StarRate>{countR()}</StarRate>
+              </CampDescR>
+            </CampDescRight>
+          </CampDescBody>
+        </CampDescWrap>
+      </ItemWrap>
+    </>
   );
 };
 
 const ItemWrap = styled.div`
+  position: relative;
   width: 285px;
   height: 292px;
   /* border-bottom: 1px solid blue; */
@@ -115,6 +123,7 @@ const CampDescWrap = styled.div`
 `;
 
 const CampHeadDesc = styled.div`
+  font-family: 'SEBANG_Gothic';
   word-break: break-all;
   word-wrap: break-word;
   font-size: 20px;
@@ -138,7 +147,7 @@ const CampDescLeft = styled.div`
   justify-content: center;
   margin-left: 13px;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
 `;
 
 const CampDescRight = styled.div`
@@ -146,7 +155,7 @@ const CampDescRight = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-right: 13px;
-  gap: 5px;
+  /* gap: 10px; */
   align-items: center;
 `;
 
@@ -165,6 +174,7 @@ const CampDescL = styled.div`
   height: 22px;
   margin-right: 17px;
   font-size: 16px;
+  font-weight: bold;
   /* border: 1px solid black; */
   /* display: flex; */
   white-space: nowrap;
@@ -181,7 +191,7 @@ const CampDescR = styled.div`
   /* height: 24px; */
   font-size: 16px;
   /* border: 1px solid gray; */
-  gap: 3px;
+  gap: 10px;
 `;
 
 const StarRate = styled.div`
