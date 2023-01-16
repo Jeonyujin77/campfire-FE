@@ -72,12 +72,15 @@ const List = styled.div<{ isCmtOpen: boolean }>`
 `;
 
 const CommentTitle = styled.div`
+  margin: 50px 0px 10px 0px;
   width: 100%;
   text-align: left;
+  font-size: 22px;
+  font-weight: bold;
 `;
 
 const MoreComment = styled.div`
-  background-color: #e0dddd;
+  background-color: #ffece0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,7 +89,7 @@ const MoreComment = styled.div`
   border-radius: 15px;
   cursor: pointer;
   &:hover {
-    background-color: #cccbcb;
+    background-color: #e8d2c4;
   }
 `;
 

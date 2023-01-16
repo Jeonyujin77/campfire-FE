@@ -6,6 +6,7 @@ import { __getUser } from '../../apis/userApi';
 import useInput from '../../hooks/useInput';
 import { CommentInfo } from '../../interfaces/Comment';
 import { useAppDispatch } from '../../redux/store';
+import Button from '../common/Button';
 
 const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {
   const dispatch = useAppDispatch();
@@ -100,15 +101,39 @@ const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {
         {content.length > 500 ? <button>더보기</button> : <></>}
         {Number(loggedInUserId) === userId ? (
           !isModify ? (
-            <>
-              <button onClick={() => setIsModify(true)}>수정</button>
-              <button onClick={() => onDeleteReview(reviewId)}>삭제</button>
-            </>
+            <BtnWrap>
+              <Button
+                margin="0px"
+                bgColor="#ffece0"
+                onClick={() => setIsModify(true)}
+              >
+                수정
+              </Button>
+              <Button
+                margin="0px"
+                bgColor="#ffece0"
+                onClick={() => onDeleteReview(reviewId)}
+              >
+                삭제
+              </Button>
+            </BtnWrap>
           ) : (
-            <>
-              <button onClick={() => onModifyReview(reviewId)}>저장</button>
-              <button onClick={() => setIsModify(false)}>취소</button>
-            </>
+            <BtnWrap>
+              <Button
+                margin="0px"
+                bgColor="#ffece0"
+                onClick={() => onModifyReview(reviewId)}
+              >
+                저장
+              </Button>
+              <Button
+                margin="0px"
+                bgColor="#ffece0"
+                onClick={() => setIsModify(false)}
+              >
+                취소
+              </Button>
+            </BtnWrap>
           )
         ) : (
           <></>
@@ -120,6 +145,8 @@ const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {
 
 const CommentWrapper = styled.div`
   width: 100%;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 10px 0px 30px 0px;
 `;
 
 const Profile = styled.div`
@@ -142,10 +169,18 @@ const CommentBox = styled.div`
     width: 100%;
     height: 150px;
     resize: none;
+    border-radius: 5px;
   }
   p {
     white-space: pre-wrap;
   }
+`;
+
+const BtnWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
 `;
 
 export default Comment;
