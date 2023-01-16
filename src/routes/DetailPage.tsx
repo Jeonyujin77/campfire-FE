@@ -1,22 +1,36 @@
-import DateChoiceModal from '../components/reservations/dateChoiceModal';
 import { useState, useEffect } from 'react';
-import ImgSwiper from '../components/reservations/imgSwiper';
 import styled from '@emotion/styled';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import CommentList from '../components/reservations/commentList';
-import Button from '../components/common/Button';
-import CampAmenities from '../components/reservations/campAmenities';
+
+//axios관련
 import { useAppDispatch } from '../redux/store';
 import {
   __getCampsByParams,
   __getCampSitesByParams,
   __likeCampByParams,
 } from '../apis/campApi';
+
+//interface
 import { SiteList, SiteListsRes } from '../interfaces/camp';
-import Sites from '../components/camps/Sites';
+
+//컴포넌트
+import DateChoiceModal from '../components/reservations/dateChoiceModal';
+import CommentList from '../components/reservations/commentList';
+import Button from '../components/common/Button';
 import CheckAuth from '../components/common/CheckAuth';
+import Sites from '../components/camps/Sites';
+import CampAmenities from '../components/reservations/campAmenities';
+import ImgSwiper from '../components/reservations/imgSwiper';
+
+//이미지 불러오기
 import likeOn from '../asset/likeOn.png';
 import likeOff from '../asset/likeOff.png';
+import dateImg from '../asset/dateImg.png';
+import locationImg from '../asset/locationImg.png';
+import phoneImg from '../asset/phoneImg.png';
+import adultImg from '../asset/adultImg.png';
+import childImg from '../asset/childImg.png';
+import upArrowOrange from '../asset/upArrowOrange.png';
 
 interface dateType {
   startday?: any;
@@ -38,8 +52,9 @@ const DetailPage = () => {
   const navigate = useNavigate();
   const params = Number(useParams().campId);
   const dispatch = useAppDispatch();
-  const [camp, setCamp] = useState<any>();
 
+  const [camp, setCamp] = useState<any>();
+  //사이트진입시 params로 camp데이터 가져오기
   useEffect(() => {
     dispatch(__getCampsByParams(params)).then(res => {
       const { payload, type }: any = res;
@@ -54,63 +69,32 @@ const DetailPage = () => {
     });
   }, []);
 
+  //모달 isOpen값
   const [isOpen, setIsOpen] = useState(false);
-
-  const [start, setStart] = useState(new Date());
-  const [end, setEnd] = useState(new Date());
-  const getday = (dayNum: number) => {
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    return days[dayNum];
-  };
-
-  const [adult, setAdult] = useState(2);
-  const [child, setChild] = useState(0);
-  const adultMinusButton = () => {
-    if (adult <= 1) return;
-    setAdult(adult - 1);
-  };
-  const adultPlusButton = () => {
-    setAdult(adult + 1);
-  };
-  const childMinusButton = () => {
-    if (child <= 0) return;
-    setChild(child - 1);
-  };
-  const childPlusButton = () => {
-    setChild(child + 1);
-  };
-
-  const [isCmtOpen, setIsCmtOpen] = useState(false);
-  const isCmtOpenChange = () => {
-    setIsCmtOpen(!isCmtOpen);
-  };
-
-  const [dateObj, setDateObj] = useState<dateType>({
-    startday: '',
-    endday: '',
-  });
 
   const [sites, setSites] = useState<SiteList>();
   //사이트 검색 버튼 onClick
   const getCampSites = () => {
-    dispatch(__getCampSitesByParams(params)).then(res => {
-      console.log(res);
-      const { type, payload }: any = res;
-      console.log('type:', type);
-      console.log('payload:', payload);
-      if (type === 'getCampSitesByParams/fulfilled') {
-        setSites(payload);
-      }
-      // 에러처리
-      else if (type === 'getCampSitesByParams/rejected') {
-        alert(`${payload.response.data.errorMessage}`);
-      }
-    });
+    if (start && end) {
+      dispatch(__getCampSitesByParams(params)).then(res => {
+        console.log(res);
+        const { type, payload }: any = res;
+        console.log('type:', type);
+        console.log('payload:', payload);
+        if (type === 'getCampSitesByParams/fulfilled') {
+          setSites(payload);
+        }
+        // 에러처리
+        else if (type === 'getCampSitesByParams/rejected') {
+          alert(`${payload.response.data.errorMessage}`);
+        }
+      });
+    } else {
+      alert('날짜를 선택하세요!');
+    }
   };
 
   const [like, setLike] = useState<boolean>();
-
-  useEffect(() => {});
   //찜하기, 찜취소하기 버튼 onClick
   const likeCamp = () => {
     dispatch(__likeCampByParams(params)).then(res => {
@@ -133,6 +117,38 @@ const DetailPage = () => {
     });
   };
 
+  //인원수, 날짜
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
+  const getday = (dayNum: number) => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    return days[dayNum];
+  };
+  const [adult, setAdult] = useState(2);
+  const [child, setChild] = useState(0);
+  const adultMinusButton = () => {
+    if (adult <= 1) return;
+    setAdult(adult - 1);
+  };
+  const adultPlusButton = () => {
+    setAdult(adult + 1);
+  };
+  const childMinusButton = () => {
+    if (child <= 0) return;
+    setChild(child - 1);
+  };
+  const childPlusButton = () => {
+    setChild(child + 1);
+  };
+
+  const [isCmtOpen, setIsCmtOpen] = useState(false);
+  const isCmtOpenChange = () => {
+    setIsCmtOpen(!isCmtOpen);
+  };
+  const [dateObj, setDateObj] = useState<dateType>({
+    startday: '',
+    endday: '',
+  });
   useEffect(() => {
     setDateObj({ ...dateObj, startday: start, endday: end });
   }, [start, end]);
@@ -144,6 +160,16 @@ const DetailPage = () => {
   useEffect(() => {
     setCountObj({ ...countObj, adult: adult, child: child });
   }, [adult, child]);
+
+  //번호 복사 함수
+  const handleCopyClipBoard = async () => {
+    try {
+      navigator.clipboard.writeText(camp.phoneNumber);
+      alert('클립보드에 번호가 복사되었습니다.');
+    } catch (e) {
+      alert('복사에 실패하였습니다.');
+    }
+  };
 
   return camp ? (
     <Wrap>
@@ -157,12 +183,15 @@ const DetailPage = () => {
         campMainImage={camp.campMainImage}
         campSubImages={camp.campSubImages}
       />
-      <button
+      {/* <button
+        // onClick={() => {
+        //   console.log('dateObj:', dateObj);
+        //   console.log('countObj:', countObj);
+        // }}
         onClick={() => {
-          console.log('dateObj:', dateObj);
-          console.log('countObj:', countObj);
+          console.log(camp);
         }}
-      ></button>
+      ></button> */}
       <DescWrap>
         <div>
           <div>
@@ -172,7 +201,9 @@ const DetailPage = () => {
                 alignContent: 'center',
                 justifyContent: 'space-between',
                 width: '1130px',
-                border: '1px solid red',
+                // border: '1px solid red',
+                // margin: '20px',
+                marginBottom: '20px',
               }}
             >
               <CampName>{camp.campName}</CampName>
@@ -194,32 +225,82 @@ const DetailPage = () => {
                 )}
               </div>
             </div>
-            <CampDesc>{camp.campAddress}</CampDesc>
-            <CampDesc>campPhonenumber</CampDesc>
+            <CampDesc>
+              <IconLo src={locationImg} />
+              <div>{camp.campAddress}</div>
+              <Button
+                bgColor="#fff2e9"
+                width="54px"
+                height="27px"
+                fontSize="12px"
+                borderRadius="13.5px"
+                margin="0px"
+              >
+                길찾기
+              </Button>
+            </CampDesc>
+            <CampDesc>
+              <IconPh src={phoneImg} />
+              <div>{camp.phoneNumber}</div>
+              <Button
+                bgColor="#fff2e9"
+                fontSize="12px"
+                width="45px"
+                height="27px"
+                borderRadius="13.5px"
+                margin="0px"
+                onClick={handleCopyClipBoard}
+              >
+                복사
+              </Button>
+            </CampDesc>
           </div>
         </div>
-        <DateText
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}
-        >
-          <div>
-            {start?.getMonth() + 1}.{start?.getDate()}({getday(start?.getDay())}
-            ){' / '}
-            {end?.getMonth() + 1}.{end?.getDate()}({getday(end?.getDay())})
-          </div>
-        </DateText>
+        <DateWrap>
+          <IconDa src={dateImg} />
+          <DateText>
+            <div>
+              {start?.getMonth() + 1}월 {start?.getDate()}일 (
+              {getday(start?.getDay())}){' - '}
+              {end ? (
+                <>
+                  {end?.getMonth() + 1}월 {end?.getDate()}일 (
+                  {getday(end?.getDay())})
+                </>
+              ) : (
+                '체크아웃날짜'
+              )}
+            </div>
+          </DateText>
+          <Button
+            bgColor="#fff2e9"
+            fontSize="12px"
+            width="67px"
+            height="27px"
+            borderRadius="13.5px"
+            margin="0px"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            날짜선택
+          </Button>
+        </DateWrap>
         <HeadCountWrap>
-          <div>방문하시는 인원을 선택하세요</div>
+          <HeadText>방문인원</HeadText>
           <HeadCount>
             <CountWrap>
+              <IconAd src={adultImg} />
               성인
               <Button
-                width="25px"
-                height="25px"
-                bgColor="transparent"
-                borderRadius="5px"
-                fontSize="16px"
+                width="27px"
+                height="27px"
+                bgColor="rgb(254,128,44)"
+                borderRadius="13.5px"
+                fontSize="23px"
+                fontWeight="bold"
+                color="white"
+                margin="12px"
                 onClick={() => {
                   adultMinusButton();
                 }}
@@ -228,24 +309,31 @@ const DetailPage = () => {
               </Button>
               {adult}
               <Button
-                width="25px"
-                height="25px"
-                bgColor="transparent"
-                borderRadius="5px"
-                fontSize="16px"
+                width="27px"
+                height="27px"
+                bgColor="rgb(254,128,44)"
+                borderRadius="13.5px"
+                fontSize="23px"
+                fontWeight="bold"
+                color="white"
+                margin="12px"
                 onClick={() => {
                   adultPlusButton();
                 }}
               >
                 +
               </Button>
+              <IconAd src={childImg} />
               아동
               <Button
-                width="25px"
-                height="25px"
-                bgColor="transparent"
-                borderRadius="5px"
-                fontSize="16px"
+                width="27px"
+                height="27px"
+                bgColor="rgb(254,128,44)"
+                borderRadius="13.5px"
+                fontSize="23px"
+                fontWeight="bold"
+                color="white"
+                margin="12px"
                 onClick={() => {
                   childMinusButton();
                 }}
@@ -254,54 +342,48 @@ const DetailPage = () => {
               </Button>
               {child}
               <Button
-                width="25px"
-                height="25px"
-                bgColor="transparent"
-                borderRadius="5px"
-                fontSize="16px"
+                width="27px"
+                height="27px"
+                bgColor="rgb(254,128,44)"
+                borderRadius="13.5px"
+                fontSize="23px"
+                fontWeight="bold"
+                color="white"
+                margin="12px"
                 onClick={() => {
                   childPlusButton();
                 }}
               >
                 +
               </Button>
-              <Button
-                //navigate하면서 date값도 보내줌
-                // onClick={() => {
-                //   navigate(`/camp/${params}/campdesc`, {
-                //     state: { dateState: dateObj, countState: countObj },
-                //   });
-                // }}
-                onClick={getCampSites}
-              >
-                검색하기
-              </Button>
             </CountWrap>
+            <Button bgColor="#FFECE0" onClick={getCampSites}>
+              검색하기
+            </Button>
           </HeadCount>
         </HeadCountWrap>
         {camp.campAmenities ? (
           <AmenityWrap>
             <div
               style={{
-                width: '100px',
-                height: '30px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: '5px',
+                fontWeight: 'bold',
               }}
             >
               부대시설
             </div>
-            {camp.campAmenities ? (
-              <Amenities>
-                {camp.campAmenities.map((amenity: any) => (
-                  <CampAmenities key={amenity}>{amenity}</CampAmenities>
-                ))}
-              </Amenities>
-            ) : (
-              <></>
-            )}
+            <div style={{ display: 'flex' }}>
+              {camp.campAmenities ? (
+                <Amenities>
+                  {camp.campAmenities.map((amenity: any) => (
+                    <CampAmenities key={amenity}>{amenity}</CampAmenities>
+                  ))}
+                </Amenities>
+              ) : (
+                <></>
+              )}
+            </div>
           </AmenityWrap>
         ) : (
           <></>
@@ -323,9 +405,15 @@ const DetailPage = () => {
           )}
         </SiteLists>
         {isCmtOpen ? (
-          <CmtBox onClick={() => isCmtOpenChange()}>접기 🔼</CmtBox>
+          <CmtBox onClick={() => isCmtOpenChange()}>
+            {'접기 '}
+            <ArrImg src={upArrowOrange} />
+          </CmtBox>
         ) : (
-          <CmtBox onClick={() => isCmtOpenChange()}>열기 🔽</CmtBox>
+          <CmtBox onClick={() => isCmtOpenChange()}>
+            {'열기 '}
+            <ArrImgDown src={upArrowOrange} />
+          </CmtBox>
         )}
         <CommentList
           isCmtOpen={isCmtOpen}
@@ -345,43 +433,84 @@ const Wrap = styled.div`
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 `;
 
 const DescWrap = styled.div`
   padding: 15px 30px 15px 30px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  /* gap: 10px; */
 `;
 
 const CampName = styled.div`
-  font-size: 30px;
+  font-size: 25px;
   font-weight: bold;
+  font-family: 'SEBANG_Gothic';
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const CampDesc = styled.div`
-  font-size: 25px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  /* justify-content: center; */
+`;
+
+const IconLo = styled.img`
+  width: 20px;
+  height: 27px;
+`;
+
+const IconPh = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
+const IconDa = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
+const IconAd = styled.img`
+  width: 22px;
+  height: 23px;
+`;
+
+const DateWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 20px;
 `;
 
 const DateText = styled.div`
   text-align: center;
-  background-color: #afadad;
-  width: 200px;
-  height: 40px;
-  border-radius: 15px;
-  cursor: pointer;
+  /* background-color: #afadad; */
+  /* width: 200px;
+  height: 40px; */
+  /* border-radius: 15px; */
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
 `;
 
 const HeadCountWrap = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+const HeadText = styled.div`
+  font-weight: bold;
+  margin: 10px 0px;
 `;
 
 const HeadCount = styled.div`
@@ -394,12 +523,17 @@ const CountWrap = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  padding: 0px 25px 0px 25px;
+  border-radius: 20px;
+  gap: 10px;
+  background-color: rgb(255, 236, 224);
 `;
 
 const AmenityWrap = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
   gap: 5px;
 `;
 
@@ -407,8 +541,13 @@ const Amenities = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  /* justify-content: flex-start; */
   flex-wrap: wrap;
+  max-width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  background-color: rgb(255, 236, 224);
   gap: 5px;
 `;
 
@@ -417,7 +556,7 @@ const SiteLists = styled.div<{ sites: any }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 20px 0px 20px 0px;
   gap: 15px;
 `;
@@ -430,6 +569,18 @@ const CmtBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
+`;
+
+const ArrImg = styled.img`
+  width: 23px;
+  height: 23px;
+`;
+
+const ArrImgDown = styled.img`
+  width: 23px;
+  height: 23px;
+  transform: rotate(180deg);
 `;
 
 export default DetailPage;

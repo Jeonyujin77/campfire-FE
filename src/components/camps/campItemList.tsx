@@ -21,6 +21,7 @@ export interface CampType {
   typeLists: [];
   likes: number;
   countReviews: number;
+  likeStatus: boolean;
 }
 
 let pageno = 1;

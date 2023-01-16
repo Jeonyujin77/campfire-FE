@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { __writeCampReview } from '../../apis/campApi';
 import useInput from '../../hooks/useInput';
 import { useAppDispatch } from '../../redux/store';
+import Button from '../common/Button';
 
 const InsertComment = ({ campId }: { campId: number }) => {
   const dispatch = useAppDispatch();
@@ -41,7 +42,7 @@ const InsertComment = ({ campId }: { campId: number }) => {
       ) : (
         <WriteCommentForm onSubmit={onSubmit}>
           <textarea value={comment} onChange={commentHandler} maxLength={500} />
-          <button>등록</button>
+          <Button bgColor="#ffece0">등록</Button>
         </WriteCommentForm>
       )}
     </>
@@ -50,10 +51,15 @@ const InsertComment = ({ campId }: { campId: number }) => {
 
 const WriteCommentForm = styled.form`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
   textarea {
     width: 100%;
     height: 150px;
     resize: none;
+    border-radius: 5px;
   }
 `;
 

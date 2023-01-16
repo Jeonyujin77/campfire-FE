@@ -20,3 +20,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* 나눔스퀘어 */
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('./fonts/NanumSquare_acR.ttf') format('truetype');
+}
+
+/* 세방고딕 */
+@font-face {
+  font-family: 'SEBANG_Gothic';
+  src: url('./fonts/SEBANG\ Gothic.ttf') format('truetype');
+}
+
+body {
+  font-family: 'NanumSquare';
+}
+* {
+  font-family: 'NanumSquare';
+}
