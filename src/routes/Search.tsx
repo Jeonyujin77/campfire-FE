@@ -7,6 +7,7 @@ import { useAppDispatch } from '../redux/store';
 import { __searchCampsByKeyword } from '../apis/campApi';
 import { CampType } from '../interfaces/camp';
 import SearchedCampList from '../components/camps/SearchedCampList';
+import CheckAuth from '../components/common/CheckAuth';
 
 const Search = () => {
   const dispatch = useAppDispatch();
@@ -57,23 +58,26 @@ const Search = () => {
   };
 
   return (
-    <Wrap>
-      <SearchWrap>
-        <Input
-          placeholder="검색어를 입력하세요"
-          onChange={searchKeyChangeHandler}
-          onKeyDown={keyPressHandler}
-        />
-        <SearchIcon
-          onClick={() => {
-            searchHandler(searchKey);
-          }}
-          src={searchIcon}
-          alt="돋보기아이콘"
-        />
-      </SearchWrap>
-      <SearchedCampList campList={campList} />
-    </Wrap>
+    <>
+      <CheckAuth />
+      <Wrap>
+        <SearchWrap>
+          <Input
+            placeholder="검색어를 입력하세요"
+            onChange={searchKeyChangeHandler}
+            onKeyDown={keyPressHandler}
+          />
+          <SearchIcon
+            onClick={() => {
+              searchHandler(searchKey);
+            }}
+            src={searchIcon}
+            alt="돋보기아이콘"
+          />
+        </SearchWrap>
+        <SearchedCampList campList={campList} />
+      </Wrap>
+    </>
   );
 };
 

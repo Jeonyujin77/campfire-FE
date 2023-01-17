@@ -197,18 +197,4 @@ const StarRate = styled.div`
   font-weight: bold;
 `;
 
-const CampPrice = styled.div`
-  word-break: break-all;
-  word-wrap: break-word;
-  display: flex;
-  width: 82px;
-  font-size: 18px;
-  gap: 3px;
-  color: rgb(255, 92, 0);
-  font-weight: bold;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
 export default CampItem;

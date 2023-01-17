@@ -172,18 +172,20 @@ const DetailPage = () => {
   };
 
   return camp ? (
-    <Wrap>
-      <DateChoiceModal
-        setStart={setStart}
-        setEnd={setEnd}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-      <ImgSwiper
-        campMainImage={camp.campMainImage}
-        campSubImages={camp.campSubImages}
-      />
-      {/* <button
+    <>
+      <CheckAuth />
+      <Wrap>
+        <DateChoiceModal
+          setStart={setStart}
+          setEnd={setEnd}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+        <ImgSwiper
+          campMainImage={camp.campMainImage}
+          campSubImages={camp.campSubImages}
+        />
+        {/* <button
         // onClick={() => {
         //   console.log('dateObj:', dateObj);
         //   console.log('countObj:', countObj);
@@ -192,236 +194,237 @@ const DetailPage = () => {
           console.log(camp);
         }}
       ></button> */}
-      <DescWrap>
-        <div>
+        <DescWrap>
           <div>
-            <div
-              style={{
-                display: 'flex',
-                alignContent: 'center',
-                justifyContent: 'space-between',
-                width: '1130px',
-                // border: '1px solid red',
-                // margin: '20px',
-                marginBottom: '20px',
-              }}
-            >
-              <CampName>{camp.campName}</CampName>
-              <div style={{ cursor: 'pointer' }} onClick={likeCamp}>
-                {like ? (
-                  <img
-                    src={likeOn}
-                    width="40px"
-                    height="40px"
-                    alt="좋아요버튼"
-                  />
+            <div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignContent: 'center',
+                  justifyContent: 'space-between',
+                  width: '1130px',
+                  // border: '1px solid red',
+                  // margin: '20px',
+                  marginBottom: '20px',
+                }}
+              >
+                <CampName>{camp.campName}</CampName>
+                <div style={{ cursor: 'pointer' }} onClick={likeCamp}>
+                  {like ? (
+                    <img
+                      src={likeOn}
+                      width="40px"
+                      height="40px"
+                      alt="좋아요버튼"
+                    />
+                  ) : (
+                    <img
+                      src={likeOff}
+                      width="40px"
+                      height="40px"
+                      alt="좋아요버튼"
+                    />
+                  )}
+                </div>
+              </div>
+              <CampDesc>
+                <IconLo src={locationImg} />
+                <div>{camp.campAddress}</div>
+                <Button
+                  bgColor="#fff2e9"
+                  width="54px"
+                  height="27px"
+                  fontSize="12px"
+                  borderRadius="13.5px"
+                  margin="0px"
+                >
+                  길찾기
+                </Button>
+              </CampDesc>
+              <CampDesc>
+                <IconPh src={phoneImg} />
+                <div>{camp.phoneNumber}</div>
+                <Button
+                  bgColor="#fff2e9"
+                  fontSize="12px"
+                  width="45px"
+                  height="27px"
+                  borderRadius="13.5px"
+                  margin="0px"
+                  onClick={handleCopyClipBoard}
+                >
+                  복사
+                </Button>
+              </CampDesc>
+            </div>
+          </div>
+          <DateWrap>
+            <IconDa src={dateImg} />
+            <DateText>
+              <div>
+                {start?.getMonth() + 1}월 {start?.getDate()}일 (
+                {getday(start?.getDay())}){' - '}
+                {end ? (
+                  <>
+                    {end?.getMonth() + 1}월 {end?.getDate()}일 (
+                    {getday(end?.getDay())})
+                  </>
                 ) : (
-                  <img
-                    src={likeOff}
-                    width="40px"
-                    height="40px"
-                    alt="좋아요버튼"
-                  />
+                  '체크아웃날짜'
                 )}
               </div>
-            </div>
-            <CampDesc>
-              <IconLo src={locationImg} />
-              <div>{camp.campAddress}</div>
-              <Button
-                bgColor="#fff2e9"
-                width="54px"
-                height="27px"
-                fontSize="12px"
-                borderRadius="13.5px"
-                margin="0px"
-              >
-                길찾기
-              </Button>
-            </CampDesc>
-            <CampDesc>
-              <IconPh src={phoneImg} />
-              <div>{camp.phoneNumber}</div>
-              <Button
-                bgColor="#fff2e9"
-                fontSize="12px"
-                width="45px"
-                height="27px"
-                borderRadius="13.5px"
-                margin="0px"
-                onClick={handleCopyClipBoard}
-              >
-                복사
-              </Button>
-            </CampDesc>
-          </div>
-        </div>
-        <DateWrap>
-          <IconDa src={dateImg} />
-          <DateText>
-            <div>
-              {start?.getMonth() + 1}월 {start?.getDate()}일 (
-              {getday(start?.getDay())}){' - '}
-              {end ? (
-                <>
-                  {end?.getMonth() + 1}월 {end?.getDate()}일 (
-                  {getday(end?.getDay())})
-                </>
-              ) : (
-                '체크아웃날짜'
-              )}
-            </div>
-          </DateText>
-          <Button
-            bgColor="#fff2e9"
-            fontSize="12px"
-            width="67px"
-            height="27px"
-            borderRadius="13.5px"
-            margin="0px"
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
-          >
-            날짜선택
-          </Button>
-        </DateWrap>
-        <HeadCountWrap>
-          <HeadText>방문인원</HeadText>
-          <HeadCount>
-            <CountWrap>
-              <IconAd src={adultImg} />
-              성인
-              <Button
-                width="27px"
-                height="27px"
-                bgColor="rgb(254,128,44)"
-                borderRadius="13.5px"
-                fontSize="23px"
-                fontWeight="bold"
-                color="white"
-                margin="12px"
-                onClick={() => {
-                  adultMinusButton();
-                }}
-              >
-                -
-              </Button>
-              {adult}
-              <Button
-                width="27px"
-                height="27px"
-                bgColor="rgb(254,128,44)"
-                borderRadius="13.5px"
-                fontSize="23px"
-                fontWeight="bold"
-                color="white"
-                margin="12px"
-                onClick={() => {
-                  adultPlusButton();
-                }}
-              >
-                +
-              </Button>
-              <IconAd src={childImg} />
-              아동
-              <Button
-                width="27px"
-                height="27px"
-                bgColor="rgb(254,128,44)"
-                borderRadius="13.5px"
-                fontSize="23px"
-                fontWeight="bold"
-                color="white"
-                margin="12px"
-                onClick={() => {
-                  childMinusButton();
-                }}
-              >
-                -
-              </Button>
-              {child}
-              <Button
-                width="27px"
-                height="27px"
-                bgColor="rgb(254,128,44)"
-                borderRadius="13.5px"
-                fontSize="23px"
-                fontWeight="bold"
-                color="white"
-                margin="12px"
-                onClick={() => {
-                  childPlusButton();
-                }}
-              >
-                +
-              </Button>
-            </CountWrap>
-            <Button bgColor="#FFECE0" onClick={getCampSites}>
-              검색하기
-            </Button>
-          </HeadCount>
-        </HeadCountWrap>
-        {camp.campAmenities ? (
-          <AmenityWrap>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                fontWeight: 'bold',
+            </DateText>
+            <Button
+              bgColor="#fff2e9"
+              fontSize="12px"
+              width="67px"
+              height="27px"
+              borderRadius="13.5px"
+              margin="0px"
+              onClick={() => {
+                setIsOpen(!isOpen);
               }}
             >
-              부대시설
-            </div>
-            <div style={{ display: 'flex' }}>
-              {camp.campAmenities ? (
-                <Amenities>
-                  {camp.campAmenities.map((amenity: any) => (
-                    <CampAmenities key={amenity}>{amenity}</CampAmenities>
-                  ))}
-                </Amenities>
-              ) : (
-                <></>
-              )}
-            </div>
-          </AmenityWrap>
-        ) : (
-          <></>
-        )}
-        <SiteLists sites={sites}>
-          {sites ? (
-            sites.sites.map(site => (
-              <Sites
-                key={site.siteId}
-                theme={camp.themeLists}
-                type={camp.typeLists}
-                dateObj={dateObj}
-                countObj={countObj}
-                site={site}
-              />
-            ))
+              날짜선택
+            </Button>
+          </DateWrap>
+          <HeadCountWrap>
+            <HeadText>방문인원</HeadText>
+            <HeadCount>
+              <CountWrap>
+                <IconAd src={adultImg} />
+                성인
+                <Button
+                  width="27px"
+                  height="27px"
+                  bgColor="rgb(254,128,44)"
+                  borderRadius="13.5px"
+                  fontSize="23px"
+                  fontWeight="bold"
+                  color="white"
+                  margin="12px"
+                  onClick={() => {
+                    adultMinusButton();
+                  }}
+                >
+                  -
+                </Button>
+                {adult}
+                <Button
+                  width="27px"
+                  height="27px"
+                  bgColor="rgb(254,128,44)"
+                  borderRadius="13.5px"
+                  fontSize="23px"
+                  fontWeight="bold"
+                  color="white"
+                  margin="12px"
+                  onClick={() => {
+                    adultPlusButton();
+                  }}
+                >
+                  +
+                </Button>
+                <IconAd src={childImg} />
+                아동
+                <Button
+                  width="27px"
+                  height="27px"
+                  bgColor="rgb(254,128,44)"
+                  borderRadius="13.5px"
+                  fontSize="23px"
+                  fontWeight="bold"
+                  color="white"
+                  margin="12px"
+                  onClick={() => {
+                    childMinusButton();
+                  }}
+                >
+                  -
+                </Button>
+                {child}
+                <Button
+                  width="27px"
+                  height="27px"
+                  bgColor="rgb(254,128,44)"
+                  borderRadius="13.5px"
+                  fontSize="23px"
+                  fontWeight="bold"
+                  color="white"
+                  margin="12px"
+                  onClick={() => {
+                    childPlusButton();
+                  }}
+                >
+                  +
+                </Button>
+              </CountWrap>
+              <Button bgColor="#FFECE0" onClick={getCampSites}>
+                검색하기
+              </Button>
+            </HeadCount>
+          </HeadCountWrap>
+          {camp.campAmenities ? (
+            <AmenityWrap>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontWeight: 'bold',
+                }}
+              >
+                부대시설
+              </div>
+              <div style={{ display: 'flex' }}>
+                {camp.campAmenities ? (
+                  <Amenities>
+                    {camp.campAmenities.map((amenity: any) => (
+                      <CampAmenities key={amenity}>{amenity}</CampAmenities>
+                    ))}
+                  </Amenities>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </AmenityWrap>
           ) : (
             <></>
           )}
-        </SiteLists>
-        {isCmtOpen ? (
-          <CmtBox onClick={() => isCmtOpenChange()}>
-            {'접기 '}
-            <ArrImg src={upArrowOrange} />
-          </CmtBox>
-        ) : (
-          <CmtBox onClick={() => isCmtOpenChange()}>
-            {'열기 '}
-            <ArrImgDown src={upArrowOrange} />
-          </CmtBox>
-        )}
-        <CommentList
-          isCmtOpen={isCmtOpen}
-          setIsCmtOpen={setIsCmtOpen}
-          campId={params}
-        />
-      </DescWrap>
-    </Wrap>
+          <SiteLists sites={sites}>
+            {sites ? (
+              sites.sites.map(site => (
+                <Sites
+                  key={site.siteId}
+                  theme={camp.themeLists}
+                  type={camp.typeLists}
+                  dateObj={dateObj}
+                  countObj={countObj}
+                  site={site}
+                />
+              ))
+            ) : (
+              <></>
+            )}
+          </SiteLists>
+          {isCmtOpen ? (
+            <CmtBox onClick={() => isCmtOpenChange()}>
+              {'접기 '}
+              <ArrImg src={upArrowOrange} />
+            </CmtBox>
+          ) : (
+            <CmtBox onClick={() => isCmtOpenChange()}>
+              {'열기 '}
+              <ArrImgDown src={upArrowOrange} />
+            </CmtBox>
+          )}
+          <CommentList
+            isCmtOpen={isCmtOpen}
+            setIsCmtOpen={setIsCmtOpen}
+            campId={params}
+          />
+        </DescWrap>
+      </Wrap>
+    </>
   ) : null;
 };
 

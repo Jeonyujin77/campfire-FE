@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import CampItemList from '../components/camps/campItemList';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import CheckAuth from '../components/common/CheckAuth';
 
 const Home = () => {
   //페이지 이동 시 스크롤바 상단으로 이동
@@ -12,6 +13,7 @@ const Home = () => {
 
   return (
     <Wrap>
+      <CheckAuth />
       <HomeTitle>쉽고 편한 캠핑장 예약 시스템 캠프파이어</HomeTitle>
       <CampItemList />
     </Wrap>
