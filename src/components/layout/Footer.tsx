@@ -28,16 +28,18 @@ const Footer = () => {
     localStorage.clear();
     navigate('/signup');
   };
+  const goToHome = () => {
+    window.location.href = '/';
+  };
+  const goToSearch = () => {
+    window.location.href = '/search';
+  };
 
   return (
     <FooterWrapper>
       <FooterMenu>
-        <Menu>
-          <Link to="/">홈</Link>
-        </Menu>
-        <Menu>
-          <Link to="/search">검색</Link>
-        </Menu>
+        <Menu onClick={goToHome}>홈</Menu>
+        <Menu onClick={goToSearch}>검색</Menu>
         <Menu>
           <Link to="/mypage">마이페이지</Link>
         </Menu>
@@ -107,6 +109,7 @@ const Menu = styled.div`
   min-width: 50px;
   text-align: center;
   margin: 0 5px;
+  cursor: pointer;
   &:hover {
     color: rgb(254, 128, 44);
   }
