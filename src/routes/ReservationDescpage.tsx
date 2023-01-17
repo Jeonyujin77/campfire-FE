@@ -10,6 +10,7 @@ import { __getCampsByParams, __getSiteByParams } from '../apis/campApi';
 import DdayBox from '../components/reservations/DdayBox';
 import CheckBox from '../components/reservations/CheckBox';
 import useReserveInfo from '../hooks/useReserveInfo';
+import CheckAuth from '../components/common/CheckAuth';
 
 const ReservationDescpage = () => {
   const location = useLocation();
@@ -84,6 +85,7 @@ const ReservationDescpage = () => {
 
   return site ? (
     <>
+      <CheckAuth />
       <TextModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}

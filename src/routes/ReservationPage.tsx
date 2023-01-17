@@ -10,6 +10,7 @@ import Button from '../components/common/Button';
 import useReserveInfo from '../hooks/useReserveInfo';
 import { useAppDispatch } from '../redux/store';
 import { __reserveCamps } from '../apis/reservationApi';
+import CheckAuth from '../components/common/CheckAuth';
 
 const ReservationPage = () => {
   const dispatch = useAppDispatch();
@@ -98,66 +99,69 @@ const ReservationPage = () => {
   };
 
   return (
-    <Wrap onSubmit={onSubmit}>
-      <TextBox>
-        <TextBoxHeader>상품정보</TextBoxHeader>
-        <TextBoxBody>
-          <TextBoxP fontSize="22px">캠핑장 이름</TextBoxP>
-          <TextBoxP fontSize="18px">캠핑장 간단한 소개</TextBoxP>
-          <RepresentDate
-            representStart={representStart}
-            representEnd={representEnd}
-          />
-        </TextBoxBody>
-      </TextBox>
-      <DdayBox dDay={dDay} />
-      <TextBox
-        minHeight="150px"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <TextBoxHeader>예약객실수 최대 ~개 선택가능</TextBoxHeader>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '20px 20px 0px 20px',
-            fontSize: '22px',
-            fontWeight: 'bold',
+    <>
+      <CheckAuth />
+      <Wrap onSubmit={onSubmit}>
+        <TextBox>
+          <TextBoxHeader>상품정보</TextBoxHeader>
+          <TextBoxBody>
+            <TextBoxP fontSize="22px">캠핑장 이름</TextBoxP>
+            <TextBoxP fontSize="18px">캠핑장 간단한 소개</TextBoxP>
+            <RepresentDate
+              representStart={representStart}
+              representEnd={representEnd}
+            />
+          </TextBoxBody>
+        </TextBox>
+        <DdayBox dDay={dDay} />
+        <TextBox
+          minHeight="150px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <TextBoxHeader>예약객실수 최대 ~개 선택가능</TextBoxHeader>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '20px 20px 0px 20px',
+              fontSize: '22px',
+              fontWeight: 'bold',
+            }}
+          >
+            <RoomCount roomCount={roomCount} setRoomCount={setRoomCount} />
+          </div>
+        </TextBox>
+        <ClientInfo
+          userName={userName}
+          phoneNum={phoneNum}
+          userEmail={userEmail}
+          userRequest={userRequest}
+          setUserName={setUserName}
+          setPhoneNum={setPhoneNum}
+          setUserEmail={setUserEmail}
+          setUserRequest={setUserRequest}
+        />
+        <CheckBox
+          isAllChecked={isAllChecked}
+          setAllChecked={setAllChecked}
+          checkedState={checkedState}
+          setCheckedState={setCheckedState}
+          handleAllCheck={handleAllCheck}
+          handleMonoCheck={handleMonoCheck}
+        />
+        <Button
+          width="200px"
+          onClick={() => {
+            return;
           }}
         >
-          <RoomCount roomCount={roomCount} setRoomCount={setRoomCount} />
-        </div>
-      </TextBox>
-      <ClientInfo
-        userName={userName}
-        phoneNum={phoneNum}
-        userEmail={userEmail}
-        userRequest={userRequest}
-        setUserName={setUserName}
-        setPhoneNum={setPhoneNum}
-        setUserEmail={setUserEmail}
-        setUserRequest={setUserRequest}
-      />
-      <CheckBox
-        isAllChecked={isAllChecked}
-        setAllChecked={setAllChecked}
-        checkedState={checkedState}
-        setCheckedState={setCheckedState}
-        handleAllCheck={handleAllCheck}
-        handleMonoCheck={handleMonoCheck}
-      />
-      <Button
-        width="200px"
-        onClick={() => {
-          return;
-        }}
-      >
-        예약 결제하기
-      </Button>
-    </Wrap>
+          예약 결제하기
+        </Button>
+      </Wrap>
+    </>
   );
 };
 

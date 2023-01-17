@@ -13,6 +13,7 @@ import {
 } from '../utils/RegExp';
 import Input from '../components/common/Input';
 import { NICK_NOT_VALID, TELNUM_NOT_VALID } from '../constant/message';
+import CheckAuth from '../components/common/CheckAuth';
 
 const ProfileModify = () => {
   const { pathname } = useLocation();
@@ -186,6 +187,7 @@ const ProfileModify = () => {
 
   return (
     <>
+      <CheckAuth />
       {userName || profileImg || phoneNumber ? (
         <Wrap>
           <button
