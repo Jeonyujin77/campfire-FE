@@ -78,17 +78,7 @@ const CampItemList = () => {
 
   return camps ? (
     <Wrap>
-      {/* <button
-        onClick={() => {
-          console.log(camps);
-        }}
-      ></button> */}
       <ListWrap>
-        {/* <button
-          onClick={() => {
-            console.log(camps);
-          }}
-        ></button> */}
         {camps?.map(camp => (
           <CampItem key={camp.campId} camp={camp} />
         ))}

@@ -27,61 +27,6 @@ const Header = () => {
         >
           <Logo />
         </LogoDiv>
-        {/* <BtnWrap>
-          <Button
-            onClick={() => {
-              localStorage.clear();
-              navigate('/');
-              window.location.reload();
-            }}
-            bgColor="transparent"
-            width="80px"
-            display={
-              accesstoken &&
-              refreshtoken &&
-              accesstoken !== 'undefined' &&
-              refreshtoken !== 'undefined'
-                ? ''
-                : 'none'
-            }
-          >
-            로그아웃
-          </Button>
-          <Button
-            onClick={() => {
-              navigate('/login');
-            }}
-            bgColor="transparent"
-            width="60px"
-            display={
-              accesstoken &&
-              refreshtoken &&
-              accesstoken !== 'undefined' &&
-              refreshtoken !== 'undefined'
-                ? 'none'
-                : ''
-            }
-          >
-            로그인
-          </Button>
-          <Button
-            onClick={() => {
-              navigate('/signup');
-            }}
-            bgColor="transparent"
-            width="80px"
-            display={
-              accesstoken &&
-              refreshtoken &&
-              accesstoken !== 'undefined' &&
-              refreshtoken !== 'undefined'
-                ? 'none'
-                : ''
-            }
-          >
-            회원가입
-          </Button>
-        </BtnWrap> */}
       </HeaderComponent>
       <TopButton />
     </>

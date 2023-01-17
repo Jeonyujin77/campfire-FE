@@ -438,6 +438,7 @@ const Wrap = styled.div`
   margin: 0px auto;
   /* 헤더 아래 출력되도록 */
   margin-top: 100px;
+  margin-bottom: 50px;
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;
