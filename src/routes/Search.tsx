@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import CampItemList from '../components/camps/campItemList';
 import searchIcon from '../asset/searchIcon.png';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -89,6 +88,9 @@ const Wrap = styled.div`
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const SearchWrap = styled.div`
@@ -113,8 +115,16 @@ const Input = styled.input`
     outline: 2px solid rgb(255, 92, 0);
     border-bottom: none;
   }
+  @media (max-width: 1200px) {
+    width: 80%;
+    height: 25px;
+  }
 `;
 
-const SearchIcon = styled.img``;
+const SearchIcon = styled.img`
+  @media (max-width: 1200px) {
+    width: 20px;
+  }
+`;
 
 export default Search;

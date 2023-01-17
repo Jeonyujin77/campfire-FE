@@ -29,6 +29,9 @@ const Wrap = styled.div`
   max-height: 100%;
   min-height: 100vh;
   /* border: 1px solid red; */
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const HomeTitle = styled.div`
@@ -38,6 +41,10 @@ const HomeTitle = styled.div`
   font-size: 25px;
   font-weight: bold;
   color: rgb(254, 128, 44);
+
+  @media (max-width: 600px) {
+    font-size: 18px;
+  }
 `;
 
 export default Home;

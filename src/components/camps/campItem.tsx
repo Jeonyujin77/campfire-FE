@@ -3,10 +3,11 @@ import styled from '@emotion/styled';
 import likeOn from '../../asset/likeOn.png';
 import Liked from './Liked';
 import { CampType } from '../../interfaces/camp';
+import { useState } from 'react';
 
 const CampItem = ({ camp }: { camp: CampType }) => {
   const navigate = useNavigate();
-
+  const [likeCnt, setLikeCnt] = useState(camp.likes);
   // campAddress: string;
   // campAmenities: any;
   // campDesc: string;

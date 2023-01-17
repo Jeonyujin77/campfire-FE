@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 //axios관련
 import { useAppDispatch } from '../redux/store';
@@ -11,7 +11,7 @@ import {
 } from '../apis/campApi';
 
 //interface
-import { SiteList, SiteListsRes } from '../interfaces/camp';
+import { SiteList } from '../interfaces/camp';
 
 //컴포넌트
 import DateChoiceModal from '../components/reservations/dateChoiceModal';
@@ -49,7 +49,6 @@ const DetailPage = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  const navigate = useNavigate();
   const params = Number(useParams().campId);
   const dispatch = useAppDispatch();
 
@@ -197,17 +196,7 @@ const DetailPage = () => {
         <DescWrap>
           <div>
             <div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignContent: 'center',
-                  justifyContent: 'space-between',
-                  width: '1130px',
-                  // border: '1px solid red',
-                  // margin: '20px',
-                  marginBottom: '20px',
-                }}
-              >
+              <DescBox>
                 <CampName>{camp.campName}</CampName>
                 <div style={{ cursor: 'pointer' }} onClick={likeCamp}>
                   {like ? (
@@ -226,7 +215,7 @@ const DetailPage = () => {
                     />
                   )}
                 </div>
-              </div>
+              </DescBox>
               <CampDesc>
                 <IconLo src={locationImg} />
                 <div>{camp.campAddress}</div>
@@ -443,15 +432,35 @@ const Wrap = styled.div`
   max-height: 100%;
   min-height: 100vh;
   /* border: 1px solid red; */
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const DescWrap = styled.div`
-  padding: 15px 30px 15px 30px;
+  padding: 15px 30px;
   display: flex;
   flex-direction: column;
-  /* gap: 10px; */
+  @media (max-width: 1200px) {
+    padding: 15px;
+  }
 `;
 
+const DescBox = styled.div`
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  width: 1130px;
+  margin-bottom: 20px;
+  @media (max-width: 1200px) {
+    width: 100%;
+    margin-bottom: 10px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
 const CampName = styled.div`
   font-size: 25px;
   font-weight: bold;
@@ -459,6 +468,9 @@ const CampName = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 1200px) {
+    font-size: 18px;
+  }
 `;
 
 const CampDesc = styled.div`
@@ -469,6 +481,9 @@ const CampDesc = styled.div`
   align-items: center;
   gap: 7px;
   /* justify-content: center; */
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const IconLo = styled.img`
@@ -509,12 +524,18 @@ const DateText = styled.div`
   align-items: center;
   font-size: 16px;
   font-weight: bold;
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const HeadCountWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  @media (max-width: 1200px) {
+    font-size: 12px;
+  }
 `;
 
 const HeadText = styled.div`
@@ -525,10 +546,19 @@ const HeadText = styled.div`
 const HeadCount = styled.div`
   display: flex;
   gap: 5px;
+  @media (max-width: 1200px) {
+    font-size: 12px;
+    gap: 2px;
+  }
+
+  button {
+    font-size: 12px;
+  }
 `;
 
 const CountWrap = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -536,6 +566,10 @@ const CountWrap = styled.div`
   border-radius: 20px;
   gap: 10px;
   background-color: rgb(255, 236, 224);
+
+  @media (max-width: 1200px) {
+    gap: 3%;
+  }
 `;
 
 const AmenityWrap = styled.div`
@@ -544,6 +578,10 @@ const AmenityWrap = styled.div`
   justify-content: center;
   /* align-items: center; */
   gap: 5px;
+
+  @media (max-width: 1200px) {
+    font-size: 12px;
+  }
 `;
 
 const Amenities = styled.div`
@@ -568,6 +606,10 @@ const SiteLists = styled.div<{ sites: any }>`
   /* border: 1px solid black; */
   padding: 20px 0px 20px 0px;
   gap: 15px;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const CmtBox = styled.div`
@@ -579,17 +621,30 @@ const CmtBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const ArrImg = styled.img`
   width: 23px;
   height: 23px;
+
+  @media (max-width: 1200px) {
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 const ArrImgDown = styled.img`
   width: 23px;
   height: 23px;
   transform: rotate(180deg);
+
+  @media (max-width: 1200px) {
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 export default DetailPage;
