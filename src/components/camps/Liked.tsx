@@ -4,16 +4,18 @@ import Likedheart from '../../asset/Likedheart.png';
 import unLikedheart from '../../asset/unLikedheart.png';
 import { useAppDispatch } from '../../redux/store';
 import { __likeCampByParams } from '../../apis/campApi';
+import { updateCampList } from '../../redux/modules/campSlice';
 
 const Liked = ({
   campId,
   likeStatus,
+  likes,
 }: {
   campId: number;
   likeStatus: boolean;
+  likes: number;
 }) => {
   const dispatch = useAppDispatch();
-
   const [like, setLike] = useState<boolean>();
 
   //찜하기, 찜취소하기 버튼 onClick
@@ -23,12 +25,24 @@ const Liked = ({
       if (type === 'likeCampByParams/fulfilled') {
         // console.log('res:', res);
         // console.log('type:', type);
-        // console.log('payload:', payload);
+        console.log('payload:', payload);
         if (payload.message === '좋아요 성공!') {
           setLike(true);
+          dispatch(
+            updateCampList({
+              campId: payload.campId,
+              likes: likes + 1,
+            }),
+          );
         }
         if (payload.message === '좋아요 취소!') {
           setLike(false);
+          dispatch(
+            updateCampList({
+              campId: payload.campId,
+              likes: likes - 1,
+            }),
+          );
         }
       } else {
       }

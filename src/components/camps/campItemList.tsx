@@ -4,14 +4,17 @@ import { useEffect, useState, useCallback } from 'react';
 import { __getCampsByPageno } from '../../apis/campApi';
 import { useAppDispatch } from '../../redux/store';
 import { CampType } from '../../interfaces/camp';
+import { addCampList } from '../../redux/modules/campSlice';
+import { RootState } from '../../redux/store';
+import { useSelector } from 'react-redux';
 
 let pageno = 1;
 const CampItemList = () => {
   const dispatch = useAppDispatch();
-
   const [target, setTarget] = useState<any>();
   const [camps, setCamps] = useState<CampType[]>();
   const [isLoaded, setIsLoaded] = useState(false);
+  const campList = useSelector((state: RootState) => state.camp.camps);
 
   //처음 입장시 데이터 조회
   const getInitData = async () => {
@@ -20,6 +23,7 @@ const CampItemList = () => {
       const { payload, type }: any = res;
       if (type === 'getCampsByPageno/fulfilled') {
         setCamps(payload.camps);
+        dispatch(addCampList(payload.camps));
       }
       // 에러처리
       else if (type === 'getCampsByPageno/rejected') {
@@ -40,10 +44,10 @@ const CampItemList = () => {
     dispatch(__getCampsByPageno(pageno)).then(res => {
       const { type, payload }: any = res;
       if (type === 'getCampsByPageno/fulfilled') {
-        console.log(payload.camps);
         if (camps !== undefined) {
           const mergeData = camps.concat(...payload.camps);
           setCamps(mergeData);
+          dispatch(addCampList(mergeData));
         }
         setIsLoaded(false);
       } else if (type === 'getPostsByPageno/rejected') {
@@ -76,7 +80,7 @@ const CampItemList = () => {
     return () => observer && observer.disconnect();
   }, [target, onIntersect]);
 
-  return camps ? (
+  return campList !== undefined ? (
     <Wrap>
       {/* <button
         onClick={() => {
@@ -89,11 +93,11 @@ const CampItemList = () => {
             console.log(camps);
           }}
         ></button> */}
-        {camps?.map(camp => (
+        {campList?.map(camp => (
           <CampItem key={camp.campId} camp={camp} />
         ))}
       </ListWrap>
-      {camps?.length !== 0 ? (
+      {campList?.length !== 0 ? (
         <Footer ref={setTarget}>{isLoaded && <br />}▽ 더보기</Footer>
       ) : (
         <>등록된 캠핑장이 없습니다.</>
