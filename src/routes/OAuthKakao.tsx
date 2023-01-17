@@ -11,7 +11,7 @@ const OAuthKakao = () => {
       console.log(payload);
       if (type === 'kakaoLogin/fulfilled') {
         localStorage.setItem('userId', payload.userId);
-        window.location.href = 'http://localhost:3000/';
+        window.location.href = '/';
       }
       // 에러처리
       else if (type === 'kakaoLogin/rejected') {
