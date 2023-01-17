@@ -45,19 +45,22 @@ const Sites = ({
 };
 
 const SiteWrap = styled.div`
-  border: 1px solid red;
+  border: 1px solid black;
   width: 1140px;
   min-height: 150px;
   display: flex;
   align-items: center;
   cursor: pointer;
+  box-shadow: 4px 4px 4px #d3d3d3;
+  border-radius: 15px;
   &:hover {
-    box-shadow: 2px 2px #d3d3d3;
+    box-shadow: 4px 4px 4px #afafaf;
   }
 `;
 
 const MainImg = styled.img`
   /* border: 1px solid green; */
+  border-radius: 15px;
   width: 340px;
   height: 170px;
 `;
@@ -68,7 +71,7 @@ const TextWrap = styled.div`
   align-items: flex-start;
   justify-content: center;
   padding: 5px 10px 5px 15px;
-  border: 1px solid green;
+  /* border: 1px solid green; */
   width: 800px;
   height: 150px;
 `;
