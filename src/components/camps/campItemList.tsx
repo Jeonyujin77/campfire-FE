@@ -3,26 +3,7 @@ import CampItem from './campItem';
 import { useEffect, useState, useCallback } from 'react';
 import { __getCampsByPageno } from '../../apis/campApi';
 import { useAppDispatch } from '../../redux/store';
-
-export interface CampType {
-  campAddress: string;
-  campAmenities: any;
-  campDesc: string;
-  campId: number;
-  campMainImage: string;
-  campName: string;
-  campPrice: number;
-  campSubImages: any;
-  checkIn: any;
-  checkOut: any;
-  cretedAt: any;
-  hostId: number;
-  updatedAt: any;
-  typeLists: [];
-  likes: number;
-  countReviews: number;
-  likeStatus: boolean;
-}
+import { CampType } from '../../interfaces/camp';
 
 let pageno = 1;
 const CampItemList = () => {

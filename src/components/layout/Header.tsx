@@ -81,14 +81,14 @@ const Header = () => {
           >
             회원가입
           </Button>
-          <Button
+          {/* <Button
             onClick={() => {
               navigate('/mypage');
             }}
             bgColor="transparent"
           >
             마이페이지
-          </Button>
+          </Button> */}
         </BtnWrap>
       </HeaderComponent>
       <TopButton />

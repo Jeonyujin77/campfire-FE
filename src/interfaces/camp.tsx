@@ -1,3 +1,23 @@
+export interface CampType {
+  campAddress: string;
+  campAmenities: any;
+  campDesc: string;
+  campId: number;
+  campMainImage: string;
+  campName: string;
+  campPrice: number;
+  campSubImages: any;
+  checkIn: any;
+  checkOut: any;
+  cretedAt: any;
+  hostId: number;
+  updatedAt: any;
+  typeLists: [];
+  likes: number;
+  countReviews: number;
+  likeStatus: boolean;
+}
+
 export interface PagenoCamps {
   camps: [
     {

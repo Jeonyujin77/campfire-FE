@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Layout from '../components/header/Layout';
+import Layout from '../components/layout/Layout';
 import DetailPage from '../routes/DetailPage';
 import ReservationDescpage from '../routes/ReservationDescpage';
 import MyPage from '../routes/MyPage';
@@ -9,6 +9,7 @@ import ReservationPage from '../routes/ReservationPage';
 import Main from '../routes/Main';
 import ProfileModify from '../routes/ProfileModify';
 import OAuthKakao from '../routes/OAuthKakao';
+import Search from '../routes/Search';
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/camp/:campId" element={<DetailPage />} />
           <Route
             path="/camp/:campId/sitedesc/:siteId"

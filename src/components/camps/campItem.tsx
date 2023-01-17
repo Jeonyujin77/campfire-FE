@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { CampType } from './campItemList';
-import starImg from '../../asset/starImg.png';
 import styled from '@emotion/styled';
 import likeOn from '../../asset/likeOn.png';
 import Liked from './Liked';
+import { CampType } from '../../interfaces/camp';
 
 const CampItem = ({ camp }: { camp: CampType }) => {
   const navigate = useNavigate();

@@ -40,7 +40,7 @@ const TopButton = () => {
 const ShowBtnWrap = styled.div`
   position: fixed;
   right: 50px;
-  bottom: 50px;
+  bottom: 100px;
   width: 60px;
   height: 60px;
   border-radius: 30px;
