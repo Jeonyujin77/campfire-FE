@@ -161,3 +161,19 @@ export const __getCampReviews = createAsyncThunk(
     }
   },
 );
+
+// 캠핑장 통합 검색
+export const __searchCampsByKeyword = createAsyncThunk(
+  'searchCampsByKeyword',
+  async (payload: string, thunkAPI) => {
+    try {
+      const response = await api.get(`api/search/camps?search=${payload}`);
+
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
