@@ -2,19 +2,22 @@ import styled from '@emotion/styled';
 import searchIcon from '../asset/searchIcon.png';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useAppDispatch } from '../redux/store';
+import { RootState, useAppDispatch } from '../redux/store';
 import { __searchCampsByKeyword } from '../apis/campApi';
-import { CampType } from '../interfaces/camp';
+// import { CampType } from '../interfaces/camp';
 import SearchedCampList from '../components/camps/SearchedCampList';
 import CheckAuth from '../components/common/CheckAuth';
+import { addCampList } from '../redux/modules/campSlice';
+import { useSelector } from 'react-redux';
 
 const Search = () => {
   const dispatch = useAppDispatch();
+  const campList = useSelector((state: RootState) => state.camp.camps);
   //페이지 이동 시 스크롤바 상단으로 이동
   const { pathname } = useLocation();
   //검색키워드 State
   const [searchKey, setSearchKey] = useState('');
-  const [campList, setCampList] = useState<CampType[]>([]);
+  // const [campList, setCampList] = useState<CampType[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -26,7 +29,8 @@ const Search = () => {
 
       // 조회 성공
       if (type === 'searchCampsByKeyword/fulfilled') {
-        setCampList(payload.getCampLists);
+        // setCampList(payload.getCampLists);
+        dispatch(addCampList(payload.getCampLists));
       }
       // 에러처리
       else if (type === 'searchCampsByKeyword/rejected') {

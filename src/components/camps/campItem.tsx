@@ -3,27 +3,9 @@ import styled from '@emotion/styled';
 import likeOn from '../../asset/likeOn.png';
 import Liked from './Liked';
 import { CampType } from '../../interfaces/camp';
-import { useState } from 'react';
 
 const CampItem = ({ camp }: { camp: CampType }) => {
   const navigate = useNavigate();
-  const [likeCnt, setLikeCnt] = useState(camp.likes);
-  // campAddress: string;
-  // campAmenities: any;
-  // campDesc: string;
-  // campId: number;
-  // campMainImage: string;
-  // campName: string;
-  // campPrice: number;
-  // campSubImages: any;
-  // checkIn: any;
-  // checkOut: any;
-  // cretedAt: any;
-  // hostId: number;
-  // updatedAt: any;
-  // campTypeLists: [string];
-  // likes: number;
-
   const campMinAddress = camp.campAddress.split(' ');
 
   const countR = () => {
@@ -37,7 +19,11 @@ const CampItem = ({ camp }: { camp: CampType }) => {
   return (
     <>
       <ItemWrap>
-        <Liked campId={camp.campId} likeStatus={camp.likeStatus} />
+        <Liked
+          campId={camp.campId}
+          likeStatus={camp.likeStatus}
+          likes={camp.likes}
+        />
         {/* <button
           onClick={() => {
             console.log(camp);
