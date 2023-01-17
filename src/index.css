@@ -1,13 +1,41 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body::-webkit-scrollbar {
+  width: 8px; /* 스크롤바의 너비 */
+}
+
+body::-webkit-scrollbar-thumb {
+  /* 스크롤바의 길이 */
+  height: 40%;
+
+  /* 스크롤바의 색상 */
+  background: rgb(255, 92, 0);
+  border-radius: 10px;
+  width: 20px;
+}
+
+body::-webkit-scrollbar-track {
+  background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* 나눔스퀘어 */
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('./fonts/NanumSquare_acR.ttf') format('truetype');
+}
+
+/* 세방고딕 */
+@font-face {
+  font-family: 'SEBANG_Gothic';
+  src: url('./fonts/SEBANG\ Gothic.ttf') format('truetype');
+}
+
+body {
+  font-family: 'NanumSquare';
+}
+* {
+  font-family: 'NanumSquare';
 }

@@ -1,0 +1,168 @@
+import { useState } from 'react';
+import styled from '@emotion/styled';
+
+import DatePicker from 'react-datepicker';
+import { ko } from 'date-fns/esm/locale';
+//기본제공 css
+import 'react-datepicker/dist/react-datepicker.css';
+// 추가 변경 css
+import './dateChoiceModal.css';
+import Button from '../common/Button';
+import { isValidDateValue } from '@testing-library/user-event/dist/utils';
+
+interface MProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setStart: React.Dispatch<React.SetStateAction<Date>>;
+  setEnd: React.Dispatch<React.SetStateAction<Date>>;
+}
+
+const DateChoiceModal = (props: MProps) => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const onChange = (dates: any) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    props.setStart(start);
+    props.setEnd(end);
+  };
+  const getday = (dayNum: number) => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    return days[dayNum];
+  };
+  return (
+    <>
+      <ModalBackground
+        onClick={() => {
+          props.setIsOpen(!props.isOpen);
+        }}
+        isOpen={props.isOpen}
+      ></ModalBackground>
+      <ModalWrap isOpen={props.isOpen}>
+        {/* <ModalHeader>
+          <div>날짜선택</div>
+          <ModalCloseBtn
+            onClick={() => {
+              props.setIsOpen(!props.isOpen);
+            }}
+          >
+            x
+          </ModalCloseBtn>
+        </ModalHeader> */}
+        <DateText>
+          <div>
+            {startDate?.getMonth() + 1}월 {startDate?.getDate()}일 (
+            {getday(startDate?.getDay())})
+          </div>
+          -
+          <div>
+            {endDate ? (
+              <>
+                {endDate?.getMonth() + 1}월 {endDate?.getDate()}일 (
+                {getday(endDate?.getDay())})
+              </>
+            ) : (
+              '체크아웃날짜'
+            )}
+          </div>
+        </DateText>
+        <DatePicker
+          locale={ko}
+          selected={startDate}
+          onChange={onChange}
+          startDate={startDate}
+          endDate={endDate}
+          selectsRange
+          inline
+        />
+        <ModalBottom>
+          <Button
+            onClick={() => {
+              props.setIsOpen(!props.isOpen);
+            }}
+            margin="0px"
+            bgColor="#fe802c"
+            fontWeight="bold"
+          >
+            선택완료
+          </Button>
+        </ModalBottom>
+      </ModalWrap>
+    </>
+  );
+};
+
+const ModalBackground = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  z-index: 1500;
+`;
+
+const ModalWrap = styled.div<{ isOpen: boolean }>`
+  border: 3px solid #fe802c;
+  border-radius: 20px;
+  position: fixed;
+  margin: auto;
+  top: calc(50vh - 170px);
+  left: calc(50vw - 150px);
+  background-color: white;
+  width: 340px;
+  height: 370px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+  z-index: 2000;
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+`;
+
+const ModalHeader = styled.div`
+  border: 1px solid green;
+  width: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ModalCloseBtn = styled.button`
+  background: none;
+  border: none;
+  color: red;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+`;
+
+const DateText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 284px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  gap: 30px;
+  background-color: #ffdec8;
+  border-radius: 15px;
+  margin-bottom: 10px;
+`;
+
+const ModalBottom = styled.div`
+  /* border: 1px solid black; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row-reverse;
+  /* width: 250px; */
+`;
+
+const CompleteBtn = styled.button``;
+
+export default DateChoiceModal;
