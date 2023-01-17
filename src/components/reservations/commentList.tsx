@@ -14,21 +14,26 @@ interface CommentProps {
 
 const CommentList = (props: CommentProps) => {
   const dispatch = useAppDispatch();
+  const [prevPage, setPrevPage] = useState(1);
   const [cmtPage, setCmtPage] = useState(1);
   const [moreCnt, setMoreCnt] = useState(true);
   const [comments, setComments] = useState<CommentInfo[]>([]);
   const { campId } = props;
 
-  useEffect(() => {
+  const getCampReviews = () => {
     dispatch(__getCampReviews({ campId, pageno: cmtPage })).then(res => {
       const { type, payload } = res;
 
       // 조회 성공
       if (type === 'getCampReviews/fulfilled') {
         const reviews = payload.reviews;
-        // 결과가 존재할 경우에만 저장한다
-        if (reviews.length !== 0) {
+        // 조회결과가 있고 이전페이지와 현페이지가 다를때
+        if (reviews.length !== 0 && prevPage !== cmtPage) {
           setComments([...comments, ...payload.reviews]);
+        }
+        // 조회결과가 있고 이전페이지와 현페이지가 같을때-중복으로 리뷰가 생기는 문제 수정
+        else if (reviews.length !== 0 && prevPage === cmtPage) {
+          setComments([...payload.reviews]);
         } else {
           setMoreCnt(false);
         }
@@ -38,10 +43,16 @@ const CommentList = (props: CommentProps) => {
         alert(`${payload.response.data.errorMessage}`);
       }
     });
-  }, [cmtPage]);
+  };
+
+  useEffect(() => {
+    getCampReviews();
+  }, []);
 
   const getCommentsByPageno = () => {
+    setPrevPage(cmtPage);
     setCmtPage(cmtPage + 1);
+    getCampReviews();
   };
 
   return (
@@ -50,7 +61,10 @@ const CommentList = (props: CommentProps) => {
       <InsertComment campId={campId} />
       {comments.length !== 0 ? (
         comments.map(comment => (
-          <Comment key={comment.reviewId} commentInfo={comment} />
+          <Comment
+            key={`${comment.reviewId}${Date.now()}`}
+            commentInfo={comment}
+          />
         ))
       ) : (
         <>작성된 리뷰가 없습니다.</>
@@ -69,6 +83,10 @@ const List = styled.div<{ isCmtOpen: boolean }>`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const CommentTitle = styled.div`
@@ -77,6 +95,9 @@ const CommentTitle = styled.div`
   text-align: left;
   font-size: 22px;
   font-weight: bold;
+  @media (max-width: 1200px) {
+    font-size: 18px;
+  }
 `;
 
 const MoreComment = styled.div`
@@ -90,6 +111,11 @@ const MoreComment = styled.div`
   cursor: pointer;
   &:hover {
     background-color: #e8d2c4;
+  }
+
+  @media (max-width: 1200px) {
+    width: 100%;
+    font-size: 12px;
   }
 `;
 

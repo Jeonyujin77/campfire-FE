@@ -97,13 +97,16 @@ const FooterMenu = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-size: 14px;
+  button {
+    font-size: 14px;
+  }
 `;
 
 const Menu = styled.div`
-  min-width: 100px;
+  min-width: 50px;
   text-align: center;
   margin: 0 5px;
-
   &:hover {
     color: rgb(254, 128, 44);
   }

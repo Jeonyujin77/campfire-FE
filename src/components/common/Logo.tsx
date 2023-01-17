@@ -9,6 +9,11 @@ const Image = styled.img`
   width: 286px;
   height: 43px;
   cursor: pointer;
+
+  @media (max-width: 1200px) {
+    width: 150px;
+    height: 20px;
+  }
 `;
 
 export default Logo;
