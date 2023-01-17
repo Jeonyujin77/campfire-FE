@@ -4,7 +4,10 @@ import Likedheart from '../../asset/Likedheart.png';
 import unLikedheart from '../../asset/unLikedheart.png';
 import { useAppDispatch } from '../../redux/store';
 import { __likeCampByParams } from '../../apis/campApi';
-import { updateCampList } from '../../redux/modules/campSlice';
+import {
+  updateCampList,
+  updateSearchedCampList,
+} from '../../redux/modules/campSlice';
 
 const Liked = ({
   campId,
@@ -25,11 +28,17 @@ const Liked = ({
       if (type === 'likeCampByParams/fulfilled') {
         // console.log('res:', res);
         // console.log('type:', type);
-        console.log('payload:', payload);
+        // console.log('payload:', payload);
         if (payload.message === '좋아요 성공!') {
           setLike(true);
           dispatch(
             updateCampList({
+              campId: payload.campId,
+              likes: likes + 1,
+            }),
+          );
+          dispatch(
+            updateSearchedCampList({
               campId: payload.campId,
               likes: likes + 1,
             }),
@@ -39,6 +48,12 @@ const Liked = ({
           setLike(false);
           dispatch(
             updateCampList({
+              campId: payload.campId,
+              likes: likes - 1,
+            }),
+          );
+          dispatch(
+            updateSearchedCampList({
               campId: payload.campId,
               likes: likes - 1,
             }),

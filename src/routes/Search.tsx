@@ -7,12 +7,12 @@ import { __searchCampsByKeyword } from '../apis/campApi';
 // import { CampType } from '../interfaces/camp';
 import SearchedCampList from '../components/camps/SearchedCampList';
 import CheckAuth from '../components/common/CheckAuth';
-import { addCampList } from '../redux/modules/campSlice';
+import { addSearchedCampList } from '../redux/modules/campSlice';
 import { useSelector } from 'react-redux';
 
 const Search = () => {
   const dispatch = useAppDispatch();
-  const campList = useSelector((state: RootState) => state.camp.camps);
+  const campList = useSelector((state: RootState) => state.camp.searchedCamps);
   //페이지 이동 시 스크롤바 상단으로 이동
   const { pathname } = useLocation();
   //검색키워드 State
@@ -30,7 +30,7 @@ const Search = () => {
       // 조회 성공
       if (type === 'searchCampsByKeyword/fulfilled') {
         // setCampList(payload.getCampLists);
-        dispatch(addCampList(payload.getCampLists));
+        dispatch(addSearchedCampList(payload.getCampLists));
       }
       // 에러처리
       else if (type === 'searchCampsByKeyword/rejected') {
