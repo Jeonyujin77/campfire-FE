@@ -3,10 +3,12 @@ import { CampType } from '../../interfaces/camp';
 
 interface CampList {
   camps: CampType[];
+  searchedCamps: CampType[];
 }
 
 const initialState: CampList = {
   camps: [],
+  searchedCamps: [],
 };
 
 export const campSlice = createSlice({
@@ -15,6 +17,9 @@ export const campSlice = createSlice({
   reducers: {
     addCampList: (state, action) => {
       state.camps = [...state.camps, ...action.payload];
+    },
+    addSearchedCampList: (state, action) => {
+      state.searchedCamps = [...action.payload];
     },
     updateCampList: (state, action) => {
       const { campId, likes } = action.payload;
@@ -25,9 +30,23 @@ export const campSlice = createSlice({
           : camp,
       );
     },
+    updateSearchedCampList: (state, action) => {
+      const { campId, likes } = action.payload;
+
+      state.searchedCamps = state.searchedCamps.map(camp =>
+        Number(camp.campId) === Number(campId)
+          ? { ...camp, likes: likes }
+          : camp,
+      );
+    },
   },
   extraReducers: builder => {},
 });
 
-export const { addCampList, updateCampList } = campSlice.actions;
+export const {
+  addCampList,
+  addSearchedCampList,
+  updateCampList,
+  updateSearchedCampList,
+} = campSlice.actions;
 export default campSlice;
