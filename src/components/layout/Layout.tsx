@@ -20,6 +20,7 @@ const Layout = ({ children }: LayoutProps) => {
 const Wrap = styled.div`
   width: 100%;
   padding-top: 40px;
+  padding-bottom: 50px;
 `;
 
 export default Layout;
