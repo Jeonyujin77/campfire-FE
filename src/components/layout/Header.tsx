@@ -9,13 +9,13 @@ import TopButton from '../common/TopButton';
 const Header = () => {
   const navigate = useNavigate();
 
-  const [accesstoken, setAccesstoken] = useState<any>();
-  const [refreshtoken, setRefreshtoken] = useState<any>();
+  // const [accesstoken, setAccesstoken] = useState<any>();
+  // const [refreshtoken, setRefreshtoken] = useState<any>();
 
-  useEffect(() => {
-    setAccesstoken(localStorage.getItem('accessToken'));
-    setRefreshtoken(localStorage.getItem('refreshToken'));
-  }, []);
+  // useEffect(() => {
+  //   setAccesstoken(localStorage.getItem('accessToken'));
+  //   setRefreshtoken(localStorage.getItem('refreshToken'));
+  // }, []);
 
   return (
     <>
@@ -27,7 +27,7 @@ const Header = () => {
         >
           <Logo />
         </LogoDiv>
-        <BtnWrap>
+        {/* <BtnWrap>
           <Button
             onClick={() => {
               localStorage.clear();
@@ -81,15 +81,7 @@ const Header = () => {
           >
             회원가입
           </Button>
-          {/* <Button
-            onClick={() => {
-              navigate('/mypage');
-            }}
-            bgColor="transparent"
-          >
-            마이페이지
-          </Button> */}
-        </BtnWrap>
+        </BtnWrap> */}
       </HeaderComponent>
       <TopButton />
     </>

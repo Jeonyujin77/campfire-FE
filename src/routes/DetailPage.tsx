@@ -237,6 +237,11 @@ const DetailPage = () => {
                   fontSize="12px"
                   borderRadius="13.5px"
                   margin="0px"
+                  onClick={() => {
+                    window.open(
+                      `https://www.google.com/search?q=${camp.campName}${camp.campAddress}`,
+                    );
+                  }}
                 >
                   길찾기
                 </Button>
