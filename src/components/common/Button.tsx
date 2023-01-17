@@ -14,6 +14,7 @@ interface ButtonProps {
   margin?: string;
   fontFamily?: string;
   color?: string;
+  hColor?: string;
 }
 
 const Button = ({
@@ -29,6 +30,7 @@ const Button = ({
   margin,
   fontFamily,
   color,
+  hColor,
 }: ButtonProps) => {
   return (
     <Btn
@@ -43,6 +45,7 @@ const Button = ({
       margin={margin}
       fontFamily={fontFamily}
       color={color}
+      hColor={hColor}
     >
       {children}
     </Btn>
@@ -68,6 +71,7 @@ const Btn = styled.button<ButtonProps>`
   justify-content: center;
   &:hover {
     filter: brightness(95%);
+    color: ${({ hColor }) => (hColor ? hColor : 'black')};
   }
 `;
 
