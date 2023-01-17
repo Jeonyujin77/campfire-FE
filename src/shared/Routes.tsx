@@ -5,7 +5,7 @@ import ReservationDescpage from '../routes/ReservationDescpage';
 import MyPage from '../routes/MyPage';
 import Signup from '../routes/Signup';
 import Login from '../routes/Login';
-import ReservationPage from '../routes/ReservationPage';
+// import ReservationPage from '../routes/ReservationPage';
 import Main from '../routes/Main';
 import ProfileModify from '../routes/ProfileModify';
 import OAuthKakao from '../routes/OAuthKakao';
@@ -23,10 +23,10 @@ const Router = () => {
             path="/camp/:campId/sitedesc/:siteId"
             element={<ReservationDescpage />}
           />
-          <Route
+          {/* <Route
             path="/camp/:campId/sitereservation/:siteId"
             element={<ReservationPage />}
-          />
+          /> */}
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/edit" element={<ProfileModify />} />
           <Route path="/signup" element={<Signup />} />

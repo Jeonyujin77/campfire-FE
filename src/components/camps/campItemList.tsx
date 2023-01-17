@@ -82,11 +82,6 @@ const CampItemList = () => {
 
   return campList !== undefined ? (
     <Wrap>
-      {/* <button
-        onClick={() => {
-          console.log(camps);
-        }}
-      ></button> */}
       <ListWrap>
         {/* <button
           onClick={() => {
