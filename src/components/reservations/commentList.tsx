@@ -20,8 +20,8 @@ const CommentList = (props: CommentProps) => {
   const [comments, setComments] = useState<CommentInfo[]>([]);
   const { campId } = props;
 
-  const getCampReviews = () => {
-    dispatch(__getCampReviews({ campId, pageno: cmtPage })).then(res => {
+  const getCampReviews = (page: number) => {
+    dispatch(__getCampReviews({ campId, pageno: page })).then(res => {
       const { type, payload } = res;
 
       // 조회 성공
@@ -46,13 +46,13 @@ const CommentList = (props: CommentProps) => {
   };
 
   useEffect(() => {
-    getCampReviews();
-  }, []);
+    getCampReviews(cmtPage);
+  }, [cmtPage]);
 
-  const getCommentsByPageno = () => {
-    setPrevPage(cmtPage);
-    setCmtPage(cmtPage + 1);
-    getCampReviews();
+  const getCommentsByPageno = (prev: number, next: number) => {
+    setPrevPage(prev);
+    setCmtPage(next);
+    getCampReviews(next);
   };
 
   return (
@@ -70,7 +70,9 @@ const CommentList = (props: CommentProps) => {
         <>작성된 리뷰가 없습니다.</>
       )}
       {moreCnt ? (
-        <MoreComment onClick={getCommentsByPageno}>리뷰 더보기</MoreComment>
+        <MoreComment onClick={() => getCommentsByPageno(cmtPage, cmtPage + 1)}>
+          리뷰 더보기
+        </MoreComment>
       ) : (
         <></>
       )}
