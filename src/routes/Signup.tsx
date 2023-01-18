@@ -3,6 +3,7 @@ import Logo from '../components/common/Logo';
 import SignupBox from '../components/users/signupBox';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import LogLogo from '../components/common/LogLogo';
 
 const Signup = () => {
   const { pathname } = useLocation();
@@ -12,7 +13,7 @@ const Signup = () => {
 
   return (
     <Wrap>
-      <Logo />
+      <LogLogo />
       <SignupBox />
       <BottomText>
         <div>이미 회원이신가요? </div>
@@ -29,19 +30,24 @@ const Wrap = styled.div`
   margin-top: 100px;
   width: 1180px;
   max-height: 100%;
-  min-height: 100vh;
-  border: 1px solid red;
+  min-height: 35vh;
+  /* border: 1px solid red; */
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  @media (max-width: 1200px) {
+    width: 100%;
+    margin-top: 0px;
+    padding: 0px;
+  }
 `;
 
 const ToLogin = styled(Link)`
   text-decoration: none;
   font-weight: bold;
-  color: #c6a6e3;
+  color: #fe802c;
 `;
 
 const BottomText = styled.div`
