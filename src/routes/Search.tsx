@@ -313,7 +313,7 @@ const SearchButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1150px;
+  width: 100%;
   height: 50px;
   border-radius: 15px;
   cursor: pointer;
@@ -322,7 +322,6 @@ const SearchButton = styled.div`
   }
 
   @media (max-width: 1200px) {
-    width: 100%;
     font-size: 12px;
   }
 `;
