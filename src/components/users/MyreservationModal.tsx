@@ -37,48 +37,54 @@ const MyReservationModal = (props: MRProps) => {
 
   //페이지 진입 시 예약내역부터 불러오고, 예약내역이 선택될 때마다 데이터를 불러옴
   useEffect(() => {
-    dispatch(__reserveUser()).then(res => {
-      const { type, payload }: any = res;
-      console.log('res:', res);
-      console.log('type:', type);
-      console.log('payload:', payload);
-      if (type === 'reserveUser/fulfilled') {
-        setBooks(payload);
-      }
-      // 에러처리
-      else if (type === 'reserveUser/rejected') {
-        alert(`${payload.response.data.errorMessage}`);
-      }
-    });
-  }, [selectBooks]);
+    if (props.isOpen === true) {
+      dispatch(__reserveUser()).then(res => {
+        const { type, payload }: any = res;
+        console.log('res:', res);
+        console.log('type:', type);
+        console.log('payload:', payload);
+        if (type === 'reserveUser/fulfilled') {
+          setBooks(payload);
+        }
+        // 에러처리
+        else if (type === 'reserveUser/rejected') {
+          alert(`${payload.response.data.errorMessage}`);
+        }
+      });
+    }
+  }, [selectBooks, props.isOpen]);
 
   //페이지 진입 시 완료내역 한번 불러오고, 완료내역이 선택될 때마다 데이터를 불러옴
   useEffect(() => {
-    dispatch(__reserveCompleted()).then(res => {
-      const { type, payload }: any = res;
-      if (type === 'reserveCompleted/fulfilled') {
-        setCompletedBooks(payload);
-      }
-      // 에러처리
-      else if (type === 'reserveCompleted/rejected') {
-        alert(`${payload.response.data.errorMessage}`);
-      }
-    });
-  }, [selectCompleted]);
+    if (props.isOpen === true) {
+      dispatch(__reserveCompleted()).then(res => {
+        const { type, payload }: any = res;
+        if (type === 'reserveCompleted/fulfilled') {
+          setCompletedBooks(payload);
+        }
+        // 에러처리
+        else if (type === 'reserveCompleted/rejected') {
+          alert(`${payload.response.data.errorMessage}`);
+        }
+      });
+    }
+  }, [selectCompleted, props.isOpen]);
 
   //페이지 진입 시 취소내역 한번 불러오고, 취소내역이 선택될 때마다 데이터를 불러옴
   useEffect(() => {
-    dispatch(__reserveCanceled()).then(res => {
-      const { type, payload }: any = res;
-      if (type === 'reserveCanceled/fulfilled') {
-        setCanceledBooks(payload);
-      }
-      // 에러처리
-      else if (type === 'reserveCanceled/rejected') {
-        alert(`${payload.response.data.errorMessage}`);
-      }
-    });
-  }, [selectCanceled]);
+    if (props.isOpen === true) {
+      dispatch(__reserveCanceled()).then(res => {
+        const { type, payload }: any = res;
+        if (type === 'reserveCanceled/fulfilled') {
+          setCanceledBooks(payload);
+        }
+        // 에러처리
+        else if (type === 'reserveCanceled/rejected') {
+          alert(`${payload.response.data.errorMessage}`);
+        }
+      });
+    }
+  }, [selectCanceled, props.isOpen]);
 
   return (
     <>

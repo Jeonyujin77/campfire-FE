@@ -25,19 +25,21 @@ const MyLikeList = (props: MLProps) => {
   const [likeList, setLikeList] = useState<LikesCamp>();
 
   useEffect(() => {
-    dispatch(__likeCamps()).then(res => {
-      const { type, payload }: any = res;
-      console.log('res:', res);
-      console.log('type:', type);
-      console.log('payload:', payload);
-      if (type === 'likeCamps/fulfilled') {
-        setLikeList(payload);
-      } else if (type === 'likeCamps/rejected') {
-        console.log(payload);
-        alert(`${payload.response.data.errorMessage}`);
-      }
-    });
-  }, []);
+    if (props.isLikeOpen === true) {
+      dispatch(__likeCamps()).then(res => {
+        const { type, payload }: any = res;
+        console.log('res:', res);
+        console.log('type:', type);
+        console.log('payload:', payload);
+        if (type === 'likeCamps/fulfilled') {
+          setLikeList(payload);
+        } else if (type === 'likeCamps/rejected') {
+          console.log(payload);
+          alert(`${payload.response.data.errorMessage}`);
+        }
+      });
+    }
+  }, [props.isLikeOpen]);
 
   return (
     <>
