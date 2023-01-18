@@ -71,7 +71,7 @@ const SiteName = styled.div`
   width: 400px;
   height: 30px;
   padding: 5px 10px 10px 10px;
-  display: flex;
+  display: block;
   flex-direction: row;
   align-items: center;
   justify-content: center;

@@ -20,7 +20,10 @@ import {
   PW_NOT_VALID,
   TELNUM_NOT_VALID,
 } from '../../constant/message';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
+import pwHide from '../../asset/pwHide.png';
+import pwShow from '../../asset/pwShow.png';
 
 const SignupBox = () => {
   const dispatch = useAppDispatch();
@@ -42,8 +45,8 @@ const SignupBox = () => {
   const [emailDupFlag, setEmailDupFlag] = useState(false); // 이메일중복확인 flag
   const [nickDupFlag, setNickDupFlag] = useState(false); // 닉네임중복확인 flag
   //비밀번호 value 보이기, 숨기기
-  // const [showPswd, setShowPswd] = useState(false);
-  // const [showPswdCheck, setShowPswdCheck] = useState(false);
+  const [showPswd, setShowPswd] = useState(false);
+  const [showPswdCheck, setShowPswdCheck] = useState(false);
 
   // 이메일 변경 시
   const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,163 +139,268 @@ const SignupBox = () => {
   };
 
   return (
-    <SignupWrap onSubmit={onSubmit}>
-      <InputWrap>
-        <div>
-          <div>아이디</div>
-          <Span>
-            <Input
-              width="285px"
-              height="30px"
-              name="email"
-              type="email"
-              required
-              value={email}
-              onChange={emailHandler}
-              onBlur={emailFlagHandler}
-            />
-            <InputBtn onClick={checkEmailDup}>중복확인</InputBtn>
-          </Span>
-          {!emailValidFlag ? <Guide>{EMAIL_NOT_VALID}</Guide> : <></>}
-        </div>
-        <div>
-          <div>이름</div>
-          <Span>
-            <Input
-              type="text"
-              width="285px"
-              height="30px"
-              name="userName"
-              required
-              value={nickname}
-              onChange={nicknameHandler}
-              onBlur={nickFlagHandler}
-            />
-            <InputBtn onClick={checkNickDup}>중복확인</InputBtn>
-          </Span>
-          {!nickValidFlag ? <Guide>{NICK_NOT_VALID}</Guide> : <></>}
-        </div>
-        <div>
-          <div>비밀번호</div>
-          <SpanPswd>
-            <Input
-              // type={showPswd ? 'text' : 'password'}
-              type="password"
-              width="285px"
-              height="30px"
-              required
-              name="password"
-              value={password}
-              onChange={passwordHandler}
-              onBlur={pwFlagHandler}
-            />
-            {/* <InputBtn
-            onClick={() => {
-              setShowPswd(!showPswd);
-            }}
-          >
-            비밀번호
-          </InputBtn> */}
-          </SpanPswd>
-          {!pwValidFlag ? <Guide>{PW_NOT_VALID}</Guide> : <></>}
-        </div>
-        <div>
-          <div>비밀번호확인</div>
-          <SpanPswd>
-            <Input
-              // type={showPswdCheck ? 'text' : 'password'}
-              type="password"
-              width="285px"
-              height="30px"
-              required
-              name="passwordCheck"
-              value={passwordCheck}
-              onChange={passwordCheckHandler}
-              onBlur={onBlurPasswordCheck}
-            />
-            {/* <InputBtn
-            onClick={() => {
-              setShowPswdCheck(!showPswdCheck);
-            }}
-          >
-            비밀번호 확인
-          </InputBtn> */}
-          </SpanPswd>
-          {!pwChkValidFlag ? <Guide>{PWCHK_NOT_VALID}</Guide> : <></>}
-        </div>
-        <div>
-          <div>전화번호</div>
-          <Span>
-            <Input
-              type="tel"
-              width="285px"
-              height="30px"
-              name="phoneNumber"
-              required
-              value={telNum}
-              onChange={telNumHandler}
-              onBlur={setTelValidFlag}
-            />
-          </Span>
-          {!telValidFlag ? <Guide>{TELNUM_NOT_VALID}</Guide> : <></>}
-        </div>
-      </InputWrap>
+    <Wrap>
+      <SignupWrap onSubmit={onSubmit}>
+        <InputWrap>
+          <div>
+            <Span>
+              <Input
+                required
+                value={email}
+                onChange={emailHandler}
+                onBlur={emailFlagHandler}
+                name="email"
+                type="email"
+                placeholder="example123@email.com"
+                width="352px"
+                height="59px"
+                fontSize="20px"
+                borderRadius="20px 0px 0px 20px"
+                bgColor="#D9D9D9"
+              />
+              <InputBtn onClick={checkEmailDup}>중복확인</InputBtn>
+            </Span>
+            <ErrWrap>
+              {!emailValidFlag ? <Guide>{EMAIL_NOT_VALID}</Guide> : <></>}
+            </ErrWrap>
+          </div>
+          <div>
+            <Span>
+              <Input
+                required
+                value={nickname}
+                onChange={nicknameHandler}
+                onBlur={nickFlagHandler}
+                name="userName"
+                type="text"
+                placeholder="닉네임"
+                width="352px"
+                height="59px"
+                fontSize="20px"
+                borderRadius="20px 0px 0px 20px"
+                bgColor="#D9D9D9"
+              />
+              <InputBtn onClick={checkNickDup}>중복확인</InputBtn>
+            </Span>
+            <ErrWrap>
+              {!nickValidFlag ? <Guide>{NICK_NOT_VALID}</Guide> : <></>}
+            </ErrWrap>
+          </div>
+          <div>
+            <SpanPswd>
+              <Input
+                value={password}
+                onChange={passwordHandler}
+                onBlur={pwFlagHandler}
+                required
+                name="password"
+                type={showPswd ? 'text' : 'password'}
+                placeholder="비밀번호"
+                width="352px"
+                height="59px"
+                fontSize="20px"
+                borderRadius="20px 0px 0px 20px"
+                bgColor="#D9D9D9"
+              />
+              {showPswd ? (
+                <PswdShow
+                  onClick={() => {
+                    setShowPswd(!showPswd);
+                  }}
+                >
+                  <PswdImg src={pwShow} />
+                </PswdShow>
+              ) : (
+                <PswdShow
+                  onClick={() => {
+                    setShowPswd(!showPswd);
+                  }}
+                >
+                  <PswdImg src={pwHide} />
+                </PswdShow>
+              )}
+            </SpanPswd>
+            <ErrWrap>
+              {!pwValidFlag ? <Guide>{PW_NOT_VALID}</Guide> : <></>}
+            </ErrWrap>
+          </div>
+          <div>
+            <SpanPswd>
+              <Input
+                value={passwordCheck}
+                onChange={passwordCheckHandler}
+                onBlur={onBlurPasswordCheck}
+                required
+                name="passwordCheck"
+                type={showPswdCheck ? 'text' : 'password'}
+                placeholder="비밀번호 확인"
+                width="352px"
+                height="59px"
+                fontSize="20px"
+                borderRadius="20px 0px 0px 20px"
+                bgColor="#D9D9D9"
+              />
+              {showPswdCheck ? (
+                <PswdShow
+                  onClick={() => {
+                    setShowPswdCheck(!showPswdCheck);
+                  }}
+                >
+                  <PswdImg src={pwShow} />
+                </PswdShow>
+              ) : (
+                <PswdShow
+                  onClick={() => {
+                    setShowPswdCheck(!showPswdCheck);
+                  }}
+                >
+                  <PswdImg src={pwHide} />
+                </PswdShow>
+              )}
+            </SpanPswd>
+            <ErrWrap>
+              {!pwChkValidFlag ? <Guide>{PWCHK_NOT_VALID}</Guide> : <></>}
+            </ErrWrap>
+          </div>
+          <div>
+            <Span>
+              <Input
+                value={telNum}
+                onChange={telNumHandler}
+                onBlur={setTelValidFlag}
+                name="phoneNumber"
+                required
+                type="tel"
+                placeholder="전화번호"
+                width="352px"
+                height="59px"
+                fontSize="20px"
+                borderRadius="20px 0px 0px 20px"
+                bgColor="#D9D9D9"
+              />
+              <InputBtn></InputBtn>
+            </Span>
+            <ErrWrap>
+              {!telValidFlag ? <Guide>{TELNUM_NOT_VALID}</Guide> : <></>}
+            </ErrWrap>
+          </div>
+        </InputWrap>
+      </SignupWrap>
       <Button
-        width="430px"
-        height="40px"
-        bgColor="#f2f2f2"
-        borderRadius="10px"
+        width="400px"
+        height="50px"
+        bgColor="#FFDEC8"
+        borderRadius="12px"
         fontSize="20px"
+        fontWeight="bold"
+        margin="0px 0px 10px 0px"
+        mwidth="70%"
         onClick={() => {
           return;
         }}
       >
         가입하기
       </Button>
-    </SignupWrap>
+    </Wrap>
   );
 };
 
-const SignupWrap = styled.form`
-  /* 헤더 크기에 따라 수정 필요 */
-  margin: 0px auto;
-  /* 헤더 아래 출력되도록 */
-  border: 1px solid red;
-  padding: 10px;
-  width: 450px;
+const Wrap = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const SignupWrap = styled.form`
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  width: 450px;
+  margin-bottom: 50px;
+  @media (max-width: 1200px) {
+    width: 95%;
+    margin-bottom: 20px;
+  }
 `;
 
 const InputWrap = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 10px;
-  border: 1px solid red;
-  width: 400px;
-  height: auto;
+  /* border: 1px solid red; */
+  width: 450px;
+  height: 500px;
   font-size: 25px;
+  gap: 5px;
+  margin-bottom: 10px;
+  @media (max-width: 1200px) {
+    width: 100%;
+    height: 95%;
+    align-items: flex-start;
+    margin-bottom: 0px;
+  }
 `;
 
 const InputBtn = styled.span`
+  width: 60px;
+  height: 30px;
   margin-right: 5px;
   font-size: 14px;
   cursor: pointer;
-`;
-
-const SpanPswd = styled.span`
-  border: 1px solid black;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
 `;
 
 const Span = styled.span`
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #dadada;
+  @media (max-width: 1200px) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+`;
+
+const SpanPswd = styled.span`
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 20px;
+  background-color: #dadada;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
+`;
+
+const PswdShow = styled.div`
+  width: 60px;
+  height: 30px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const PswdImg = styled.img`
+  user-select: none;
+  width: 30px;
+  height: 20px;
+`;
+
+const ErrWrap = styled.div`
+  height: 30px;
+  display: flex;
   align-items: center;
 `;
 
