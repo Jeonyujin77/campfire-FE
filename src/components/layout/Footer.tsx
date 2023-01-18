@@ -74,7 +74,6 @@ const FooterMenu = styled.div`
 `;
 
 const Menu = styled.div`
-  min-width: 50px;
   text-align: center;
   margin: 0 1%;
   cursor: pointer;
