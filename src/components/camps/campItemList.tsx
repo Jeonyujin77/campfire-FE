@@ -3,8 +3,7 @@ import CampItem from './campItem';
 import { useEffect, useState, useCallback } from 'react';
 import { __getCampsByPageno } from '../../apis/campApi';
 import { useAppDispatch } from '../../redux/store';
-import { CampType } from '../../interfaces/camp';
-import { addCampList } from '../../redux/modules/campSlice';
+import { addCampList, removeCampList } from '../../redux/modules/campSlice';
 import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
 
@@ -12,17 +11,16 @@ let pageno = 1;
 const CampItemList = () => {
   const dispatch = useAppDispatch();
   const [target, setTarget] = useState<any>();
-  const [camps, setCamps] = useState<CampType[]>();
   const [isLoaded, setIsLoaded] = useState(false);
   const campList = useSelector((state: RootState) => state.camp.camps);
 
   //처음 입장시 데이터 조회
   const getInitData = async () => {
+    dispatch(removeCampList([]));
     setIsLoaded(true);
     dispatch(__getCampsByPageno(1)).then(res => {
       const { payload, type }: any = res;
       if (type === 'getCampsByPageno/fulfilled') {
-        setCamps(payload.camps);
         dispatch(addCampList(payload.camps));
       }
       // 에러처리
@@ -44,19 +42,14 @@ const CampItemList = () => {
     dispatch(__getCampsByPageno(pageno)).then(res => {
       const { type, payload }: any = res;
       if (type === 'getCampsByPageno/fulfilled') {
-        if (camps !== undefined) {
-          const mergeData = camps.concat(...payload.camps);
-          setCamps(mergeData);
-          dispatch(addCampList(mergeData));
-        }
+        dispatch(addCampList(payload.camps));
         setIsLoaded(false);
       } else if (type === 'getPostsByPageno/rejected') {
         setTarget(null);
         setIsLoaded(false);
       }
     });
-    // setPageno((prev) => prev +1)
-  }, [camps, dispatch]);
+  }, [dispatch]);
 
   const onIntersect: IntersectionObserverCallback = useCallback(
     async ([entry], observer) => {
@@ -83,11 +76,6 @@ const CampItemList = () => {
   return campList !== undefined ? (
     <Wrap>
       <ListWrap>
-        {/* <button
-          onClick={() => {
-            console.log(camps);
-          }}
-        ></button> */}
         {campList?.map(camp => (
           <CampItem key={camp.campId} camp={camp} />
         ))}
@@ -107,7 +95,6 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* border: 1px solid red; */
   max-height: 100%;
   min-height: 100vh;
 `;

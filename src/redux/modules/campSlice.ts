@@ -18,6 +18,9 @@ export const campSlice = createSlice({
     addCampList: (state, action) => {
       state.camps = [...state.camps, ...action.payload];
     },
+    removeCampList: (state, action) => {
+      state.camps = action.payload;
+    },
     addSearchedCampList: (state, action) => {
       state.searchedCamps = [...action.payload];
     },
@@ -45,6 +48,7 @@ export const campSlice = createSlice({
 
 export const {
   addCampList,
+  removeCampList,
   addSearchedCampList,
   updateCampList,
   updateSearchedCampList,

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { memo } from 'react';
 import styled from '@emotion/styled';
 import likeOn from '../../asset/likeOn.png';
 import Liked from './Liked';
@@ -161,8 +162,6 @@ const CampDescL = styled.div`
   margin-right: 17px;
   font-size: 16px;
   font-weight: bold;
-  /* border: 1px solid black; */
-  /* display: flex; */
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -184,4 +183,4 @@ const StarRate = styled.div`
   font-weight: bold;
 `;
 
-export default CampItem;
+export default memo(CampItem);
