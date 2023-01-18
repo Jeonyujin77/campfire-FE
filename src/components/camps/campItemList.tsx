@@ -14,8 +14,14 @@ const CampItemList = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const campList = useSelector((state: RootState) => state.camp.camps);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    getInitData();
+  }, []);
+
   //처음 입장시 데이터 조회
   const getInitData = async () => {
+    pageno = 1;
     dispatch(removeCampList([]));
     setIsLoaded(true);
     dispatch(__getCampsByPageno(1)).then(res => {
@@ -30,11 +36,6 @@ const CampItemList = () => {
     });
     setIsLoaded(false);
   };
-
-  useEffect(() => {
-    getInitData();
-  }, []);
-
   // //추가 데이터 조회
   const getMoreCamps = useCallback(async () => {
     setIsLoaded(true);
