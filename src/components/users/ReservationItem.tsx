@@ -49,7 +49,7 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
         </div>
         <CampDesc>
           <SiteName>
-            <div
+            <SiteNameText
               onClick={() => {
                 if (display === 0) {
                   setDisplay(1);
@@ -59,7 +59,7 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
               }}
             >
               {book.siteName}{' '}
-            </div>
+            </SiteNameText>
             <button onClick={() => cancleR(book.bookId)}>예약취소</button>
           </SiteName>
           <div
@@ -163,6 +163,16 @@ const SiteName = styled.div`
   align-items: center;
   justify-content: center;
   gap: 10px;
+  font-size: 22px;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const SiteNameText = styled.div`
+  width: 350px;
   font-size: 22px;
   font-weight: bold;
   border-bottom: 1px solid black;
