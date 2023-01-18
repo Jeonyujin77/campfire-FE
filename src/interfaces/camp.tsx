@@ -90,3 +90,11 @@ export interface SiteDesc {
     updatedAt: any;
   };
 }
+
+export interface SearchCampsByKeyword {
+  search: string;
+  types: string[];
+  themes: string[];
+  amenities: string[];
+  envs: string[];
+}
