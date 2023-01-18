@@ -40,20 +40,22 @@ const Footer = () => {
       <FooterMenu>
         <Menu onClick={goToHome}>홈</Menu>
         <Menu onClick={goToSearch}>검색</Menu>
-        <Menu>
-          <Link to="/mypage">마이페이지</Link>
-        </Menu>
         {accesstoken && refreshtoken ? (
-          <Button
-            margin="0px 5px"
-            onClick={logOut}
-            width="70px"
-            bgColor="transparent"
-            fontSize="16px"
-            hColor="rgb(254, 128, 44)"
-          >
-            로그아웃
-          </Button>
+          <>
+            <Menu>
+              <Link to="/mypage">마이페이지</Link>
+            </Menu>
+            <Button
+              margin="0px 5px"
+              onClick={logOut}
+              width="70px"
+              bgColor="transparent"
+              fontSize="16px"
+              hColor="rgb(254, 128, 44)"
+            >
+              로그아웃
+            </Button>
+          </>
         ) : (
           <>
             <Button
