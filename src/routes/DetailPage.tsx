@@ -76,10 +76,7 @@ const DetailPage = () => {
   const getCampSites = () => {
     if (start && end) {
       dispatch(__getCampSitesByParams(params)).then(res => {
-        console.log(res);
         const { type, payload }: any = res;
-        console.log('type:', type);
-        console.log('payload:', payload);
         if (type === 'getCampSitesByParams/fulfilled') {
           setSites(payload);
         }
@@ -99,9 +96,6 @@ const DetailPage = () => {
     dispatch(__likeCampByParams(params)).then(res => {
       const { type, payload }: any = res;
       if (type === 'likeCampByParams/fulfilled') {
-        // console.log('res:', res);
-        // console.log('type:', type);
-        // console.log('payload:', payload);
         if (payload.message === '좋아요 성공!') {
           setLike(true);
         }
@@ -184,15 +178,6 @@ const DetailPage = () => {
           campMainImage={camp.campMainImage}
           campSubImages={camp.campSubImages}
         />
-        {/* <button
-        // onClick={() => {
-        //   console.log('dateObj:', dateObj);
-        //   console.log('countObj:', countObj);
-        // }}
-        onClick={() => {
-          console.log(camp);
-        }}
-      ></button> */}
         <DescWrap>
           <div>
             <div>
@@ -431,7 +416,7 @@ const Wrap = styled.div`
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;
-  /* border: 1px solid red; */
+
   @media (max-width: 1200px) {
     width: 100%;
   }
@@ -480,7 +465,7 @@ const CampDesc = styled.div`
   display: flex;
   align-items: center;
   gap: 7px;
-  /* justify-content: center; */
+
   @media (max-width: 1200px) {
     font-size: 14px;
   }
@@ -515,12 +500,7 @@ const DateWrap = styled.div`
 
 const DateText = styled.div`
   text-align: center;
-  /* background-color: #afadad; */
-  /* width: 200px;
-  height: 40px; */
-  /* border-radius: 15px; */
   display: flex;
-  /* justify-content: center; */
   align-items: center;
   font-size: 16px;
   font-weight: bold;
@@ -576,7 +556,6 @@ const AmenityWrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
   gap: 5px;
 
   @media (max-width: 1200px) {
@@ -588,7 +567,6 @@ const Amenities = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* justify-content: flex-start; */
   flex-wrap: wrap;
   max-width: 100%;
   padding: 10px;
@@ -603,7 +581,6 @@ const SiteLists = styled.div<{ sites: any }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* border: 1px solid black; */
   padding: 20px 0px 20px 0px;
   gap: 15px;
 
