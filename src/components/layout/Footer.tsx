@@ -48,7 +48,7 @@ const Footer = () => {
             <Button
               margin="0px 5px"
               onClick={logOut}
-              width="70px"
+              width="60px"
               bgColor="transparent"
               fontSize="16px"
               hColor="rgb(254, 128, 44)"
@@ -58,10 +58,16 @@ const Footer = () => {
           </>
         ) : (
           <>
-            <Button
+            <Menu>
+              <Link to="/login">로그인</Link>
+            </Menu>
+            <Menu>
+              <Link to="/signup">회원가입</Link>
+            </Menu>
+            {/* <Button
               margin="0px 5px"
               onClick={logIn}
-              width="70px"
+              width="50px"
               bgColor="transparent"
               fontSize="16px"
               hColor="rgb(254, 128, 44)"
@@ -71,13 +77,13 @@ const Footer = () => {
             <Button
               margin="0px 5px"
               onClick={signUp}
-              width="70px"
+              width="60px"
               bgColor="transparent"
               fontSize="16px"
               hColor="rgb(254, 128, 44)"
             >
               회원가입
-            </Button>
+            </Button> */}
           </>
         )}
       </FooterMenu>
