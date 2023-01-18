@@ -20,14 +20,6 @@ const Footer = () => {
     navigate('/');
     window.location.reload();
   };
-  const logIn = () => {
-    localStorage.clear();
-    navigate('/login');
-  };
-  const signUp = () => {
-    localStorage.clear();
-    navigate('/signup');
-  };
   const goToHome = () => {
     window.location.href = '/';
   };
@@ -45,16 +37,7 @@ const Footer = () => {
             <Menu>
               <Link to="/mypage">마이페이지</Link>
             </Menu>
-            <Button
-              margin="0px 5px"
-              onClick={logOut}
-              width="60px"
-              bgColor="transparent"
-              fontSize="16px"
-              hColor="rgb(254, 128, 44)"
-            >
-              로그아웃
-            </Button>
+            <Menu onClick={logOut}>로그아웃</Menu>
           </>
         ) : (
           <>
@@ -64,26 +47,6 @@ const Footer = () => {
             <Menu>
               <Link to="/signup">회원가입</Link>
             </Menu>
-            {/* <Button
-              margin="0px 5px"
-              onClick={logIn}
-              width="50px"
-              bgColor="transparent"
-              fontSize="16px"
-              hColor="rgb(254, 128, 44)"
-            >
-              로그인
-            </Button>
-            <Button
-              margin="0px 5px"
-              onClick={signUp}
-              width="60px"
-              bgColor="transparent"
-              fontSize="16px"
-              hColor="rgb(254, 128, 44)"
-            >
-              회원가입
-            </Button> */}
           </>
         )}
       </FooterMenu>
@@ -107,16 +70,13 @@ const FooterMenu = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
-  button {
-    font-size: 14px;
-  }
+  font-size: 16px;
 `;
 
 const Menu = styled.div`
   min-width: 50px;
   text-align: center;
-  margin: 0 5px;
+  margin: 0 1%;
   cursor: pointer;
   &:hover {
     color: rgb(254, 128, 44);
