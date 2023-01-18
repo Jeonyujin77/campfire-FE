@@ -7,7 +7,6 @@ import { useAppDispatch } from '../redux/store';
 import { __getUser } from '../apis/userApi';
 import WithdrawalModal from '../components/users/WithdrawalModal';
 import MyLikeList from '../components/users/MyLikeList';
-import CheckAuth from '../components/common/CheckAuth';
 
 const MyPage = () => {
   const dispatch = useAppDispatch();
