@@ -61,6 +61,12 @@ const WriteCommentForm = styled.form`
     resize: none;
     border-radius: 5px;
   }
+  @media (max-width: 1200px) {
+    textarea,
+    button {
+      font-size: 12px;
+    }
+  }
 `;
 
 export default InsertComment;

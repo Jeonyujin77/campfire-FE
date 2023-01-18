@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { memo } from 'react';
 import styled from '@emotion/styled';
 import likeOn from '../../asset/likeOn.png';
 import Liked from './Liked';
@@ -6,23 +7,6 @@ import { CampType } from '../../interfaces/camp';
 
 const CampItem = ({ camp }: { camp: CampType }) => {
   const navigate = useNavigate();
-
-  // campAddress: string;
-  // campAmenities: any;
-  // campDesc: string;
-  // campId: number;
-  // campMainImage: string;
-  // campName: string;
-  // campPrice: number;
-  // campSubImages: any;
-  // checkIn: any;
-  // checkOut: any;
-  // cretedAt: any;
-  // hostId: number;
-  // updatedAt: any;
-  // campTypeLists: [string];
-  // likes: number;
-
   const campMinAddress = camp.campAddress.split(' ');
 
   const countR = () => {
@@ -36,7 +20,11 @@ const CampItem = ({ camp }: { camp: CampType }) => {
   return (
     <>
       <ItemWrap>
-        <Liked campId={camp.campId} likeStatus={camp.likeStatus} />
+        <Liked
+          campId={camp.campId}
+          likeStatus={camp.likeStatus}
+          likes={camp.likes}
+        />
         {/* <button
           onClick={() => {
             console.log(camp);
@@ -174,8 +162,6 @@ const CampDescL = styled.div`
   margin-right: 17px;
   font-size: 16px;
   font-weight: bold;
-  /* border: 1px solid black; */
-  /* display: flex; */
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -197,4 +183,4 @@ const StarRate = styled.div`
   font-weight: bold;
 `;
 
-export default CampItem;
+export default memo(CampItem);

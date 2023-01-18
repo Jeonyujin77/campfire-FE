@@ -1,5 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { PagenoCamps, SiteDesc, SiteList } from '../interfaces/camp';
+import {
+  PagenoCamps,
+  SearchCampsByKeyword,
+  SiteDesc,
+  SiteList,
+} from '../interfaces/camp';
 import {
   Comment,
   GetComments,
@@ -165,9 +170,36 @@ export const __getCampReviews = createAsyncThunk(
 // 캠핑장 통합 검색
 export const __searchCampsByKeyword = createAsyncThunk(
   'searchCampsByKeyword',
-  async (payload: string, thunkAPI) => {
+  async (payload: SearchCampsByKeyword, thunkAPI) => {
+    const { search, types, themes, amenities, envs } = payload;
+    // console.log('----------------------------------');
+    // console.log('검색어', search);
+    // console.log('숙소유형', types.toString());
+    // console.log('테마', themes.toString());
+    // console.log('주요시설', amenities.toString());
+    // console.log('환경', envs.toString());
+
+    // 검색어
+    const searchQuery = search !== '' ? `search=${search}` : 'search';
+    // 숙소유형
+    const typesQuery =
+      types.toString() !== '' ? `types=${types.toString()}` : 'types';
+    // 테마
+    const themesQuery =
+      themes.toString() !== '' ? `themes=${themes.toString()}` : 'themes';
+    // 부대시설
+    const amenitiesQuery =
+      amenities.toString() !== ''
+        ? `amenities=${amenities.toString()}`
+        : 'amenities';
+    // 자연환경
+    const envsQuery =
+      envs.toString() !== '' ? `envs=${envs.toString()}` : 'envs';
+
     try {
-      const response = await api.get(`api/search/camps?search=${payload}`);
+      const response = await api.get(
+        `api/search/camps?${searchQuery}&${typesQuery}&${themesQuery}&${amenitiesQuery}&${envsQuery}`,
+      );
 
       if (response.status === 201) {
         return thunkAPI.fulfillWithValue(response.data);

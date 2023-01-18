@@ -20,60 +20,33 @@ const Footer = () => {
     navigate('/');
     window.location.reload();
   };
-  const logIn = () => {
-    localStorage.clear();
-    navigate('/login');
+  const goToHome = () => {
+    window.location.href = '/';
   };
-  const signUp = () => {
-    localStorage.clear();
-    navigate('/signup');
+  const goToSearch = () => {
+    window.location.href = '/search';
   };
 
   return (
     <FooterWrapper>
       <FooterMenu>
-        <Menu>
-          <Link to="/">홈</Link>
-        </Menu>
-        <Menu>
-          <Link to="/search">검색</Link>
-        </Menu>
-        <Menu>
-          <Link to="/mypage">마이페이지</Link>
-        </Menu>
+        <Menu onClick={goToHome}>홈</Menu>
+        <Menu onClick={goToSearch}>검색</Menu>
         {accesstoken && refreshtoken ? (
-          <Button
-            margin="0px 5px"
-            onClick={logOut}
-            width="70px"
-            bgColor="transparent"
-            fontSize="16px"
-            hColor="rgb(254, 128, 44)"
-          >
-            로그아웃
-          </Button>
+          <>
+            <Menu>
+              <Link to="/mypage">마이페이지</Link>
+            </Menu>
+            <Menu onClick={logOut}>로그아웃</Menu>
+          </>
         ) : (
           <>
-            <Button
-              margin="0px 5px"
-              onClick={logIn}
-              width="70px"
-              bgColor="transparent"
-              fontSize="16px"
-              hColor="rgb(254, 128, 44)"
-            >
-              로그인
-            </Button>
-            <Button
-              margin="0px 5px"
-              onClick={signUp}
-              width="70px"
-              bgColor="transparent"
-              fontSize="16px"
-              hColor="rgb(254, 128, 44)"
-            >
-              회원가입
-            </Button>
+            <Menu>
+              <Link to="/login">로그인</Link>
+            </Menu>
+            <Menu>
+              <Link to="/signup">회원가입</Link>
+            </Menu>
           </>
         )}
       </FooterMenu>
@@ -97,13 +70,14 @@ const FooterMenu = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-size: 16px;
 `;
 
 const Menu = styled.div`
-  min-width: 100px;
+  min-width: 50px;
   text-align: center;
-  margin: 0 5px;
-
+  margin: 0 1%;
+  cursor: pointer;
   &:hover {
     color: rgb(254, 128, 44);
   }

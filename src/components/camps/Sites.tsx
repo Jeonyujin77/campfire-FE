@@ -17,7 +17,7 @@ const Sites = ({
 }) => {
   const navigate = useNavigate();
   const params = useParams().campId;
-  console.log(params);
+
   return (
     <SiteWrap
       onClick={() => {
@@ -56,6 +56,10 @@ const SiteWrap = styled.div`
   &:hover {
     box-shadow: 4px 4px 4px #afafaf;
   }
+
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const MainImg = styled.img`
@@ -63,6 +67,9 @@ const MainImg = styled.img`
   border-radius: 15px;
   width: 340px;
   height: 170px;
+  @media (max-width: 1200px) {
+    display: none;
+  }
 `;
 
 const TextWrap = styled.div`
@@ -74,6 +81,9 @@ const TextWrap = styled.div`
   /* border: 1px solid green; */
   width: 800px;
   height: 150px;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const TextTitle = styled.div`
@@ -83,6 +93,10 @@ const TextTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @media (max-width: 1200px) {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
 `;
 
 const TextBody = styled.div`
@@ -90,12 +104,19 @@ const TextBody = styled.div`
   flex-direction: column;
   gap: 5px;
   margin-bottom: 10px;
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const TextFoot = styled.div`
   display: flex;
   justify-content: space-between;
   width: 800px;
+  @media (max-width: 1200px) {
+    width: 100%;
+    font-size: 14px;
+  }
 `;
 
 const CountWrap = styled.div``;
@@ -105,6 +126,10 @@ const Price = styled.div`
   font-weight: bold;
   color: orange;
   padding: 0px 10px;
+
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 export default Sites;

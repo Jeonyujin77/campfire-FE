@@ -1,21 +1,11 @@
 import styled from '@emotion/styled';
 import Logo from '../common/Logo';
-import Button from '../common/Button';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import HeaderImg from '../../asset/HeaderImg.png';
 import TopButton from '../common/TopButton';
 
 const Header = () => {
   const navigate = useNavigate();
-
-  // const [accesstoken, setAccesstoken] = useState<any>();
-  // const [refreshtoken, setRefreshtoken] = useState<any>();
-
-  // useEffect(() => {
-  //   setAccesstoken(localStorage.getItem('accessToken'));
-  //   setRefreshtoken(localStorage.getItem('refreshToken'));
-  // }, []);
 
   return (
     <>
@@ -27,61 +17,6 @@ const Header = () => {
         >
           <Logo />
         </LogoDiv>
-        {/* <BtnWrap>
-          <Button
-            onClick={() => {
-              localStorage.clear();
-              navigate('/');
-              window.location.reload();
-            }}
-            bgColor="transparent"
-            width="80px"
-            display={
-              accesstoken &&
-              refreshtoken &&
-              accesstoken !== 'undefined' &&
-              refreshtoken !== 'undefined'
-                ? ''
-                : 'none'
-            }
-          >
-            로그아웃
-          </Button>
-          <Button
-            onClick={() => {
-              navigate('/login');
-            }}
-            bgColor="transparent"
-            width="60px"
-            display={
-              accesstoken &&
-              refreshtoken &&
-              accesstoken !== 'undefined' &&
-              refreshtoken !== 'undefined'
-                ? 'none'
-                : ''
-            }
-          >
-            로그인
-          </Button>
-          <Button
-            onClick={() => {
-              navigate('/signup');
-            }}
-            bgColor="transparent"
-            width="80px"
-            display={
-              accesstoken &&
-              refreshtoken &&
-              accesstoken !== 'undefined' &&
-              refreshtoken !== 'undefined'
-                ? 'none'
-                : ''
-            }
-          >
-            회원가입
-          </Button>
-        </BtnWrap> */}
       </HeaderComponent>
       <TopButton />
     </>
@@ -99,13 +34,19 @@ const HeaderComponent = styled.div`
   background-image: url(${HeaderImg});
   background-repeat: no-repeat;
   background-size: 100%;
+  background-size: cover;
   display: flex;
   align-items: center;
   text-align: center;
   justify-content: flex-start;
   color: black;
   padding: 10px 0px;
-  /* border-bottom: 1px solid blue; */
+
+  @media (max-width: 1200px) {
+    height: 50px;
+    background-image: none;
+    background-color: rgb(254, 128, 44);
+  }
 `;
 
 const LogoDiv = styled.div`
@@ -114,15 +55,10 @@ const LogoDiv = styled.div`
   align-items: center;
   margin-left: 160px;
   margin-right: 1000px;
-`;
 
-const BtnWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-direction: row;
-  width: 320px;
-  /* border: 1px solid black; */
+  @media (max-width: 1200px) {
+    margin: 0 auto;
+  }
 `;
 
 export default Header;

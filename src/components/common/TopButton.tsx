@@ -40,7 +40,7 @@ const TopButton = () => {
 const ShowBtnWrap = styled.div`
   position: fixed;
   right: 50px;
-  bottom: 100px;
+  bottom: 70px;
   width: 60px;
   height: 60px;
   border-radius: 30px;
@@ -49,12 +49,24 @@ const ShowBtnWrap = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
+  @media (max-width: 1200px) {
+    width: 25px;
+    height: 25px;
+    right: 1%;
+    bottom: 100px;
+  }
 `;
 
 const Arrow = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 30px;
+
+  @media (max-width: 1200px) {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 export default TopButton;

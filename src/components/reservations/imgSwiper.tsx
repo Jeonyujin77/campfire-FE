@@ -44,6 +44,15 @@ const StyledSwiper = styled(Swiper)`
   justify-content: center;
   flex-direction: row;
   text-align: center;
+  @media (max-width: 1200px) {
+    width: 100%;
+    height: 500px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    height: 250px;
+  }
 `;
 
 const StyledSwiperSlide = styled(SwiperSlide)`
@@ -58,6 +67,15 @@ const CampImg = styled.img`
   object-fit: fill;
   width: 1200px;
   height: 600px;
+  @media (max-width: 1200px) {
+    width: 100%;
+    height: 500px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    height: 250px;
+  }
 `;
 
 export default ImgSwiper;

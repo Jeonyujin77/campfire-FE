@@ -15,6 +15,7 @@ interface ButtonProps {
   fontFamily?: string;
   color?: string;
   hColor?: string;
+  mwidth?: string;
 }
 
 const Button = ({
@@ -31,6 +32,7 @@ const Button = ({
   fontFamily,
   color,
   hColor,
+  mwidth,
 }: ButtonProps) => {
   return (
     <Btn
@@ -46,6 +48,7 @@ const Button = ({
       fontFamily={fontFamily}
       color={color}
       hColor={hColor}
+      mwidth={mwidth}
     >
       {children}
     </Btn>
@@ -72,6 +75,10 @@ const Btn = styled.button<ButtonProps>`
   &:hover {
     filter: brightness(95%);
     color: ${({ hColor }) => (hColor ? hColor : 'black')};
+  }
+  @media (max-width: 1200px) {
+    width: ${({ mwidth }) => mwidth};
+    padding: 0px;
   }
 `;
 

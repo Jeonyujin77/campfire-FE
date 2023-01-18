@@ -12,6 +12,8 @@ import { useAppDispatch } from '../../redux/store';
 import { __signin } from '../../apis/userApi';
 import kakao_login_medium_wide from '../../asset/kakao_login_medium_wide.png';
 import { KAKAO_AUTH_URL } from '../../apis/loginkeys';
+import pwHide from '../../asset/pwHide.png';
+import pwShow from '../../asset/pwShow.png';
 
 const LoginBox = () => {
   const dispatch = useAppDispatch();
@@ -37,17 +39,9 @@ const LoginBox = () => {
     });
   };
 
-  //카카오
-  // REST_API_KEY={process.env.REACT_APP_KAKAO_REST_API_KEY}
-  // REDIRECT_URI={process.env.REACT_APP_LOGIN_REDIRECT_URI}
-  // kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code
-  // const { Kakao } = window;
-  // const loginWithKakao = () => {
-  //   Kakao.Auth.authorize({
-  //     redirectUri: `http://localhost:3000/login/oauth`,
-  //     scope: 'profile_nickname,profile_image,account_email',
-  //   });
-  // };
+  //비밀번호 보이기/숨기기
+  const [showPw, setShowPw] = useState(false);
+
   const handleKakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
@@ -55,45 +49,79 @@ const LoginBox = () => {
   return (
     <Wrap>
       <FormWrap onSubmit={onSubmit}>
-        <SignupWrap>
-          <InputWrap>
-            <InputTitle>아이디</InputTitle>
-            <Span>
-              <Input
-                type="email"
-                width="285px"
-                required
-                value={email}
-                onChange={emailHandler}
-                onBlur={emailFlagHandler}
-              />
-            </Span>
+        {/* <SignupWrap> */}
+        <InputWrap>
+          {/* <InputTitle>아이디</InputTitle> */}
+          <Span>
+            <Input
+              type="email"
+              width="412px"
+              placeholder="아이디(ID)"
+              height="59px"
+              fontSize="20px"
+              borderRadius="20px 20px 20px 20px"
+              bgColor="#D9D9D9"
+              required
+              value={email}
+              onChange={emailHandler}
+              onBlur={emailFlagHandler}
+            />
+          </Span>
+          <ErrWrap>
             {!emailValidFlag ? <ErrorText>{EMAIL_NOT_VALID}</ErrorText> : <></>}
-            <InputTitle>비밀번호</InputTitle>
-            <SpanPswd>
-              <Input
-                type="password"
-                width="285px"
-                required
-                value={password}
-                onChange={passwordHandler}
-                onBlur={pwFlagHandler}
-              />
-            </SpanPswd>
+          </ErrWrap>
+          {/* <InputTitle>비밀번호</InputTitle> */}
+          <SpanPswd>
+            <Input
+              type={showPw ? 'text' : 'password'}
+              width="352px"
+              placeholder="비밀번호(PW)"
+              height="59px"
+              fontSize="20px"
+              borderRadius="20px 0px 0px 20px"
+              bgColor="#D9D9D9"
+              required
+              value={password}
+              onChange={passwordHandler}
+              onBlur={pwFlagHandler}
+            />
+            {showPw ? (
+              <PswdShow
+                onClick={() => {
+                  setShowPw(!showPw);
+                }}
+              >
+                <PswdImg src={pwShow} />
+              </PswdShow>
+            ) : (
+              <PswdShow
+                onClick={() => {
+                  setShowPw(!showPw);
+                }}
+              >
+                <PswdImg src={pwHide} />
+              </PswdShow>
+            )}
+          </SpanPswd>
+          <ErrWrap>
             {!pwValidFlag ? <ErrorText>{PW_NOT_VALID}</ErrorText> : <></>}
-          </InputWrap>
-        </SignupWrap>
+          </ErrWrap>
+        </InputWrap>
+        {/* </SignupWrap> */}
         <Button
-          width="430px"
-          height="40px"
-          bgColor="#f2f2f2"
-          borderRadius="10px"
+          width="400px"
+          height="50px"
+          bgColor="#FFDEC8"
+          borderRadius="12px"
           fontSize="20px"
+          fontWeight="bold"
+          margin="0px 0px 10px 0px"
+          mwidth="70%"
           onClick={() => {
             return;
           }}
         >
-          로그인하기
+          로그인
         </Button>
       </FormWrap>
       <KakaoBtn onClick={handleKakaoLogin}>
@@ -114,24 +142,15 @@ const Wrap = styled.div`
   flex-direction: column;
 `;
 
-const SignupWrap = styled.div`
-  /* 헤더 크기에 따라 수정 필요 */
-  margin: 0px auto;
-  /* 헤더 아래 출력되도록 */
-  border: 1px solid red;
-  padding: 10px;
-  width: 450px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`;
-
 const FormWrap = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 450px;
+  @media (max-width: 1200px) {
+    width: 95%;
+  }
 `;
 
 const InputWrap = styled.div`
@@ -140,59 +159,82 @@ const InputWrap = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  border: 1px solid red;
-  width: 400px;
+  /* border: 1px solid red; */
+  width: 450px;
   height: 200px;
   font-size: 25px;
   gap: 5px;
-`;
-
-const InputTitle = styled.div`
-  /* border: 1px solid green; */
-  width: 305px;
-  height: 25px;
-  font-size: 15px;
-`;
-
-// const Input = styled.input`
-//   margin-left: 5px;
-//   border: none;
-//   font-size: 13px;
-//   font-weight: bold;
-//   width: 285px;
-//   height: 30px;
-//   outline: none;
-// `;
-
-// const InputBtn = styled.button`
-//   margin-right: 5px;
-// `;
-
-const SpanPswd = styled.span`
-  border: 1px solid black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  margin-bottom: 10px;
+  @media (max-width: 1200px) {
+    width: 95%;
+    height: 95%;
+  }
 `;
 
 const Span = styled.span`
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-bottom: 5px; */
+  border-radius: 20px;
+  background-color: #dadada;
+  @media (max-width: 1200px) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+`;
+
+const SpanPswd = styled.span`
+  /* border: 1px solid black; */
+  /* width: 412px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  border-radius: 20px;
+  background-color: #dadada;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
+`;
+
+const PswdShow = styled.div`
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const PswdImg = styled.img`
+  width: 30px;
+  height: 20px;
+`;
+
+const ErrWrap = styled.div`
+  height: 30px;
+  display: flex;
+  align-items: center;
+  @media (max-width: 1200px) {
+    height: 20px;
+  }
 `;
 
 const ErrorText = styled.div`
   color: red;
-  width: 295px;
+  width: 412px;
   font-size: 12px;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const ToLogin = styled(Link)`
   text-decoration: none;
   font-weight: bold;
-  color: #c6a6e3;
+  color: #fe802c;
 `;
 
 const BottomText = styled.div`
@@ -208,6 +250,7 @@ const KakaoBtn = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  margin-bottom: 20px;
 `;
 
 const Kakao = styled.img`
@@ -216,6 +259,44 @@ const Kakao = styled.img`
   &:hover {
     filter: brightness(95%);
   }
+  @media (max-width: 1200px) {
+    width: 80%;
+    height: 80%;
+  }
 `;
+
+// const SignupWrap = styled.div`
+//   /* 헤더 크기에 따라 수정 필요 */
+//   margin: 0px auto;
+//   /* 헤더 아래 출력되도록 */
+//   border: 1px solid red;
+//   padding: 10px;
+//   width: 450px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: row;
+// `;
+
+// const InputTitle = styled.div`
+//   /* border: 1px solid green; */
+//   width: 305px;
+//   height: 25px;
+//   font-size: 15px;
+// `;
+
+// const Input = styled.input`
+//   margin-left: 5px;
+//   border: none;
+//   font-size: 13px;
+//   font-weight: bold;
+//   width: 285px;
+//   height: 30px;
+//   outline: none;
+// `;
+
+// const InputBtn = styled.button`
+//   margin-right: 5px;
+// `;
 
 export default LoginBox;

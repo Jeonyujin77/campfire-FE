@@ -1,39 +1,27 @@
 import styled from '@emotion/styled';
 import noprofileImg from '../asset/noprofileImg.png';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MyReservationModal from '../components/users/MyreservationModal';
-import UserIcones from '../components/users/UserIcones';
 import { useAppDispatch } from '../redux/store';
 import { __getUser } from '../apis/userApi';
 import WithdrawalModal from '../components/users/WithdrawalModal';
 import MyLikeList from '../components/users/MyLikeList';
-import CheckAuth from '../components/common/CheckAuth';
 
 const MyPage = () => {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isLikeOpen, setIsLikeOpen] = useState(false);
   const [isWithdrawalOpen, setIsWithdrawalOpen] = useState(false);
-
   const [accesstoken, setAccesstoken] = useState<string | null>(null);
   const [refreshtoken, setRefreshtoken] = useState<string | null>(null);
-  useEffect(() => {
-    setAccesstoken(localStorage.getItem('accessToken'));
-    setRefreshtoken(localStorage.getItem('refreshToken'));
-  }, []);
-
   const [userName, setUserName] = useState('');
   const [represent, setRepresent] = useState<string | undefined>();
 
-  useEffect(() => {
+  // 사용자 정보 조회
+  const getUser = () => {
     dispatch(__getUser(Number(localStorage.getItem('userId')))).then(res => {
       const { type, payload } = res;
 
@@ -52,11 +40,28 @@ const MyPage = () => {
         alert(`${payload.response.data.errorMessage}`);
       }
     });
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (
+      localStorage.getItem('accessToken') &&
+      localStorage.getItem('refreshToken') &&
+      localStorage.getItem('userId')
+    ) {
+      setAccesstoken(localStorage.getItem('accessToken'));
+      setRefreshtoken(localStorage.getItem('refreshToken'));
+      getUser();
+    } else {
+      window.location.href = '/login';
+    }
   }, []);
 
   return (
     <>
-      <CheckAuth />
       <MyReservationModal isOpen={isOpen} setIsOpen={setIsOpen} />
       <MyLikeList isLikeOpen={isLikeOpen} setIsLikeOpen={setIsLikeOpen} />
       <WithdrawalModal

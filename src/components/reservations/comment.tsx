@@ -162,6 +162,14 @@ const Profile = styled.div`
     line-height: 0;
     font-weight: bold;
   }
+
+  @media (max-width: 1200px) {
+    font-size: 12px;
+    img {
+      width: 25px;
+      height: 25px;
+    }
+  }
 `;
 
 const CommentBox = styled.div`
@@ -174,6 +182,10 @@ const CommentBox = styled.div`
   p {
     white-space: pre-wrap;
   }
+
+  @media (max-width: 1200px) {
+    font-size: 12px;
+  }
 `;
 
 const BtnWrap = styled.div`
@@ -181,6 +193,12 @@ const BtnWrap = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
+
+  @media (max-width: 1200px) {
+    button {
+      font-size: 12px;
+    }
+  }
 `;
 
 export default Comment;
