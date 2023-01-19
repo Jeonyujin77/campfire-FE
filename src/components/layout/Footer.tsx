@@ -26,6 +26,9 @@ const Footer = () => {
   const goToSearch = () => {
     window.location.href = '/search';
   };
+  const goToHostPage = () => {
+    window.location.href = 'https://campfire-host-fe.vercel.app/';
+  };
 
   return (
     <FooterWrapper>
@@ -49,6 +52,7 @@ const Footer = () => {
             </Menu>
           </>
         )}
+        <Menu onClick={goToHostPage}>관리자모드</Menu>
       </FooterMenu>
     </FooterWrapper>
   );
@@ -75,7 +79,7 @@ const FooterMenu = styled.div`
 
 const Menu = styled.div`
   text-align: center;
-  margin: 0 1%;
+  margin: 0 3%;
   cursor: pointer;
   &:hover {
     color: rgb(254, 128, 44);
