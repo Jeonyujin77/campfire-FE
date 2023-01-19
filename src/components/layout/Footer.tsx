@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../common/Button';
 
 const Footer = () => {
   const navigate = useNavigate();

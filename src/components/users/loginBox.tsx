@@ -134,7 +134,7 @@ const LoginBox = () => {
         borderRadius="12px"
         fontSize="20px"
         fontWeight="bold"
-        margin="0px 0px 10px 0px"
+        margin="0px 0px 20px 0px"
         mwidth="70%"
         onClick={() => {
           window.location.href = 'https://campfire-host-fe.vercel.app/';
@@ -265,7 +265,7 @@ const KakaoBtn = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const Kakao = styled.img`
