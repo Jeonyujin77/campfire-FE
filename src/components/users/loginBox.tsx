@@ -127,6 +127,21 @@ const LoginBox = () => {
       <KakaoBtn onClick={handleKakaoLogin}>
         <Kakao src={kakao_login_medium_wide} />
       </KakaoBtn>
+      <Button
+        width="400px"
+        height="50px"
+        bgColor="#FFDEC8"
+        borderRadius="12px"
+        fontSize="20px"
+        fontWeight="bold"
+        margin="0px 0px 20px 0px"
+        mwidth="70%"
+        onClick={() => {
+          window.location.href = 'https://campfire-host-fe.vercel.app/';
+        }}
+      >
+        관리자모드
+      </Button>
       <BottomText>
         <div>아직 회원이 아니시라면? </div>
         <ToLogin to="/signup">회원가입하기</ToLogin>
@@ -250,7 +265,7 @@ const KakaoBtn = styled.button`
   border: none;
   background-color: transparent;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const Kakao = styled.img`
