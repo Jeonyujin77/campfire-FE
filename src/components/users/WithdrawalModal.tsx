@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
-import Button from '../common/Button';
-import useInput from '../../hooks/useInput';
-import Input from '../common/Input';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
+//api
 import { __withdrawalUser } from '../../apis/userApi';
-import { Navigate, useNavigate } from 'react-router-dom';
+//훅
+import useInput from '../../hooks/useInput';
+//컴포넌트
+import Button from '../common/Button';
+import Input from '../common/Input';
 
 interface Withdrawal {
   isWithdrawalOpen: boolean;
@@ -53,8 +57,6 @@ const WithdrawalModal = ({
                 const { type, payload } = res;
                 console.log(type);
                 console.log(res);
-                // console.log(payload.response.data.errorMessage);
-                // console.log(payload.response.status);
                 if (type === 'withdrawalUser/fulfilled') {
                   alert(`${payload.message}`);
                   localStorage.clear();
@@ -99,7 +101,6 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   max-height: 100%;
   min-height: 20vh;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   padding: 5px;
   gap: 10px;
@@ -126,39 +127,5 @@ const ModalCloseBtn = styled.button`
   font-size: 15px;
   cursor: pointer;
 `;
-
-const ReserveWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 10px;
-  width: 930px;
-  height: 260px;
-  border: 1px solid black;
-`;
-
-const CampDesc = styled.div`
-  border: 1px solid blue;
-  width: 400px;
-  padding: 10px;
-  min-height: 240px;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const DescText = styled.div<{ height: string }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 400px;
-  height: ${({ height }) => height};
-  border-bottom: 1px solid black;
-`;
-
-const PagenoBtnWrap = styled.div``;
 
 export default WithdrawalModal;

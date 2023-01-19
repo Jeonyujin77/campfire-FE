@@ -1,7 +1,8 @@
-import React from 'react';
+//라이브러리
 import styled from '@emotion/styled';
-import { Like } from '../../interfaces/Users';
 import { useNavigate } from 'react-router-dom';
+//인터페이스
+import { Like } from '../../interfaces/Users';
 
 const LikeItem = ({ like }: { like: Like }) => {
   const navigate = useNavigate();
@@ -15,10 +16,7 @@ const LikeItem = ({ like }: { like: Like }) => {
       <TextWrap>
         <div>
           <CampTitle>{like.campName}</CampTitle>
-          <div>
-            {like.typeLists}
-            {/* {like.typeLists.join(',')} */}
-          </div>
+          <div>{like.typeLists}</div>
         </div>
         <div>{like.campAddress}</div>
       </TextWrap>

@@ -1,3 +1,4 @@
+//라이브러리
 import styled from '@emotion/styled';
 
 const Input = ({ width, height = '26px', ...props }) => {

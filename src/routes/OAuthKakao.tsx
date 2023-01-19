@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react';
-import { __kakaoLogin } from '../apis/userApi';
+//라이브러리
+import { useEffect } from 'react';
 import { useAppDispatch } from '../redux/store';
+//api
+import { __kakaoLogin } from '../apis/userApi';
 
+//카카오페이지에서 작업하고 리다이렉트되는 곳
 const OAuthKakao = () => {
   const dispatch = useAppDispatch();
+
   const kakaoLogin = (payload: any) => {
     dispatch(__kakaoLogin(payload)).then(res => {
       console.log(res);
@@ -26,6 +30,7 @@ const OAuthKakao = () => {
   useEffect(() => {
     kakaoLogin(code);
   }, []);
+
   return <div>kakao</div>;
 };
 

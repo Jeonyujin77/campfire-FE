@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+//현재 미사용 훅, 추후 사용여부 결정되면 사용/삭제 할 것
 export const convertURLtoFile = async (url: string) => {
   const response = await fetch(url);
   const data = await response.blob();

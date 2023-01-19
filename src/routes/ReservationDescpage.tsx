@@ -1,21 +1,23 @@
+//라이브러리
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch } from '../redux/store';
+//api
+import { __getCampsByParams, __getSiteByParams } from '../apis/campApi';
+import { __reserveCamps } from '../apis/reservationApi';
+//훅
+import useReserveInfo from '../hooks/useReserveInfo';
+//컴포넌트
+import RepresentDate from '../components/reservations/RepresentDate';
+import DdayBox from '../components/reservations/DdayBox';
+import CheckAuth from '../components/common/CheckAuth';
 import ImgSwiper from '../components/reservations/imgSwiper';
 import Button from '../components/common/Button';
 import TextModal from '../components/common/TextModal';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import RepresentDate from '../components/reservations/RepresentDate';
-import { useAppDispatch } from '../redux/store';
-import { __getCampsByParams, __getSiteByParams } from '../apis/campApi';
-import DdayBox from '../components/reservations/DdayBox';
-import CheckBox from '../components/reservations/CheckBox';
-import useReserveInfo from '../hooks/useReserveInfo';
-import CheckAuth from '../components/common/CheckAuth';
-import { __reserveCamps } from '../apis/reservationApi';
 
 const ReservationDescpage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const campparams = Number(useParams().campId);
   const siteparams = Number(useParams().siteId);
@@ -24,7 +26,6 @@ const ReservationDescpage = () => {
   const [headText, setHeadText] = useState('');
   const [bodyText, setBodyText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  const [cancleInfo, setCancleInfo] = useState(false);
 
   //해당 캠프 데이터 받아오기
   const [site, setSite] = useState<any>();
@@ -85,34 +86,6 @@ const ReservationDescpage = () => {
       }
     });
   };
-
-  //약관 동의 체크박스
-  // const [isAllChecked, setAllChecked] = useState(false);
-  // const [checkedState, setCheckedState] = useState(new Array(5).fill(false));
-  // 체크박스 함수
-  // const handleAllCheck = () => {
-  //   setAllChecked(prev => !prev);
-  //   let array = new Array(5).fill(!isAllChecked);
-  //   setCheckedState(array);
-  // };
-
-  // const handleMonoCheck = (position: number) => {
-  //   //각 체크박스별로 검사해서 누른 체크박스만 변하도록
-  //   const updatedCheckedState = checkedState.map((item, index) =>
-  //     index === position ? !item : item,
-  //   );
-  //   setCheckedState(updatedCheckedState);
-  //   //위에서 map을 돌린 체크박스에 reduce를 사용해서 개수를 더한 값과
-  //   //체크된 박스의 개수가 같다면 Allchecked를 true로 바꾼다.
-  //   //(개별로 체크를 다 해도 전체체크박스가 자동으로 체크된다는 뜻)
-  //   const checkedLength = updatedCheckedState.reduce((sum, currentState) => {
-  //     if (currentState === true) {
-  //       return sum + 1;
-  //     }
-  //     return sum;
-  //   }, 0);
-  //   setAllChecked(checkedLength === updatedCheckedState.length);
-  // };
 
   return site ? (
     <>
@@ -247,15 +220,6 @@ const ReservationDescpage = () => {
         />
         <ReservationPageNav>
           <Button
-            // onClick={() => {
-            //   navigate(`/camp/${campparams}/sitereservation/${siteparams}`, {
-            //     state: {
-            //       dateState: { startday, endday, representStart, representEnd },
-            //       countState: { adult, child },
-            //       campId: site.siteId,
-            //     },
-            //   });
-            // }}
             onClick={() => {
               return;
             }}
@@ -280,9 +244,7 @@ const ReservationDescpage = () => {
 };
 
 const Wrap = styled.form`
-  /* 헤더 크기에 따라 수정 필요 */
   margin: 0px auto;
-  /* 헤더 아래 출력되도록 */
   margin-top: 100px;
   margin-bottom: 50px;
   width: 1200px;
@@ -355,73 +317,5 @@ const ReservationPageNav = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
-// const CancleBox = styled.div`
-//   border: 1px solid blue;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   width: 1200;
-//   max-height: 100%;
-//   min-height: 60px;
-//   font-size: 25px;
-//   margin-bottom: 10px;
-//   gap: 10px;
-// `;
-
-// const CancleTextBox = styled.div`
-//   border: 1px solid blue;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: center;
-//   width: 1200px;
-//   max-height: 100%;
-//   min-height: 60px;
-//   font-size: 25px;
-//   gap: 10px;
-// `;
-
-// const CancleText = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const CancleBtnOpen = styled.div<{ cancleInfo: boolean }>`
-//   display: ${({ cancleInfo }) => (cancleInfo ? 'none' : 'flex')};
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const CancleBtnClose = styled.div<{ cancleInfo: boolean }>`
-//   display: ${({ cancleInfo }) => (cancleInfo ? 'flex' : 'none')};
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const CancleDetail = styled.div<{ cancleInfo: boolean }>`
-//   border: 1px solid black;
-//   display: ${({ cancleInfo }) => (cancleInfo ? 'flex' : 'none')};
-//   align-items: center;
-//   justify-content: center;
-//   padding: 10px;
-//   gap: 10px;
-// `;
-
-// const CancleDetailLeft = styled.div`
-//   border: 1px solid black;
-//   width: 580px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-// `;
-
-// const CancleDetailRight = styled.div`
-//   border: 1px solid black;
-//   width: 580px;
-//   display: flex;
-//   flex-direction: column;
-//   font-size: 16px;
-// `;
 
 export default ReservationDescpage;

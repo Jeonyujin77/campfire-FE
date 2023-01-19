@@ -1,17 +1,9 @@
-import { useState } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import {
-  cancreser,
-  Reservation,
-  ReservationList,
-} from '../../interfaces/Users';
-import { useAppDispatch } from '../../redux/store';
-import { __cancelReservation } from '../../apis/reservationApi';
+//인터페이스
+import { cancreser } from '../../interfaces/Users';
 
 const CancReserveItem = ({ book }: { book: cancreser }) => {
-  const dispatch = useAppDispatch();
-
   return (
     <div>
       <ReserveWrap key={book.bookId}>
@@ -37,6 +29,7 @@ const CancReserveItem = ({ book }: { book: cancreser }) => {
     </div>
   );
 };
+
 const Cover = styled.div`
   z-index: 2500;
   background-color: red;
@@ -86,7 +79,6 @@ const SiteName = styled.div`
 `;
 
 const CampDesc = styled.div`
-  /* border: 1px solid blue; */
   width: 400px;
   padding: 10px;
   min-height: 240px;
@@ -94,7 +86,6 @@ const CampDesc = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: space-between; */
 `;
 
 const DescText = styled.div<{ height: string }>`
@@ -131,33 +122,6 @@ const SiteInfo = styled.div`
   width: 400px;
   height: 77px;
   margin-bottom: 7px;
-`;
-
-const DropdownWrap = styled.div<{ display: number }>`
-  display: ${({ display }) => (display === 0 ? 'block' : 'none')};
-  border: 1px solid green;
-  z-index: 2100;
-  position: absolute;
-  background-color: #c5c5c5;
-  width: 890px;
-  margin: 5px 20px 0px 20px;
-  padding: 10px;
-`;
-
-const CampName = styled.h3``;
-
-const CampAboutBox = styled.div`
-  margin-bottom: 10px;
-`;
-
-const CampAboutTitle = styled.p`
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-const CamtAbout = styled.p`
-  word-break: break-all;
-  white-space: pre-wrap;
 `;
 
 export default CancReserveItem;

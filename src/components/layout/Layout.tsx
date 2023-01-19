@@ -1,5 +1,7 @@
-import { ReactNode } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
+import { ReactNode } from 'react';
+//컴포넌트
 import Header from './Header';
 import Footer from './Footer';
 

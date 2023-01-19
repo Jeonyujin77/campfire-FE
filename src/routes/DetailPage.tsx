@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
+import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-
-//axios관련
 import { useAppDispatch } from '../redux/store';
+//api
 import {
   __getCampsByParams,
   __getCampSitesByParams,
   __likeCampByParams,
 } from '../apis/campApi';
-
 //interface
 import { SiteList } from '../interfaces/camp';
-
 //컴포넌트
 import DateChoiceModal from '../components/reservations/dateChoiceModal';
 import CommentList from '../components/reservations/commentList';
@@ -21,8 +19,7 @@ import CheckAuth from '../components/common/CheckAuth';
 import Sites from '../components/camps/Sites';
 import CampAmenities from '../components/reservations/campAmenities';
 import ImgSwiper from '../components/reservations/imgSwiper';
-
-//이미지 불러오기
+//이미지
 import likeOn from '../asset/likeOn.png';
 import likeOff from '../asset/likeOff.png';
 import dateImg from '../asset/dateImg.png';
@@ -408,9 +405,7 @@ const DetailPage = () => {
 };
 
 const Wrap = styled.div`
-  /* 헤더 크기에 따라 수정 필요 */
   margin: 0px auto;
-  /* 헤더 아래 출력되도록 */
   margin-top: 100px;
   margin-bottom: 50px;
   width: 1200px;

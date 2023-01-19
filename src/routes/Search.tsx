@@ -1,3 +1,4 @@
+//라이브러리
 import styled from '@emotion/styled';
 import searchIcon from '../asset/searchIcon.png';
 import Tabs from '@mui/material/Tabs';
@@ -6,13 +7,16 @@ import Box from '@mui/material/Box';
 import { useLocation } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { RootState, useAppDispatch } from '../redux/store';
+import { useSelector } from 'react-redux';
+//api
 import { __searchCampsByKeyword } from '../apis/campApi';
+import { addSearchedCampList } from '../redux/modules/campSlice';
+import { onChecked } from '../utils/CampsUtil';
+//컴포넌트
 import SearchedCampList from '../components/camps/SearchedCampList';
 import CheckAuth from '../components/common/CheckAuth';
-import { addSearchedCampList } from '../redux/modules/campSlice';
-import { useSelector } from 'react-redux';
 import TabPanel from '../components/common/TabPanel';
-import { onChecked } from '../utils/CampsUtil';
+//리스트
 import {
   AMENITIES_LIST,
   ENV_LIST,
@@ -247,9 +251,7 @@ const Search = () => {
 };
 
 const Wrap = styled.div`
-  /* 헤더 크기에 따라 수정 필요 */
   margin: 0px auto;
-  /* 헤더 아래 출력되도록 */
   margin-top: 120px;
   width: 1200px;
   max-height: 100%;

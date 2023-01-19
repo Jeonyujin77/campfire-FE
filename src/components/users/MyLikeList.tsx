@@ -1,16 +1,13 @@
-import { useState, useEffect } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
-import Button from '../common/Button';
+import { useState, useEffect } from 'react';
 import { useAppDispatch } from '../../redux/store';
+//api
 import { __reserveUser } from '../../apis/reservationApi';
-import {
-  LikesCamp,
-  Reservation,
-  ReservationList,
-} from '../../interfaces/Users';
-import { useNavigate } from 'react-router-dom';
-import ReservationItem from './ReservationItem';
 import { __likeCamps } from '../../apis/userApi';
+//인터페이스
+import { LikesCamp } from '../../interfaces/Users';
+//컴포넌트
 import LikeItem from './likeItem';
 
 interface MLProps {
@@ -20,7 +17,6 @@ interface MLProps {
 
 const MyLikeList = (props: MLProps) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const [likeList, setLikeList] = useState<LikesCamp>();
 
@@ -89,10 +85,8 @@ const ModalWrap = styled.div<{ isLikeOpen: boolean }>`
   left: calc(50vw - 300px);
   background-color: white;
   width: 600px;
-  /* max-height: 100%; */
   height: 50vh;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   padding: 5px;
   gap: 10px;

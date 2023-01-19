@@ -1,8 +1,8 @@
+//라이브러리
+import styled from '@emotion/styled';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper';
-import styled from '@emotion/styled';
-
-// Import Swiper styles
+// Swiper css
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
