@@ -1,19 +1,20 @@
-import { useState, useEffect } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
-import Button from '../common/Button';
+import { useState, useEffect } from 'react';
 import { useAppDispatch } from '../../redux/store';
+//api
 import {
   __reserveCanceled,
   __reserveCompleted,
   __reserveUser,
 } from '../../apis/reservationApi';
+//인터페이스
 import {
   CanceledReservationList,
   CompletedReservationList,
-  Reservation,
   ReservationList,
 } from '../../interfaces/Users';
-import { useNavigate } from 'react-router-dom';
+//컴포넌트
 import ReservationItem from './ReservationItem';
 import CompReserveItem from './CompReserveItem';
 import CancReserveItem from './CancReserveItem';
@@ -193,10 +194,8 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   left: calc(50vw - 550px);
   background-color: white;
   width: 1100px;
-  /* max-height: 100%; */
   height: 90vh;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   padding: 5px;
   gap: 10px;

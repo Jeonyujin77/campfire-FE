@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
+import { useState, useEffect } from 'react';
+//이미지
 import upArrow from '../../asset/upArrow.png';
 
 const TopButton = () => {
@@ -12,6 +14,7 @@ const TopButton = () => {
     });
   };
 
+  //스크롤위치에따라 버튼이 생기고 사라지도록
   useEffect(() => {
     const ShowButtonClick = () => {
       if (window.scrollY > 200) {

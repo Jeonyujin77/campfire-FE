@@ -1,10 +1,14 @@
-import Comment from './comment';
+//라이브러리
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import InsertComment from './InsertComment';
-import { __getCampReviews } from '../../apis/campApi';
 import { useAppDispatch } from '../../redux/store';
+//api
+import { __getCampReviews } from '../../apis/campApi';
+//인터페이스
 import { CommentInfo } from '../../interfaces/Comment';
+//컴포넌트
+import Comment from './comment';
+import InsertComment from './InsertComment';
 
 interface CommentProps {
   isCmtOpen: boolean;

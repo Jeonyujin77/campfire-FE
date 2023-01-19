@@ -1,6 +1,9 @@
+//라이브러리
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+//인터페이스
 import { CampType } from '../../interfaces/camp';
+//컴포넌트
 import CampItem from './campItem';
 
 const SearchedCampList = ({ campList }: { campList: CampType[] }) => {

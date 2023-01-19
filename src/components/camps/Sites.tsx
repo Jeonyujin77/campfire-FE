@@ -1,5 +1,7 @@
+//라이브러리
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
+//인터페이스
 import { SiteListsRes } from '../../interfaces/camp';
 
 const Sites = ({
@@ -63,7 +65,6 @@ const SiteWrap = styled.div`
 `;
 
 const MainImg = styled.img`
-  /* border: 1px solid green; */
   border-radius: 15px;
   width: 340px;
   height: 170px;
@@ -73,23 +74,22 @@ const MainImg = styled.img`
 `;
 
 const TextWrap = styled.div`
-  display: flex;
+  display: block;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   padding: 5px 10px 5px 15px;
-  /* border: 1px solid green; */
   width: 800px;
   height: 150px;
   @media (max-width: 1200px) {
-    width: 100%;
+    width: 95%;
   }
 `;
 
 const TextTitle = styled.div`
   font-size: 25px;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin: 20px 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

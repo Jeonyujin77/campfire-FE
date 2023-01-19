@@ -1,12 +1,14 @@
+//라이브러리
 import styled from '@emotion/styled';
-import Logo from '../components/common/Logo';
-import SignupBox from '../components/users/signupBox';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+//컴포넌트
 import LogLogo from '../components/common/LogLogo';
+import SignupBox from '../components/users/signupBox';
 
 const Signup = () => {
   const { pathname } = useLocation();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -24,14 +26,11 @@ const Signup = () => {
 };
 
 const Wrap = styled.div`
-  /* 헤더 크기에 따라 수정 필요 */
   margin: 0px auto;
-  /* 헤더 아래 출력되도록 */
   margin-top: 100px;
   width: 1180px;
   max-height: 100%;
   min-height: 35vh;
-  /* border: 1px solid red; */
   padding: 10px;
   display: flex;
   align-items: center;

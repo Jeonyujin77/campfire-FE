@@ -1,35 +1,44 @@
+//라이브러리
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Button from '../components/common/Button';
 import { useAppDispatch } from '../redux/store';
-import addbuttonimg from '../asset/addbutton.png';
+//api
 import { __checkNickDup, __getUser, __putUser } from '../apis/userApi';
-import { convertURLtoFile } from '../hooks/convertURLtoFIle';
+//훅
 import useInputValid from '../hooks/useInputValid';
+// import { convertURLtoFile } from '../hooks/convertURLtoFIle';
 import {
   nicknameValid as userNameValid,
   telValid as phoneNumberValid,
 } from '../utils/RegExp';
+//컴포넌트
+import Button from '../components/common/Button';
 import Input from '../components/common/Input';
-import { NICK_NOT_VALID, TELNUM_NOT_VALID } from '../constant/message';
 import CheckAuth from '../components/common/CheckAuth';
+//이미지
+import addbuttonimg from '../asset/addbutton.png';
+import { NICK_NOT_VALID, TELNUM_NOT_VALID } from '../constant/message';
 
 const ProfileModify = () => {
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const formData = new FormData();
+
   const [prevName, setPrevName] = useState(''); //비교할 이전이름
   const [userName, setUserName] = useState(''); //사용자 이름
   const [phoneNumber, setPhoneNumber] = useState(''); //전화번호
   const [profileImg, setProfileImg] = useState<File | string | null>(); //이미지 input
   const [represent, setRepresent] = useState<any>(); //보여줄 사진
   // const [prevFile, setPrevFile] = useState<File | string | null | any>(); //이전 적용되어있던 사진파일
+
   const [nickDupFlag, setNickDupFlag] = useState(false); // 닉네임중복확인 flag
+
   const [userNameVal, setUserNameVal] = useState(''); //이름 유효성검사
   const [phoneNumberVal, setPhoneNumberVal] = useState(''); //번호 유효성검사
   // const [profileImgVal, setProfileImgVal] = useState(''); //이미지 유효성검사
+
   const [userNameValidFlag, userNameFlagHandler] = useInputValid(
     userName,
     userNameValid,
@@ -278,9 +287,7 @@ const ProfileModify = () => {
 };
 
 const Wrap = styled.div`
-  /* 헤더 크기에 따라 수정 필요 */
   margin: 0px auto;
-  /* 헤더 아래 출력되도록 */
   margin-top: 100px;
   width: 1200px;
   max-height: 100%;
@@ -362,17 +369,11 @@ const InputBox = styled.div`
 `;
 
 const InputText = styled.div`
-  /* border: 1px solid purple; */
   width: 150px;
   font-size: 22px;
   font-weight: bold;
   text-align: right;
 `;
-
-// const Input = styled.input`
-//   height: 26px;
-//   font-size: 20px;
-// `;
 
 const BtnWrap = styled.div`
   display: flex;

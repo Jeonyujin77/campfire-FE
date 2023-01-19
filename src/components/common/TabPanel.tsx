@@ -1,5 +1,6 @@
-import React from "react";
-import Box from "@mui/material/Box";
+//라이브러리
+import React from 'react';
+import Box from '@mui/material/Box';
 
 interface Props {
   children: React.ReactNode;

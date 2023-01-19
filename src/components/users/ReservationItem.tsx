@@ -1,14 +1,17 @@
-import { useState } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router-dom';
-import { Reservation, ReservationList } from '../../interfaces/Users';
+import { useState } from 'react';
 import { useAppDispatch } from '../../redux/store';
+//api
 import { __cancelReservation } from '../../apis/reservationApi';
+//인터페이스
+import { Reservation } from '../../interfaces/Users';
 
 const ReservationItem = ({ book }: { book: Reservation }) => {
   const dispatch = useAppDispatch();
   const [display, setDisplay] = useState(1);
 
+  //예약취소버튼함수
   const cancleR = (payload: number) => {
     dispatch(__cancelReservation(payload)).then(res => {
       const { type, payload } = res;
@@ -182,7 +185,6 @@ const SiteNameText = styled.div`
 `;
 
 const CampDesc = styled.div`
-  /* border: 1px solid blue; */
   width: 400px;
   padding: 10px;
   min-height: 240px;
@@ -190,7 +192,6 @@ const CampDesc = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: space-between; */
 `;
 
 const DescText = styled.div<{ height: string }>`

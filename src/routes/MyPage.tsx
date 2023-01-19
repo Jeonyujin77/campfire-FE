@@ -1,16 +1,20 @@
+//라이브러리
 import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import MyReservationModal from '../components/users/MyreservationModal';
 import { useAppDispatch } from '../redux/store';
+//api
 import { __getUser } from '../apis/userApi';
+//컴포넌트
 import WithdrawalModal from '../components/users/WithdrawalModal';
 import MyLikeList from '../components/users/MyLikeList';
+import MyReservationModal from '../components/users/MyreservationModal';
 
 const MyPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isLikeOpen, setIsLikeOpen] = useState(false);
   const [isWithdrawalOpen, setIsWithdrawalOpen] = useState(false);

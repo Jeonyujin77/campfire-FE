@@ -1,11 +1,14 @@
+//라이브러리
 import styled from '@emotion/styled';
-import CampItem from './campItem';
 import { useEffect, useState, useCallback } from 'react';
-import { __getCampsByPageno } from '../../apis/campApi';
 import { useAppDispatch } from '../../redux/store';
-import { addCampList, removeCampList } from '../../redux/modules/campSlice';
-import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+//api
+import { __getCampsByPageno } from '../../apis/campApi';
+import { addCampList, removeCampList } from '../../redux/modules/campSlice';
+//컴포넌트
+import CampItem from './campItem';
 
 let pageno = 1;
 const CampItemList = () => {
@@ -74,7 +77,7 @@ const CampItemList = () => {
     return () => observer && observer.disconnect();
   }, [target, onIntersect]);
 
-  return campList !== undefined ? (
+  return campList ? (
     <Wrap>
       <ListWrap>
         {campList?.map(camp => (

@@ -1,3 +1,4 @@
+//라이브러리
 import styled from '@emotion/styled';
 
 interface RoomCountProps {
@@ -5,6 +6,7 @@ interface RoomCountProps {
   setRoomCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
+//현재 미사용 컴포넌트입니다. 추후 필요할 때 사용
 const RoomCount = ({ roomCount, setRoomCount }: RoomCountProps) => {
   return (
     <RoomCountWrap>

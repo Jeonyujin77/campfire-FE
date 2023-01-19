@@ -1,17 +1,22 @@
+//라이브러리
+import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import styled from '@emotion/styled';
+import { useAppDispatch } from '../redux/store';
+//api
+import { __reserveCamps } from '../apis/reservationApi';
+//훅
+import useReserveInfo from '../hooks/useReserveInfo';
+//컴포넌트
 import RepresentDate from '../components/reservations/RepresentDate';
 import DdayBox from '../components/reservations/DdayBox';
 import RoomCount from '../components/reservations/RoomCount';
 import ClientInfo from '../components/reservations/ClientInfo';
 import CheckBox from '../components/reservations/CheckBox';
 import Button from '../components/common/Button';
-import useReserveInfo from '../hooks/useReserveInfo';
-import { useAppDispatch } from '../redux/store';
-import { __reserveCamps } from '../apis/reservationApi';
 import CheckAuth from '../components/common/CheckAuth';
 
+//현재 사용안하는 페이지 추후 사용여부 결정되면 사용/삭제 할 것
 const ReservationPage = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
