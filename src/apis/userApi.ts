@@ -172,6 +172,28 @@ export const __kakaoLogin = createAsyncThunk(
   },
 );
 
+//네이버로그인
+export const __naverLogin = createAsyncThunk(
+  'naverLogin',
+  async (payload: any, thunkAPI) => {
+    console.log(payload);
+    try {
+      const response = await api.get<any>(
+        `/api/auths/naver?code=${payload.code}&state=${payload.state}`,
+      );
+      console.log(response);
+      if (response.status === 200) {
+        const { accesstoken, refreshtoken }: any = response.headers;
+        localStorage.setItem('accessToken', accesstoken);
+        localStorage.setItem('refreshToken', refreshtoken);
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 //찜한 캠핑장 불러오기
 export const __likeCamps = createAsyncThunk(
   'likeCamps',
