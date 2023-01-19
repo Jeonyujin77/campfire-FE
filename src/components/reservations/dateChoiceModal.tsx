@@ -1,14 +1,13 @@
-import { useState } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
-
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
-//기본제공 css
+//datePicker css
 import 'react-datepicker/dist/react-datepicker.css';
-// 추가 변경 css
 import './dateChoiceModal.css';
+//컴포넌트
 import Button from '../common/Button';
-import { isValidDateValue } from '@testing-library/user-event/dist/utils';
 
 interface MProps {
   isOpen: boolean;
@@ -40,16 +39,6 @@ const DateChoiceModal = (props: MProps) => {
         isOpen={props.isOpen}
       ></ModalBackground>
       <ModalWrap isOpen={props.isOpen}>
-        {/* <ModalHeader>
-          <div>날짜선택</div>
-          <ModalCloseBtn
-            onClick={() => {
-              props.setIsOpen(!props.isOpen);
-            }}
-          >
-            x
-          </ModalCloseBtn>
-        </ModalHeader> */}
         <DateText>
           <div>
             {startDate?.getMonth() + 1}월 {startDate?.getDate()}일 (
@@ -123,23 +112,6 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
 `;
 
-const ModalHeader = styled.div`
-  border: 1px solid green;
-  width: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ModalCloseBtn = styled.button`
-  background: none;
-  border: none;
-  color: red;
-  font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
-`;
-
 const DateText = styled.div`
   display: flex;
   justify-content: center;
@@ -155,14 +127,10 @@ const DateText = styled.div`
 `;
 
 const ModalBottom = styled.div`
-  /* border: 1px solid black; */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row-reverse;
-  /* width: 250px; */
 `;
-
-const CompleteBtn = styled.button``;
 
 export default DateChoiceModal;

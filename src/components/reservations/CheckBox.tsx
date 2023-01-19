@@ -1,5 +1,7 @@
+//라이브러리
 import styled from '@emotion/styled';
 import { useState } from 'react';
+//컴포넌트
 import TextModal from '../common/TextModal';
 
 interface CheckProps {

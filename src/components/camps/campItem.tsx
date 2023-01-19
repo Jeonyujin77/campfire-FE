@@ -1,14 +1,19 @@
+//라이브러리
+import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { memo } from 'react';
-import styled from '@emotion/styled';
-import likeOn from '../../asset/likeOn.png';
-import Liked from './Liked';
+//인터페이스
 import { CampType } from '../../interfaces/camp';
+//컴포넌트
+import Liked from './Liked';
+//이미지
+import likeOn from '../../asset/likeOn.png';
 
 const CampItem = ({ camp }: { camp: CampType }) => {
   const navigate = useNavigate();
   const campMinAddress = camp.campAddress.split(' ');
 
+  //리뷰 숫자 범위에따른 표현방식
   const countR = () => {
     if (camp.countReviews >= 100) {
       return '📃 99+';
@@ -25,11 +30,6 @@ const CampItem = ({ camp }: { camp: CampType }) => {
           likeStatus={camp.likeStatus}
           likes={camp.likes}
         />
-        {/* <button
-          onClick={() => {
-            console.log(camp);
-          }}
-        ></button> */}
         <div
           style={{ position: 'relative' }}
           onClick={() => {
@@ -38,7 +38,6 @@ const CampItem = ({ camp }: { camp: CampType }) => {
         >
           <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
         </div>
-        {/* </CampImg> */}
         <CampDescWrap
           onClick={() => {
             navigate(`/camp/${camp.campId}`);
@@ -78,7 +77,6 @@ const ItemWrap = styled.div`
   position: relative;
   width: 285px;
   height: 292px;
-  /* border-bottom: 1px solid blue; */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -93,7 +91,6 @@ const ItemWrap = styled.div`
 `;
 
 const CampImg = styled.img`
-  /* border: 1px solid green; */
   width: 285px;
   height: 177px;
   border-top-left-radius: 19px;
@@ -119,7 +116,6 @@ const CampHeadDesc = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* border: 1px solid gray; */
 `;
 
 const CampDescBody = styled.div`
@@ -142,7 +138,6 @@ const CampDescRight = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-right: 13px;
-  /* gap: 10px; */
   align-items: center;
 `;
 
@@ -153,7 +148,6 @@ const CampDescLAddress = styled.div`
   font-size: 16px;
   display: flex;
   color: #888888;
-  /* border: 1px solid gray; */
 `;
 
 const CampDescL = styled.div`
@@ -173,9 +167,7 @@ const CampDescR = styled.div`
   display: flex;
   flex-direction: column;
   width: 82px;
-  /* height: 24px; */
   font-size: 16px;
-  /* border: 1px solid gray; */
   gap: 10px;
 `;
 

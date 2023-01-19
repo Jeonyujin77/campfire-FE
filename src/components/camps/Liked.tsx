@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
-import Likedheart from '../../asset/Likedheart.png';
-import unLikedheart from '../../asset/unLikedheart.png';
+import React, { useState, useEffect } from 'react';
 import { useAppDispatch } from '../../redux/store';
+//api
 import { __likeCampByParams } from '../../apis/campApi';
 import {
   updateCampList,
   updateSearchedCampList,
 } from '../../redux/modules/campSlice';
+//이미지
+import Likedheart from '../../asset/Likedheart.png';
+import unLikedheart from '../../asset/unLikedheart.png';
 
 const Liked = ({
   campId,
@@ -26,9 +29,6 @@ const Liked = ({
     dispatch(__likeCampByParams(payload)).then(res => {
       const { type, payload }: any = res;
       if (type === 'likeCampByParams/fulfilled') {
-        // console.log('res:', res);
-        // console.log('type:', type);
-        // console.log('payload:', payload);
         if (payload.message === '좋아요 성공!') {
           setLike(true);
           dispatch(
@@ -92,7 +92,6 @@ const Back = styled.div`
   height: 30px;
   background-color: white;
   border-radius: 15px;
-  /* border: 1px solid black; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,7 +114,6 @@ const UnLBack = styled.div`
   height: 30px;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 15px;
-  /* border: 1px solid black; */
   display: flex;
   align-items: center;
   justify-content: center;

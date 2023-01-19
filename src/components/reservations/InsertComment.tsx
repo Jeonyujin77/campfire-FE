@@ -1,7 +1,11 @@
+//라이브러리
 import styled from '@emotion/styled';
-import { __writeCampReview } from '../../apis/campApi';
-import useInput from '../../hooks/useInput';
 import { useAppDispatch } from '../../redux/store';
+//api
+import { __writeCampReview } from '../../apis/campApi';
+//커스텀훅
+import useInput from '../../hooks/useInput';
+//컴포넌트
 import Button from '../common/Button';
 
 const InsertComment = ({ campId }: { campId: number }) => {

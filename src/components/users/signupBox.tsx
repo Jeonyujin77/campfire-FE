@@ -1,8 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+//라이브러리
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import Button from '../common/Button';
-import Input from '../../components/common/Input';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/store';
+//api
+import { __checkEmailDup, __checkNickDup, __signup } from '../../apis/userApi';
+//훅
 import useInput from '../../hooks/useInput';
 import useInputValid from '../../hooks/useInputValid';
 import {
@@ -11,8 +14,12 @@ import {
   pwValid,
   telValid,
 } from '../../utils/RegExp';
-import { __checkEmailDup, __checkNickDup, __signup } from '../../apis/userApi';
-import { useAppDispatch } from '../../redux/store';
+//컴포넌트
+import Button from '../common/Button';
+import Input from '../../components/common/Input';
+//이미지
+import pwHide from '../../asset/pwHide.png';
+import pwShow from '../../asset/pwShow.png';
 import {
   EMAIL_NOT_VALID,
   NICK_NOT_VALID,
@@ -20,10 +27,6 @@ import {
   PW_NOT_VALID,
   TELNUM_NOT_VALID,
 } from '../../constant/message';
-import { useNavigate, Link } from 'react-router-dom';
-
-import pwHide from '../../asset/pwHide.png';
-import pwShow from '../../asset/pwShow.png';
 
 const SignupBox = () => {
   const dispatch = useAppDispatch();
@@ -313,7 +316,6 @@ const Wrap = styled.div`
 `;
 
 const SignupWrap = styled.form`
-  /* border: 1px solid red; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -332,7 +334,6 @@ const InputWrap = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  /* border: 1px solid red; */
   width: 450px;
   height: 500px;
   font-size: 25px;
@@ -358,7 +359,6 @@ const InputBtn = styled.span`
 `;
 
 const Span = styled.span`
-  /* border: 1px solid black; */
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -371,7 +371,6 @@ const Span = styled.span`
 `;
 
 const SpanPswd = styled.span`
-  /* border: 1px solid black; */
   display: flex;
   justify-content: flex-start;
   align-items: center;

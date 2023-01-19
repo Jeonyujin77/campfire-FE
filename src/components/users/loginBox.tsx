@@ -1,19 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+//라이브러리
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import Button from '../common/Button';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/store';
+//api
+import { __signin } from '../../apis/userApi';
+import { KAKAO_AUTH_URL } from '../../apis/loginkeys';
+//훅
 import useInput from '../../hooks/useInput';
 import useInputValid from '../../hooks/useInputValid';
 import { emailValid, pwValid } from '../../utils/RegExp';
+//컴포넌트
 import Input from '../common/Input';
-import { EMAIL_NOT_VALID, PW_NOT_VALID } from '../../constant/message';
-import { useAppDispatch } from '../../redux/store';
-import { __signin } from '../../apis/userApi';
+import Button from '../common/Button';
+//이미지
 import kakao_login_medium_wide from '../../asset/kakao_login_medium_wide.png';
-import { KAKAO_AUTH_URL } from '../../apis/loginkeys';
 import pwHide from '../../asset/pwHide.png';
 import pwShow from '../../asset/pwShow.png';
+import { EMAIL_NOT_VALID, PW_NOT_VALID } from '../../constant/message';
 
 const LoginBox = () => {
   const dispatch = useAppDispatch();
@@ -42,6 +46,7 @@ const LoginBox = () => {
   //비밀번호 보이기/숨기기
   const [showPw, setShowPw] = useState(false);
 
+  //카카오로그인
   const handleKakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
@@ -49,9 +54,7 @@ const LoginBox = () => {
   return (
     <Wrap>
       <FormWrap onSubmit={onSubmit}>
-        {/* <SignupWrap> */}
         <InputWrap>
-          {/* <InputTitle>아이디</InputTitle> */}
           <Span>
             <Input
               type="email"
@@ -70,7 +73,6 @@ const LoginBox = () => {
           <ErrWrap>
             {!emailValidFlag ? <ErrorText>{EMAIL_NOT_VALID}</ErrorText> : <></>}
           </ErrWrap>
-          {/* <InputTitle>비밀번호</InputTitle> */}
           <SpanPswd>
             <Input
               type={showPw ? 'text' : 'password'}
@@ -107,7 +109,6 @@ const LoginBox = () => {
             {!pwValidFlag ? <ErrorText>{PW_NOT_VALID}</ErrorText> : <></>}
           </ErrWrap>
         </InputWrap>
-        {/* </SignupWrap> */}
         <Button
           width="400px"
           height="50px"
@@ -174,7 +175,6 @@ const InputWrap = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  /* border: 1px solid red; */
   width: 450px;
   height: 200px;
   font-size: 25px;
@@ -187,11 +187,9 @@ const InputWrap = styled.div`
 `;
 
 const Span = styled.span`
-  /* border: 1px solid black; */
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-bottom: 5px; */
   border-radius: 20px;
   background-color: #dadada;
   @media (max-width: 1200px) {
@@ -201,8 +199,6 @@ const Span = styled.span`
 `;
 
 const SpanPswd = styled.span`
-  /* border: 1px solid black; */
-  /* width: 412px; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -279,39 +275,5 @@ const Kakao = styled.img`
     height: 80%;
   }
 `;
-
-// const SignupWrap = styled.div`
-//   /* 헤더 크기에 따라 수정 필요 */
-//   margin: 0px auto;
-//   /* 헤더 아래 출력되도록 */
-//   border: 1px solid red;
-//   padding: 10px;
-//   width: 450px;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   flex-direction: row;
-// `;
-
-// const InputTitle = styled.div`
-//   /* border: 1px solid green; */
-//   width: 305px;
-//   height: 25px;
-//   font-size: 15px;
-// `;
-
-// const Input = styled.input`
-//   margin-left: 5px;
-//   border: none;
-//   font-size: 13px;
-//   font-weight: bold;
-//   width: 285px;
-//   height: 30px;
-//   outline: none;
-// `;
-
-// const InputBtn = styled.button`
-//   margin-right: 5px;
-// `;
 
 export default LoginBox;

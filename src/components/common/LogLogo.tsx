@@ -1,4 +1,6 @@
+//라이브러리
 import styled from '@emotion/styled';
+//이미지
 import loginLogo from '../../asset/loginLogo.png';
 
 const LogLogo = () => {

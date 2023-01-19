@@ -1,11 +1,16 @@
+//라이브러리
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/store';
+//api
 import { __deleteCampReview, __modifyCampReview } from '../../apis/campApi';
 import { __getUser } from '../../apis/userApi';
+//훅
 import useInput from '../../hooks/useInput';
+//인터페이스
 import { CommentInfo } from '../../interfaces/Comment';
-import { useAppDispatch } from '../../redux/store';
+//컴포넌트
 import Button from '../common/Button';
 
 const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {

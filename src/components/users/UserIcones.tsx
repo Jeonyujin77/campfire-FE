@@ -1,3 +1,4 @@
+//라이브러리
 import styled from '@emotion/styled';
 
 interface Icons {
@@ -8,6 +9,7 @@ interface Icons {
   imgText: string;
 }
 
+//현재 미사용 컴포넌트 > 추후 사용여부 결정되면 삭제예정
 const UserIcones = ({
   imgSrc,
   imgText,
@@ -16,12 +18,7 @@ const UserIcones = ({
   navigate,
 }: Icons) => {
   return (
-    <Icon
-    // onClick={() => {
-    //   setIsOpen(!isOpen);
-    //   alert('내 예약 불러오기 get명령 필요!');
-    // }}
-    >
+    <Icon>
       <img src="https://via.placeholder.com/80" alt="내예약 이미지" />
       <div>내 예약</div>
     </Icon>

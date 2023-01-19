@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+//라이브러리
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 
 interface TMProps {
   isOpen: boolean;
@@ -48,7 +49,6 @@ const ModalBackground = styled.div<{ isOpen: boolean }>`
 `;
 
 const ModalWrap = styled.div<{ isOpen: boolean }>`
-  /* position: absolute; */
   position: fixed;
   margin: auto;
   top: calc(50vh - 40vh);
@@ -58,7 +58,6 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   max-height: 100%;
   min-height: 80vh;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   padding: 5px;
   gap: 10px;
@@ -95,7 +94,6 @@ const ModalBody = styled.div`
   flex-direction: row;
   align-items: flex-start;
   border: 1px solid black;
-  //줄바꿈도 인식하면서 긴 문자열은 자동 줄바꿈처리해줌
   word-break: break-all;
   white-space: pre-wrap;
   line-height: 30px;
