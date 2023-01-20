@@ -30,6 +30,7 @@ const DateChoiceModal = (props: MProps) => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     return days[dayNum];
   };
+
   return (
     <>
       <ModalBackground
@@ -62,6 +63,7 @@ const DateChoiceModal = (props: MProps) => {
           onChange={onChange}
           startDate={startDate}
           endDate={endDate}
+          minDate={new Date()} //지난 날짜는 선택하지 못하도록
           selectsRange
           inline
         />
