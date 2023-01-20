@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
 //api
 import { __signin } from '../../apis/userApi';
-import { KAKAO_AUTH_URL } from '../../apis/loginkeys';
+import { KAKAO_AUTH_URL, NAVER_AUTH_URL } from '../../apis/loginkeys';
 //훅
 import useInput from '../../hooks/useInput';
 import useInputValid from '../../hooks/useInputValid';
@@ -15,6 +15,7 @@ import Input from '../common/Input';
 import Button from '../common/Button';
 //이미지
 import kakao_login_medium_wide from '../../asset/kakao_login_medium_wide.png';
+import naver_login from '../../asset/naver_login.png';
 import pwHide from '../../asset/pwHide.png';
 import pwShow from '../../asset/pwShow.png';
 import { EMAIL_NOT_VALID, PW_NOT_VALID } from '../../constant/message';
@@ -49,6 +50,10 @@ const LoginBox = () => {
   //카카오로그인
   const handleKakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
+  };
+  //네이버로그인
+  const handleNaverLogin = () => {
+    window.location.href = NAVER_AUTH_URL;
   };
 
   return (
@@ -127,6 +132,9 @@ const LoginBox = () => {
       </FormWrap>
       <KakaoBtn onClick={handleKakaoLogin}>
         <Kakao src={kakao_login_medium_wide} />
+      </KakaoBtn>
+      <KakaoBtn onClick={handleNaverLogin}>
+        <Kakao src={naver_login} />
       </KakaoBtn>
       <Button
         width="400px"
@@ -267,6 +275,7 @@ const KakaoBtn = styled.button`
 const Kakao = styled.img`
   width: 400px;
   height: 59px;
+  border-radius: 12px;
   &:hover {
     filter: brightness(95%);
   }

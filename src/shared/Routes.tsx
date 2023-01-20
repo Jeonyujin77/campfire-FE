@@ -9,6 +9,7 @@ import Login from '../routes/Login';
 import Main from '../routes/Main';
 import ProfileModify from '../routes/ProfileModify';
 import OAuthKakao from '../routes/OAuthKakao';
+import OAuthNaver from '../routes/OAuthNaver';
 import Search from '../routes/Search';
 
 const Router = () => {
@@ -32,6 +33,7 @@ const Router = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/api/auths/kakao" element={<OAuthKakao />} />
+          <Route path="api/auths/naver" element={<OAuthNaver />} />
         </Routes>
       </Layout>
     </BrowserRouter>
