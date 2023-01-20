@@ -6,6 +6,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import './imgSwiper.css';
 
 export interface DetailCampDesc {
   campMainImage: string;
@@ -24,7 +25,7 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
         autoplay={{ delay: 4000 }}
         navigation
         loop={true}
-        pagination={{ clickable: true }}
+        // pagination={{ clickable: true }}
       >
         {images.map(image => (
           <StyledSwiperSlide key={image + Math.random()}>
