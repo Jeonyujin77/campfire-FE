@@ -385,12 +385,12 @@ const DetailPage = () => {
           {isCmtOpen ? (
             <CmtBox onClick={() => isCmtOpenChange()}>
               {'접기 '}
-              <ArrImg src={upArrowOrange} />
+              {/* <ArrImg src={upArrowOrange} /> */}
             </CmtBox>
           ) : (
             <CmtBox onClick={() => isCmtOpenChange()}>
               {'열기 '}
-              <ArrImgDown src={upArrowOrange} />
+              {/* <ArrImgDown src={upArrowOrange} /> */}
             </CmtBox>
           )}
           <CommentList
@@ -586,8 +586,12 @@ const SiteLists = styled.div<{ sites: any }>`
 
 const CmtBox = styled.div`
   border: 1px solid lightgray;
+  background-color: #a1c182;
+  border-radius: 20px;
+  color: white;
   text-align: center;
-  font-size: 23px;
+  font-size: 30px;
+  font-weight: 800;
   height: 50px;
   display: flex;
   justify-content: center;
