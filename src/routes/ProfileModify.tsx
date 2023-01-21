@@ -235,7 +235,7 @@ const ProfileModify = () => {
                   onBlur={setphoneNumberValidFlag}
                 />
               </InputBox>
-              <div style={{ height: '30px' }}>
+              <div>
                 {!phoneNumberValidFlag ? (
                   <Guide>{TELNUM_NOT_VALID}</Guide>
                 ) : (
