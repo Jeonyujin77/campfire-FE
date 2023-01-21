@@ -142,8 +142,8 @@ const SignupBox = () => {
   };
 
   return (
-    <Wrap>
-      <SignupWrap onSubmit={onSubmit}>
+    <Wrap onSubmit={onSubmit}>
+      <SignupWrap>
         <InputWrap>
           <div>
             <Span>
@@ -308,7 +308,7 @@ const SignupBox = () => {
   );
 };
 
-const Wrap = styled.div`
+const Wrap = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
