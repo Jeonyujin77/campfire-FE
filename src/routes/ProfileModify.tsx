@@ -17,7 +17,6 @@ import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import CheckAuth from '../components/common/CheckAuth';
 //이미지
-import addbuttonimg from '../asset/addbutton.png';
 import { NICK_NOT_VALID, TELNUM_NOT_VALID } from '../constant/message';
 
 const ProfileModify = () => {
@@ -34,11 +33,6 @@ const ProfileModify = () => {
   // const [prevFile, setPrevFile] = useState<File | string | null | any>(); //이전 적용되어있던 사진파일
 
   const [nickDupFlag, setNickDupFlag] = useState(false); // 닉네임중복확인 flag
-
-  const [userNameVal, setUserNameVal] = useState(''); //이름 유효성검사
-  const [phoneNumberVal, setPhoneNumberVal] = useState(''); //번호 유효성검사
-  // const [profileImgVal, setProfileImgVal] = useState(''); //이미지 유효성검사
-
   const [userNameValidFlag, userNameFlagHandler] = useInputValid(
     userName,
     userNameValid,
@@ -109,7 +103,6 @@ const ProfileModify = () => {
   // let fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf)$/;
   const ImgChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value: any = e.target?.files?.[0];
-    console.log(value);
     //값이 들어왔을 때 검사
     if (value) {
       //확장자 일치하지 않으면 change안됨
@@ -182,8 +175,6 @@ const ProfileModify = () => {
       ).then(res => {
         const { type, payload } = res;
         if (type === 'putUser/fulfilled') {
-          console.log('res:', res);
-          console.log('payload:', payload);
           alert(payload.message);
           navigate('/mypage');
         } else if (type === 'putUser/rejected') {
@@ -199,19 +190,12 @@ const ProfileModify = () => {
       <CheckAuth />
       {userName || profileImg || phoneNumber ? (
         <Wrap>
-          <button
-            onClick={() => {
-              console.log(profileImg);
-            }}
-          ></button>
-          <OverWrap>
+          <UserInfoDiv>
             <Imgwrap>
               <Img src={represent} alt="프로필사진" />
               <ImgInputWrap>
                 <label htmlFor="ex_file">
-                  <div>
-                    <img src={addbuttonimg} alt="버튼이미지" />
-                  </div>
+                  <AddImgButton>사진</AddImgButton>
                 </label>
                 <input
                   onChange={ImgChangeHandler}
@@ -224,10 +208,10 @@ const ProfileModify = () => {
             </Imgwrap>
             <InputWrap>
               <InputBox>
-                <InputText>사용자 이름 : </InputText>
+                <InputText>이름</InputText>
                 <Input
-                  width="285px"
-                  height="30px"
+                  width="256px"
+                  height="37px"
                   type="text"
                   required
                   value={userName}
@@ -240,10 +224,10 @@ const ProfileModify = () => {
                 {!userNameValidFlag ? <Guide>{NICK_NOT_VALID}</Guide> : <></>}
               </div>
               <InputBox>
-                <InputText>전화번호 : </InputText>
+                <InputText>번호</InputText>
                 <Input
-                  width="285px"
-                  height="30px"
+                  width="256px"
+                  height="37px"
                   type="tel"
                   required
                   value={phoneNumber}
@@ -261,6 +245,8 @@ const ProfileModify = () => {
             </InputWrap>
             <BtnWrap>
               <Button
+                bgColor="#FE802C"
+                color="#fff"
                 onClick={() => {
                   if (window.confirm('작성한 내용으로 수정하시겠습니까?')) {
                     SubmitProfile();
@@ -270,6 +256,8 @@ const ProfileModify = () => {
                 수정 완료
               </Button>
               <Button
+                bgColor="#A1C182"
+                color="#fff"
                 onClick={() => {
                   if (window.confirm('프로필 수정을 취소하시겠습니까?')) {
                     navigate(-1);
@@ -279,7 +267,7 @@ const ProfileModify = () => {
                 수정 취소
               </Button>
             </BtnWrap>
-          </OverWrap>
+          </UserInfoDiv>
         </Wrap>
       ) : null}
     </>
@@ -287,51 +275,51 @@ const ProfileModify = () => {
 };
 
 const Wrap = styled.div`
-  margin: 0px auto;
-  margin-top: 100px;
+  margin: 200px auto;
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;
   padding-top: 10px;
-  border: 1px solid red;
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 10px;
-`;
-
-const OverWrap = styled.div`
-  border: 1px solid black;
-  width: 800px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
+  @media (max-width: 1200px) {
+    width: 100%;
+    margin: 100px auto;
+  }
 `;
 
 const Imgwrap = styled.div`
-  border: 1px solid blue;
+  width: 130px;
+  height: 130px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
+  @media (max-width: 1200px) {
+    width: 100px;
+    height: 100px;
+    padding: 20px 0;
+  }
 `;
 
 const Img = styled.img`
-  width: 240px;
-  height: 240px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  @media (max-width: 1200px) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 const ImgInputWrap = styled.div`
-  border: 1px solid red;
-  height: 240px;
+  height: 130px;
   display: flex;
   flex-direction: column-reverse;
-  img {
-    width: 70px;
-    height: 70px;
-  }
+  position: relative;
   label {
     display: inline-block;
     font-size: inherit;
@@ -351,35 +339,82 @@ const ImgInputWrap = styled.div`
   }
 `;
 
+const AddImgButton = styled.span`
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+  width: 38px;
+  height: 28px;
+  display: block;
+  background-color: #d9d9d9;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 28px;
+  text-align: center;
+`;
+
+const UserInfoDiv = styled.div`
+  width: 895px;
+  height: 202px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffece0;
+  border-radius: 101px;
+  margin-bottom: 20px;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    padding: 20px 0;
+  }
+`;
+
 const InputWrap = styled.div`
-  border: 1px solid green;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  margin-left: 3%;
 `;
 
 const InputBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  gap: 20px;
-  height: 50px;
+  gap: 10px;
+
+  input {
+    border-radius: 101px;
+  }
 `;
 
 const InputText = styled.div`
-  width: 150px;
-  font-size: 22px;
-  font-weight: bold;
-  text-align: right;
+  min-width: 40px;
+  font-size: 16px;
+  display: inline-block;
+  color: #888888;
 `;
 
 const BtnWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid green;
+  margin-left: 2%;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+  @media (min-width: 900px) {
+    button {
+      width: 128px;
+      height: 83px;
+      line-height: 83px;
+      border-radius: 101px;
+      margin: 5px;
+    }
+  }
 `;
 
 const Guide = styled.span`
@@ -391,9 +426,10 @@ const Guide = styled.span`
 `;
 
 const InputBtn = styled.span`
-  margin-right: 5px;
   font-size: 14px;
   cursor: pointer;
+  display: inline-block;
+  min-width: 50px;
 `;
 
 export default ProfileModify;
