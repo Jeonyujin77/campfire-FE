@@ -44,6 +44,7 @@ const DetailPage = () => {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.body.style.overflow = 'auto';
   }, [pathname]);
 
   const params = Number(useParams().campId);

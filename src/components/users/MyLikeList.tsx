@@ -31,24 +31,24 @@ const MyLikeList = (props: MLProps) => {
           alert(`${payload.response.data.errorMessage}`);
         }
       });
+      document.body.style.overflow = 'hidden';
     }
   }, [isLikeOpen]);
+
+  const onClose = () => {
+    setIsLikeOpen(!isLikeOpen);
+    document.body.style.overflow = 'auto';
+  };
 
   return (
     <>
       <ModalBackground
-        onClick={() => {
-          setIsLikeOpen(!isLikeOpen);
-        }}
+        onClick={onClose}
         isLikeOpen={isLikeOpen}
       ></ModalBackground>
       <ModalWrap isLikeOpen={isLikeOpen}>
         <ModalHeader>
-          <ModalCloseBtn
-            onClick={() => {
-              setIsLikeOpen(!isLikeOpen);
-            }}
-          >
+          <ModalCloseBtn onClick={onClose}>
             <img src={closePopBtn} alt="닫기" width="19px" />
           </ModalCloseBtn>
         </ModalHeader>

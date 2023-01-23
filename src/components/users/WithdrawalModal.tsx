@@ -28,25 +28,26 @@ const WithdrawalModal = ({
 
   useEffect(() => {
     setUserId(Number(localStorage.getItem('userId')));
-  }, []);
+    if (isWithdrawalOpen) {
+      document.body.style.overflow = 'hidden';
+    }
+  }, [isWithdrawalOpen]);
+
+  const onClose = () => {
+    setIsWithdrawalOpen(!isWithdrawalOpen);
+    setPassword('');
+    document.body.style.overflow = 'auto';
+  };
 
   return (
     <>
       <ModalBackground
-        onClick={() => {
-          setIsWithdrawalOpen(!isWithdrawalOpen);
-          setPassword('');
-        }}
+        onClick={onClose}
         isOpen={isWithdrawalOpen}
       ></ModalBackground>
       <ModalWrap isOpen={isWithdrawalOpen}>
         <ModalHeader>
-          <ModalCloseBtn
-            onClick={() => {
-              setIsWithdrawalOpen(!isWithdrawalOpen);
-              setPassword('');
-            }}
-          >
+          <ModalCloseBtn onClick={onClose}>
             <img src={closePopBtn} alt="닫기" width="19px" />
           </ModalCloseBtn>
         </ModalHeader>
