@@ -200,7 +200,7 @@ export const __likeCamps = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get<LikesCamp>(`/api/likes`);
-      console.log(response);
+
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue(response.data);
       }

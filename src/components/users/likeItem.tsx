@@ -16,9 +16,9 @@ const LikeItem = ({ like }: { like: Like }) => {
       <TextWrap>
         <div>
           <CampTitle>{like.campName}</CampTitle>
-          <div>{like.typeLists}</div>
+          <CampDesc>{like.typeLists}</CampDesc>
         </div>
-        <div>{like.campAddress}</div>
+        <CampDesc>{like.campAddress}</CampDesc>
       </TextWrap>
     </ItemWrap>
   );
@@ -27,25 +27,33 @@ const LikeItem = ({ like }: { like: Like }) => {
 const ItemWrap = styled.div`
   width: 550px;
   height: 130px;
-  border: 1px solid blue;
+  border: 1px solid #dadada;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  border-radius: 10px;
   cursor: pointer;
   &:hover {
     box-shadow: 1px 1px 1px 1px #c0bdbd;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
   }
 `;
 
 const ItemImg = styled.img`
   width: 250px;
   height: 130px;
+  border-radius: 10px;
+  @media (max-width: 600px) {
+    width: 40%;
+  }
 `;
 
 const TextWrap = styled.div`
   width: 280px;
-  height: 110px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -54,9 +62,22 @@ const TextWrap = styled.div`
 `;
 
 const CampTitle = styled.div`
-  font-size: 19px;
   font-weight: bold;
   margin-bottom: 7px;
+  font-size: 18px;
+  @media (max-width: 600px) {
+    font-size: 16px;
+  }
+`;
+
+const CampDesc = styled.p`
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  line-height: 1.5;
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
 `;
 
 export default LikeItem;
