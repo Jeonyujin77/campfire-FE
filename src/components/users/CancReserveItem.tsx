@@ -34,11 +34,11 @@ const Cover = styled.div`
   z-index: 2500;
   background-color: red;
   position: absolute;
-  width: 1014px;
+  width: 995px;
   height: 5px;
-  top: 147px;
+  top: 135px;
   left: -23px;
-  transform: rotate(-17deg);
+  transform: rotate(-16.5deg);
 `;
 
 const ReserveWrap = styled.div`
@@ -48,8 +48,8 @@ const ReserveWrap = styled.div`
   align-items: center;
   flex-wrap: wrap;
   padding: 10px;
-  width: 950px;
-  height: 280px;
+  width: 930px;
+  height: 260px;
   border: 1px solid black;
   position: relative;
 `;
