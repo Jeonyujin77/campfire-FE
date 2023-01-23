@@ -36,8 +36,8 @@ const ReserveWrap = styled.div`
   align-items: center;
   flex-wrap: wrap;
   padding: 10px;
-  width: 950px;
-  height: 280px;
+  width: 930px;
+  height: 260px;
   cursor: pointer;
   &:hover {
     box-shadow: 1px 1px 1px 1px #c0bdbd;

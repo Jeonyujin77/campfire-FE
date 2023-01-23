@@ -118,7 +118,7 @@ const ReservationPage = () => {
             />
           </TextBoxBody>
         </TextBox>
-        <DdayBox dDay={dDay} />
+        {/* <DdayBox dDay={dDay} /> */}
         <TextBox
           minHeight="150px"
           display="flex"
