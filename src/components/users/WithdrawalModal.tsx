@@ -10,6 +10,7 @@ import useInput from '../../hooks/useInput';
 //컴포넌트
 import Button from '../common/Button';
 import Input from '../common/Input';
+import closePopBtn from '../../asset/closePopupBtn.png';
 
 interface Withdrawal {
   isWithdrawalOpen: boolean;
@@ -34,6 +35,7 @@ const WithdrawalModal = ({
       <ModalBackground
         onClick={() => {
           setIsWithdrawalOpen(!isWithdrawalOpen);
+          setPassword('');
         }}
         isOpen={isWithdrawalOpen}
       ></ModalBackground>
@@ -42,21 +44,30 @@ const WithdrawalModal = ({
           <ModalCloseBtn
             onClick={() => {
               setIsWithdrawalOpen(!isWithdrawalOpen);
+              setPassword('');
             }}
           >
-            x
+            <img src={closePopBtn} alt="닫기" width="19px" />
           </ModalCloseBtn>
         </ModalHeader>
-        <Input width="200px" height="30px" onChange={passwordHandler} />
+        <p>CAMPFIRE를 탈퇴하시겠습니까?</p>
+        <Input
+          width="270px"
+          height="37px"
+          onChange={passwordHandler}
+          value={password}
+        />
         <Button
+          width="286px"
+          height="37px"
+          bgColor="#A1C182"
+          color="#fff"
           onClick={() => {
             if (window.confirm('정말 탈퇴하시겠습니까? \n')) {
               dispatch(
                 __withdrawalUser({ userId: userId, password: password }),
               ).then(res => {
                 const { type, payload } = res;
-                console.log(type);
-                console.log(res);
                 if (type === 'withdrawalUser/fulfilled') {
                   alert(`${payload.message}`);
                   localStorage.clear();
@@ -72,7 +83,7 @@ const WithdrawalModal = ({
             }
           }}
         >
-          탈퇴
+          탈퇴하기
         </Button>
       </ModalWrap>
     </>
@@ -91,29 +102,57 @@ const ModalBackground = styled.div<{ isOpen: boolean }>`
 `;
 
 const ModalWrap = styled.div<{ isOpen: boolean }>`
-  border: 1px solid red;
   position: fixed;
   margin: auto;
   top: calc(50vh - 10vh);
   left: calc(50vw - 200px);
   background-color: white;
-  width: 400px;
+  width: 339px;
   max-height: 100%;
   min-height: 20vh;
   flex-direction: column;
   align-items: center;
-  padding: 5px;
+  padding: 7px 10px;
   gap: 10px;
   z-index: 2000;
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
+  border-radius: 20px;
+  border: 1px solid #fe802c;
+  p {
+    font-size: 20px;
+    color: #fe802c;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+  }
+
+  input {
+    border-radius: 101px;
+    border: 1px solid #fe802c;
+    padding: 0 8px;
+  }
+
+  @media (max-width: 600px) {
+    width: calc(100% - 20px);
+    left: 0;
+    right: 0;
+
+    p {
+      font-size: 16px;
+    }
+
+    input {
+      width: 250px;
+      height: 37px;
+    }
+  }
 `;
 
 const ModalHeader = styled.div`
-  border: 1px solid green;
-  width: 380px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -122,9 +161,6 @@ const ModalHeader = styled.div`
 const ModalCloseBtn = styled.button`
   background: none;
   border: none;
-  color: red;
-  font-weight: bold;
-  font-size: 15px;
   cursor: pointer;
 `;
 

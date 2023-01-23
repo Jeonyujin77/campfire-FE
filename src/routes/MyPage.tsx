@@ -41,6 +41,8 @@ const MyPage = () => {
     } else {
       window.location.href = '/login';
     }
+
+    document.body.style.overflow = 'hidden';
   }, []);
 
   // 사용자 정보 조회
