@@ -28,7 +28,6 @@ import phoneImg from '../asset/phoneImg.png';
 import adultImg from '../asset/adultImg.png';
 import childImg from '../asset/childImg.png';
 import { roadMap } from '../utils/CampsUtil';
-// import upArrowOrange from '../asset/upArrowOrange.png';
 
 interface dateType {
   startday?: any;
@@ -41,19 +40,35 @@ interface countType {
 }
 
 const DetailPage = () => {
-  const mapContainer = useRef(null);
-  //페이지 이동 시 스크롤 최상단
-  const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
+  const params = Number(useParams().campId); // 캠핑장 아이디
+  const { pathname } = useLocation(); // 현재 경로
+  const [camp, setCamp] = useState<any>(); // 캠핑장 정보
+  const [start, setStart] = useState(new Date()); // 시작일
+  const [end, setEnd] = useState(new Date()); // 종료일
+  const [adult, setAdult] = useState(2); // 성인수
+  const [child, setChild] = useState(0); // 아동수
+  const [isOpen, setIsOpen] = useState(false); // 모달 isOpen
+  const [sites, setSites] = useState<SiteList | null>(); // 사이트리스트
+  const [like, setLike] = useState<boolean>(); // 좋아요
+  const [isCmtOpen, setIsCmtOpen] = useState(false); // 더보기
+  const [dateObj, setDateObj] = useState<dateType>({
+    startday: '',
+    endday: '',
+  }); // 날짜
+  const [countObj, setCountObj] = useState<countType>({
+    adult: adult,
+    child: child,
+  }); // 인원수
+  const mapContainer = useRef(null); // 캠핑장 지도
+
+  //페이지 이동 시 스크롤 최상단으로 이동
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.style.overflow = 'auto';
   }, [pathname]);
 
-  const params = Number(useParams().campId);
-  const dispatch = useAppDispatch();
-
-  const [camp, setCamp] = useState<any>();
-  //사이트진입시 params로 camp데이터 가져오기
+  //사이트 진입 시 params로 camp데이터 가져오기
   useEffect(() => {
     dispatch(__getCampsByParams(params)).then(res => {
       const { payload, type }: any = res;
@@ -69,15 +84,57 @@ const DetailPage = () => {
   }, []);
 
   useEffect(() => {
+    setDateObj({ ...dateObj, startday: start, endday: end });
+  }, [start, end]);
+
+  useEffect(() => {
+    setCountObj({ ...countObj, adult: adult, child: child });
+  }, [adult, child]);
+
+  //검색 후 날짜나 인원수를 바꾸면 사이트목록을 비워
+  //다시 검색하도록 유도한다.
+  useEffect(() => {
+    if (sites) {
+      setSites(null);
+    }
+  }, [start, end, adult, child]);
+
+  // 카카오 맵 API로 지도 출력
+  useEffect(() => {
     if (mapContainer !== null && camp !== undefined) {
       roadMap(camp.campAddress, camp.campName);
     }
   }, [mapContainer, camp]);
 
-  //모달 isOpen값
-  const [isOpen, setIsOpen] = useState(false);
+  // 요일 계산
+  const getday = (dayNum: number) => {
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    return days[dayNum];
+  };
 
-  const [sites, setSites] = useState<SiteList | null>();
+  // 성인수 감소
+  const adultMinusButton = () => {
+    if (adult <= 1) return;
+    setAdult(adult - 1);
+  };
+  // 성인수 증가
+  const adultPlusButton = () => {
+    setAdult(adult + 1);
+  };
+  // 아동수 감소
+  const childMinusButton = () => {
+    if (child <= 0) return;
+    setChild(child - 1);
+  };
+  // 아동수 증가
+  const childPlusButton = () => {
+    setChild(child + 1);
+  };
+  // 접기/열기
+  const isCmtOpenChange = () => {
+    setIsCmtOpen(!isCmtOpen);
+  };
+
   //사이트 검색 버튼 onClick
   const getCampSites = () => {
     if (start && end) {
@@ -98,7 +155,6 @@ const DetailPage = () => {
     }
   };
 
-  const [like, setLike] = useState<boolean>();
   //찜하기, 찜취소하기 버튼 onClick
   const likeCamp = () => {
     dispatch(__likeCampByParams(params)).then(res => {
@@ -118,50 +174,6 @@ const DetailPage = () => {
     });
   };
 
-  //인원수, 날짜
-  const [start, setStart] = useState(new Date());
-  const [end, setEnd] = useState(new Date());
-  const getday = (dayNum: number) => {
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    return days[dayNum];
-  };
-  const [adult, setAdult] = useState(2);
-  const [child, setChild] = useState(0);
-  const adultMinusButton = () => {
-    if (adult <= 1) return;
-    setAdult(adult - 1);
-  };
-  const adultPlusButton = () => {
-    setAdult(adult + 1);
-  };
-  const childMinusButton = () => {
-    if (child <= 0) return;
-    setChild(child - 1);
-  };
-  const childPlusButton = () => {
-    setChild(child + 1);
-  };
-
-  const [isCmtOpen, setIsCmtOpen] = useState(false);
-  const isCmtOpenChange = () => {
-    setIsCmtOpen(!isCmtOpen);
-  };
-  const [dateObj, setDateObj] = useState<dateType>({
-    startday: '',
-    endday: '',
-  });
-  useEffect(() => {
-    setDateObj({ ...dateObj, startday: start, endday: end });
-  }, [start, end]);
-  const [countObj, setCountObj] = useState<countType>({
-    adult: adult,
-    child: child,
-  });
-
-  useEffect(() => {
-    setCountObj({ ...countObj, adult: adult, child: child });
-  }, [adult, child]);
-
   //번호 복사 함수
   const handleCopyClipBoard = async () => {
     try {
@@ -171,14 +183,6 @@ const DetailPage = () => {
       alert('복사에 실패하였습니다.');
     }
   };
-
-  //검색 후 날짜나 인원수를 바꾸면 사이트목록을 비워
-  //다시 검색하도록 유도한다.
-  useEffect(() => {
-    if (sites) {
-      setSites(null);
-    }
-  }, [start, end, adult, child]);
 
   return camp ? (
     <>
