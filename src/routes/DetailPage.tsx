@@ -77,11 +77,13 @@ const DetailPage = () => {
   //모달 isOpen값
   const [isOpen, setIsOpen] = useState(false);
 
-  const [sites, setSites] = useState<SiteList>();
+  const [sites, setSites] = useState<SiteList | null>();
   //사이트 검색 버튼 onClick
   const getCampSites = () => {
     if (start && end) {
-      dispatch(__getCampSitesByParams(params)).then(res => {
+      dispatch(
+        __getCampSitesByParams({ params, adult, child, start, end }),
+      ).then(res => {
         const { type, payload }: any = res;
         if (type === 'getCampSitesByParams/fulfilled') {
           setSites(payload);
@@ -170,6 +172,14 @@ const DetailPage = () => {
     }
   };
 
+  //검색 후 날짜나 인원수를 바꾸면 사이트목록을 비워
+  //다시 검색하도록 유도한다.
+  useEffect(() => {
+    if (sites) {
+      setSites(null);
+    }
+  }, [start, end, adult, child]);
+
   return camp ? (
     <>
       <CheckAuth />
@@ -188,7 +198,14 @@ const DetailPage = () => {
           <div>
             <div>
               <DescBox>
-                <CampName>{camp.campName}</CampName>
+                <CampName>
+                  {camp.campName}
+                  <button
+                    onClick={() => {
+                      console.log(sites);
+                    }}
+                  ></button>
+                </CampName>
                 <div style={{ cursor: 'pointer' }} onClick={likeCamp}>
                   {like ? (
                     <img
@@ -371,22 +388,24 @@ const DetailPage = () => {
           ) : (
             <></>
           )}
-          <SiteLists sites={sites}>
-            {sites ? (
-              sites.sites.map(site => (
-                <Sites
-                  key={site.siteId}
-                  theme={camp.themeLists}
-                  type={camp.typeLists}
-                  dateObj={dateObj}
-                  countObj={countObj}
-                  site={site}
-                />
-              ))
-            ) : (
-              <></>
-            )}
-          </SiteLists>
+          {sites ? (
+            <>
+              <SiteLists sites={sites}>
+                {sites.getSiteLists.map(site => (
+                  <Sites
+                    key={site.siteId}
+                    theme={camp.themeLists}
+                    type={camp.typeLists}
+                    dateObj={dateObj}
+                    countObj={countObj}
+                    site={site}
+                  />
+                ))}
+              </SiteLists>
+            </>
+          ) : (
+            <></>
+          )}
           <MapBox>
             <div id="map" className="mapViewPopUp" ref={mapContainer}></div>
           </MapBox>

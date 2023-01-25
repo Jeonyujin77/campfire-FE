@@ -21,42 +21,121 @@ const Sites = ({
   const params = useParams().campId;
 
   return (
-    <SiteWrap
-      onClick={() => {
-        navigate(`/camp/${params}/sitedesc/${site.siteId}`, {
-          state: { dateState: dateObj, countState: countObj },
-        });
-      }}
-    >
-      <MainImg src={site.siteMainImage} alt="사이트 메인이미지" />
-      <TextWrap>
-        <TextTitle>{site.siteName}</TextTitle>
-        <TextBody>
-          <div>{theme?.join(', ')}</div>
-          <div>{type?.join(', ')}</div>
-        </TextBody>
-        <TextFoot>
-          <CountWrap>
-            기준인원: {site.minPeople} / 최대인원: {site.maxPeople}
-          </CountWrap>
-          <Price>{site.sitePrice}원~</Price>
-        </TextFoot>
-      </TextWrap>
-    </SiteWrap>
+    <>
+      {site.bookStatus ? (
+        <SiteWrap
+          bookStatus={site.bookStatus}
+          onClick={() => {
+            navigate(`/camp/${params}/sitedesc/${site.siteId}`, {
+              state: { dateState: dateObj, countState: countObj },
+            });
+          }}
+        >
+          <CanBookText>예약가능</CanBookText>
+          <MainImg src={site.siteMainImage} alt="사이트 메인이미지" />
+          <TextWrap>
+            <TextTitle>{site.siteName}</TextTitle>
+            <TextBody>
+              <div>{theme?.join(', ')}</div>
+              <div>{type?.join(', ')}</div>
+            </TextBody>
+            <TextFoot>
+              <CountWrap>
+                기준인원: {site.minPeople} / 최대인원: {site.maxPeople}
+              </CountWrap>
+              <Price>{site.sitePrice}원~</Price>
+            </TextFoot>
+          </TextWrap>
+        </SiteWrap>
+      ) : (
+        <SiteWrap bookStatus={site.bookStatus}>
+          <CantBook />
+          <CantBookText>예약불가</CantBookText>
+          <MainImg src={site.siteMainImage} alt="사이트 메인이미지" />
+          <TextWrap>
+            <TextTitle>{site.siteName}</TextTitle>
+            <TextBody>
+              <div>{theme?.join(', ')}</div>
+              <div>{type?.join(', ')}</div>
+            </TextBody>
+            <TextFoot>
+              <CountWrap>
+                기준인원: {site.minPeople} / 최대인원: {site.maxPeople}
+              </CountWrap>
+              <Price>{site.sitePrice}원~</Price>
+            </TextFoot>
+          </TextWrap>
+        </SiteWrap>
+      )}
+    </>
   );
 };
 
-const SiteWrap = styled.div`
+const CantBook = styled.div`
+  position: absolute;
+  width: 1140px;
+  min-height: 170px;
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  background-color: #f1f1f1;
+  opacity: 0.8;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+    min-height: 160px;
+  }
+`;
+
+const CantBookText = styled.div`
+  position: absolute;
+  right: 3%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  width: 80px;
+  height: 26px;
+  border-radius: 10px;
+  background-color: #e26715;
+  @media (max-width: 1200px) {
+    top: 40%;
+  }
+`;
+
+const CanBookText = styled.div`
+  position: absolute;
+  right: 3%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  width: 80px;
+  height: 26px;
+  border-radius: 10px;
+  background-color: #fe802c;
+  @media (max-width: 1200px) {
+    top: 40%;
+  }
+`;
+
+const SiteWrap = styled.div<{ bookStatus: boolean }>`
+  position: relative;
   border: 1px solid black;
   width: 1140px;
   min-height: 150px;
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: ${({ bookStatus }) => (bookStatus ? 'pointer' : 'default')};
   box-shadow: 4px 4px 4px #d3d3d3;
   border-radius: 15px;
   &:hover {
-    box-shadow: 4px 4px 4px #afafaf;
+    box-shadow: ${({ bookStatus }) =>
+      bookStatus ? '4px 4px 4px #afafaf' : '4px 4px 4px #d3d3d3'};
   }
 
   @media (max-width: 1200px) {
