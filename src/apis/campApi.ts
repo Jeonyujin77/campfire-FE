@@ -47,10 +47,18 @@ export const __getCampsByParams = createAsyncThunk(
 // 디테일페이지 캠핑사이트 리스트 가져오기
 export const __getCampSitesByParams = createAsyncThunk(
   'getCampSitesByParams',
-  async (payload: number, thunkAPI) => {
+  async (payload: any, thunkAPI) => {
+    const { params, adult, child, start, end }: any = payload;
+    const paramsquery = `campid=${params}`;
+    const adultquery = `adults=${adult}`;
+    const childquery = `children=${child}`;
+    const checkindatequery = `checkindate=${start}`;
+    const checkoutdatequery = `checkoutdate=${end}`;
     try {
-      const response = await api.get<SiteList>(`api/camps/${payload}/sites`);
-      if (response.status === 200) {
+      const response = await api.get<SiteList>(
+        `api/search/sites/?${paramsquery}&${adultquery}&${childquery}&${checkindatequery}&${checkoutdatequery}`,
+      );
+      if (response.status === 201) {
         return thunkAPI.fulfillWithValue(response.data);
       }
     } catch (error) {

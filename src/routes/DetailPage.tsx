@@ -1,6 +1,6 @@
 //라이브러리
 import styled from '@emotion/styled';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 //api
@@ -27,7 +27,8 @@ import locationImg from '../asset/locationImg.png';
 import phoneImg from '../asset/phoneImg.png';
 import adultImg from '../asset/adultImg.png';
 import childImg from '../asset/childImg.png';
-import upArrowOrange from '../asset/upArrowOrange.png';
+import { roadMap } from '../utils/CampsUtil';
+// import upArrowOrange from '../asset/upArrowOrange.png';
 
 interface dateType {
   startday?: any;
@@ -40,6 +41,7 @@ interface countType {
 }
 
 const DetailPage = () => {
+  const mapContainer = useRef(null);
   //페이지 이동 시 스크롤 최상단
   const { pathname } = useLocation();
   useEffect(() => {
@@ -66,14 +68,22 @@ const DetailPage = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (mapContainer !== null && camp !== undefined) {
+      roadMap(camp.campAddress, camp.campName);
+    }
+  }, [mapContainer, camp]);
+
   //모달 isOpen값
   const [isOpen, setIsOpen] = useState(false);
 
-  const [sites, setSites] = useState<SiteList>();
+  const [sites, setSites] = useState<SiteList | null>();
   //사이트 검색 버튼 onClick
   const getCampSites = () => {
     if (start && end) {
-      dispatch(__getCampSitesByParams(params)).then(res => {
+      dispatch(
+        __getCampSitesByParams({ params, adult, child, start, end }),
+      ).then(res => {
         const { type, payload }: any = res;
         if (type === 'getCampSitesByParams/fulfilled') {
           setSites(payload);
@@ -162,6 +172,14 @@ const DetailPage = () => {
     }
   };
 
+  //검색 후 날짜나 인원수를 바꾸면 사이트목록을 비워
+  //다시 검색하도록 유도한다.
+  useEffect(() => {
+    if (sites) {
+      setSites(null);
+    }
+  }, [start, end, adult, child]);
+
   return camp ? (
     <>
       <CheckAuth />
@@ -180,7 +198,14 @@ const DetailPage = () => {
           <div>
             <div>
               <DescBox>
-                <CampName>{camp.campName}</CampName>
+                <CampName>
+                  {camp.campName}
+                  <button
+                    onClick={() => {
+                      console.log(sites);
+                    }}
+                  ></button>
+                </CampName>
                 <div style={{ cursor: 'pointer' }} onClick={likeCamp}>
                   {like ? (
                     <img
@@ -202,21 +227,16 @@ const DetailPage = () => {
               <CampDesc>
                 <IconLo src={locationImg} />
                 <div>{camp.campAddress}</div>
-                <Button
+                {/* <Button
                   bgColor="#fff2e9"
                   width="54px"
                   height="27px"
                   fontSize="12px"
                   borderRadius="13.5px"
                   margin="0px"
-                  onClick={() => {
-                    window.open(
-                      `https://www.google.com/search?q=${camp.campName}${camp.campAddress}`,
-                    );
-                  }}
                 >
                   길찾기
-                </Button>
+                </Button> */}
               </CampDesc>
               <CampDesc>
                 <IconPh src={phoneImg} />
@@ -341,6 +361,7 @@ const DetailPage = () => {
               </Button>
             </HeadCount>
           </HeadCountWrap>
+
           {camp.campAmenities ? (
             <AmenityWrap>
               <div
@@ -367,22 +388,27 @@ const DetailPage = () => {
           ) : (
             <></>
           )}
-          <SiteLists sites={sites}>
-            {sites ? (
-              sites.sites.map(site => (
-                <Sites
-                  key={site.siteId}
-                  theme={camp.themeLists}
-                  type={camp.typeLists}
-                  dateObj={dateObj}
-                  countObj={countObj}
-                  site={site}
-                />
-              ))
-            ) : (
-              <></>
-            )}
-          </SiteLists>
+          {sites ? (
+            <>
+              <SiteLists sites={sites}>
+                {sites.getSiteLists.map(site => (
+                  <Sites
+                    key={site.siteId}
+                    theme={camp.themeLists}
+                    type={camp.typeLists}
+                    dateObj={dateObj}
+                    countObj={countObj}
+                    site={site}
+                  />
+                ))}
+              </SiteLists>
+            </>
+          ) : (
+            <></>
+          )}
+          <MapBox>
+            <div id="map" className="mapViewPopUp" ref={mapContainer}></div>
+          </MapBox>
           {isCmtOpen ? (
             <CmtBox onClick={() => isCmtOpenChange()}>
               {'접기 '}
@@ -603,24 +629,17 @@ const CmtBox = styled.div`
   }
 `;
 
-const ArrImg = styled.img`
-  width: 23px;
-  height: 23px;
-
-  @media (max-width: 1200px) {
-    width: 15px;
-    height: 15px;
+const MapBox = styled.div`
+  width: 100%;
+  height: 500px;
+  margin-bottom: 20px;
+  #map {
+    width: 100%;
+    height: 100%;
   }
-`;
-
-const ArrImgDown = styled.img`
-  width: 23px;
-  height: 23px;
-  transform: rotate(180deg);
 
   @media (max-width: 1200px) {
-    width: 15px;
-    height: 15px;
+    height: 300px;
   }
 `;
 
