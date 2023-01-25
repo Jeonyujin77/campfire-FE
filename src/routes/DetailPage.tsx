@@ -1,6 +1,6 @@
 //라이브러리
 import styled from '@emotion/styled';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 //api
@@ -27,7 +27,8 @@ import locationImg from '../asset/locationImg.png';
 import phoneImg from '../asset/phoneImg.png';
 import adultImg from '../asset/adultImg.png';
 import childImg from '../asset/childImg.png';
-import upArrowOrange from '../asset/upArrowOrange.png';
+import { roadMap } from '../utils/CampsUtil';
+// import upArrowOrange from '../asset/upArrowOrange.png';
 
 interface dateType {
   startday?: any;
@@ -40,6 +41,7 @@ interface countType {
 }
 
 const DetailPage = () => {
+  const mapContainer = useRef(null);
   //페이지 이동 시 스크롤 최상단
   const { pathname } = useLocation();
   useEffect(() => {
@@ -65,6 +67,12 @@ const DetailPage = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (mapContainer !== null && camp !== undefined) {
+      roadMap(camp.campAddress, camp.campName);
+    }
+  }, [mapContainer, camp]);
 
   //모달 isOpen값
   const [isOpen, setIsOpen] = useState(false);
@@ -202,21 +210,16 @@ const DetailPage = () => {
               <CampDesc>
                 <IconLo src={locationImg} />
                 <div>{camp.campAddress}</div>
-                <Button
+                {/* <Button
                   bgColor="#fff2e9"
                   width="54px"
                   height="27px"
                   fontSize="12px"
                   borderRadius="13.5px"
                   margin="0px"
-                  onClick={() => {
-                    window.open(
-                      `https://www.google.com/search?q=${camp.campName}${camp.campAddress}`,
-                    );
-                  }}
                 >
                   길찾기
-                </Button>
+                </Button> */}
               </CampDesc>
               <CampDesc>
                 <IconPh src={phoneImg} />
@@ -341,6 +344,7 @@ const DetailPage = () => {
               </Button>
             </HeadCount>
           </HeadCountWrap>
+
           {camp.campAmenities ? (
             <AmenityWrap>
               <div
@@ -383,6 +387,9 @@ const DetailPage = () => {
               <></>
             )}
           </SiteLists>
+          <MapBox>
+            <div id="map" className="mapViewPopUp" ref={mapContainer}></div>
+          </MapBox>
           {isCmtOpen ? (
             <CmtBox onClick={() => isCmtOpenChange()}>
               {'접기 '}
@@ -603,24 +610,17 @@ const CmtBox = styled.div`
   }
 `;
 
-const ArrImg = styled.img`
-  width: 23px;
-  height: 23px;
-
-  @media (max-width: 1200px) {
-    width: 15px;
-    height: 15px;
+const MapBox = styled.div`
+  width: 100%;
+  height: 500px;
+  margin-bottom: 20px;
+  #map {
+    width: 100%;
+    height: 100%;
   }
-`;
-
-const ArrImgDown = styled.img`
-  width: 23px;
-  height: 23px;
-  transform: rotate(180deg);
 
   @media (max-width: 1200px) {
-    width: 15px;
-    height: 15px;
+    height: 300px;
   }
 `;
 
