@@ -6,9 +6,21 @@ import TopButton from '../common/TopButton';
 import Logo from '../common/Logo';
 //이미지
 import HeaderImg from '../../asset/HeaderImg.png';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const navigate = useNavigate();
+  const isLoggedIn =
+    localStorage.getItem('accessToken') && localStorage.getItem('refreshToken')
+      ? true
+      : false;
+
+  const goToHome = () => {
+    window.location.href = '/';
+  };
+  const goToSearch = () => {
+    window.location.href = '/search';
+  };
 
   return (
     <>
@@ -20,6 +32,33 @@ const Header = () => {
         >
           <Logo />
         </LogoDiv>
+        <MenuBar>
+          {!isLoggedIn ? (
+            <>
+              <div>
+                <Link to="/login">로그인</Link>
+              </div>
+              <div>
+                <Link to="/signup">회원가입</Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <div onClick={goToHome}>홈</div>
+              <div onClick={goToSearch}>검색</div>
+              <div>
+                <Link to="/mypage">마이페이지</Link>
+              </div>
+            </>
+          )}
+          <div
+            onClick={() => {
+              window.location.href = 'https://campfire-host-fe.vercel.app/';
+            }}
+          >
+            관리자모드
+          </div>
+        </MenuBar>
       </HeaderComponent>
       <TopButton />
     </>
@@ -57,10 +96,36 @@ const LogoDiv = styled.div`
   justify-content: center;
   align-items: center;
   margin-left: 160px;
-  margin-right: 1000px;
+  margin-right: 33%;
 
   @media (max-width: 1200px) {
     margin: 0 auto;
+  }
+`;
+
+const MenuBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+
+  div {
+    cursor: pointer;
+    margin: 0 20px;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    font-size: 18px;
+  }
+
+  a {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @media (max-width: 1200px) {
+    display: none;
   }
 `;
 

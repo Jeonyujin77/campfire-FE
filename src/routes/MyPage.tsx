@@ -9,6 +9,7 @@ import { __getUser } from '../apis/userApi';
 import WithdrawalModal from '../components/users/WithdrawalModal';
 import MyLikeList from '../components/users/MyLikeList';
 import MyReservationModal from '../components/users/MyreservationModal';
+import Button from '../components/common/Button';
 
 const MyPage = () => {
   const dispatch = useAppDispatch();
@@ -74,6 +75,12 @@ const MyPage = () => {
     });
   };
 
+  // 로그아웃
+  const logOut = () => {
+    localStorage.clear();
+    navigate('/');
+    window.location.reload();
+  };
   return (
     <>
       <MyReservationModal isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -169,6 +176,18 @@ const MyPage = () => {
             </Icon>
           </IconsTop>
         </IconsDiv>
+        <Button
+          onClick={logOut}
+          width="150px"
+          height="38px"
+          fontSize="15px"
+          fontWeight="bold"
+          margin="10px 30px"
+          bgColor="#A1C182"
+          color="white"
+        >
+          로그아웃
+        </Button>
       </Wrap>
     </>
   );
