@@ -103,7 +103,7 @@ const ReservationDescpage = () => {
         />
         <TextBox
           fontStyle="SEBANG_Gothic"
-          minWidth="40px"
+          minWidth="1180px"
           fontSize="33px"
           fontWeight="bold"
           margin="20px"
@@ -153,7 +153,7 @@ const ReservationDescpage = () => {
             />
           </SiteDescWrap>
         </TopWrap>
-        <TextBox>
+        <TextBox minWidth="1180px">
           <TextBoxHeader>상품정보</TextBoxHeader>
           <div
             style={{
@@ -166,7 +166,7 @@ const ReservationDescpage = () => {
             <CampIntro>{site.siteDesc}</CampIntro>
           </div>
         </TextBox>
-        <TextBox>
+        <TextBox minWidth="1180px">
           <TextBoxHeader>상품소개</TextBoxHeader>
           <div
             style={{
@@ -198,7 +198,7 @@ const ReservationDescpage = () => {
             </OpenBtn>
           )}
         </TextBox>
-        <TextBox>
+        <TextBox minWidth="1180px">
           <TextBoxHeader>주의사항</TextBoxHeader>
           <div
             style={{
@@ -237,13 +237,14 @@ const ReservationDescpage = () => {
             onClick={() => {
               return;
             }}
-            width="100%"
+            width="1100px"
             height="50px"
             fontSize="22px"
             fontWeight="bold"
             margin="10px 30px"
             bgColor="#A1C182"
             color="white"
+            mwidth="300px"
           >
             예약하기
           </Button>
@@ -267,15 +268,24 @@ const Wrap = styled.form`
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;
-  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const TopWrap = styled.div`
   display: flex;
-  /* align-items: center; */
-  /* justify-content: space-between; */
+  width: 1180px;
   gap: 50px;
   padding: 10px;
+  @media (max-width: 1200px) {
+    display: block;
+    width: 90%;
+  }
 `;
 
 const SiteDescWrap = styled.div``;
@@ -289,6 +299,10 @@ const SiteDesc = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 1200px) {
+    width: 95%;
+    padding: 0px;
+  }
 `;
 
 const DescLeft = styled.div`
@@ -297,7 +311,9 @@ const DescLeft = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 130px;
-  /* border: 1px solid black; */
+  @media (max-width: 1200px) {
+    width: 30%;
+  }
 `;
 
 const DescLeftItem = styled.div`
@@ -307,7 +323,9 @@ const DescLeftItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* border: 1px solid red; */
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const DescRight = styled.div`
@@ -315,16 +333,21 @@ const DescRight = styled.div`
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
+  width: 250px;
+  @media (max-width: 1200px) {
+    width: 60%;
+  }
 `;
 
 const DescRightItem = styled.div`
   margin: 10px;
   font-size: 20px;
-  /* font-weight: bold; */
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* border: 1px solid red; */
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const OpenBtn = styled.div`
@@ -367,13 +390,11 @@ const TextBox = styled.div<{
   fontStyle?: string;
   margin?: string;
 }>`
-  /* border: 1px solid blue; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* width: 1200; */
   max-height: 100%;
-  min-height: ${({ minWidth }) => (minWidth ? minWidth : '100px')};
+  min-width: ${({ minWidth }) => (minWidth ? minWidth : '100px')};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '16px')};
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 'normal')};
   font-family: ${({ fontStyle }) => (fontStyle ? fontStyle : 'NanumSquare')};
@@ -382,10 +403,12 @@ const TextBox = styled.div<{
   padding: 10px;
   word-break: break-all;
   word-wrap: break-word;
+  @media (max-width: 1200px) {
+    min-width: 90%;
+  }
 `;
 
 const TextBoxHeader = styled.div<{ color?: string }>`
-  /* border: 1px solid black; */
   margin: 10px 10px 0px 10px;
   padding: 0px 20px;
   font-size: 25px;
@@ -399,12 +422,12 @@ const CampInfo = styled.p<{ show: boolean }>`
   -webkit-line-clamp: ${({ show }) => (show ? 'inherit' : '3')};
   -webkit-box-orient: vertical;
   overflow: hidden;
-  /* word-wrap: break-word; */
-  /* text-overflow: ellipsis; */
-  /* height: 75px; */
   margin-bottom: 0px;
   padding-bottom: 20px;
   border-bottom: 1px solid #ffd8be;
+  /* height: ${({ show }) => (show ? '100%' : '40px')};
+  max-height: 10000px;
+  transition: max-height 1s; */
 `;
 
 const CampIntro = styled.div`
