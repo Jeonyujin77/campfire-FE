@@ -44,14 +44,14 @@ export interface PagenoCamps {
 }
 
 export interface SiteList {
-  sites: [
+  getSiteLists: [
     {
       siteId: number;
       campId: number;
-      // hostId: number;
       siteName: string;
       sitePrice: number;
       siteMainImage: string;
+      bookStatus: boolean;
       minPeople: number;
       maxPeople: number;
       createdAt: any;
@@ -63,10 +63,10 @@ export interface SiteList {
 export interface SiteListsRes {
   siteId: number;
   campId: number;
-  // hostId: number;
   siteName: string;
   sitePrice: number;
   siteMainImage: string;
+  bookStatus: boolean;
   minPeople: number;
   maxPeople: number;
   createdAt: any;
