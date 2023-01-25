@@ -25,7 +25,7 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
         autoplay={{ delay: 4000 }}
         navigation
         loop={true}
-        // pagination={{ clickable: true }}
+        pagination={{ clickable: true }}
       >
         {images.map(image => (
           <StyledSwiperSlide key={image + Math.random()}>
@@ -45,6 +45,7 @@ const StyledSwiper = styled(Swiper)`
   justify-content: center;
   flex-direction: row;
   text-align: center;
+  border-radius: 20px;
   @media (max-width: 1200px) {
     width: 100%;
     height: 500px;

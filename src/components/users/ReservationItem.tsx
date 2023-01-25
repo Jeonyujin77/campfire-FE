@@ -13,25 +13,28 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
 
   //예약취소버튼함수
   const cancleR = (payload: number) => {
-    dispatch(__cancelReservation(payload)).then(res => {
-      const { type, payload } = res;
-      if (type === 'cancelReservation/fulfilled') {
-        if (
-          payload.message === '예약 취소 할 수 없습니다. 호스트에게 문의하세요.'
-        ) {
-          alert(
-            `${payload.message} \n캠핑장 전화번호: ${payload.hostPhoneNumber}`,
-          );
+    if (window.confirm('해당 예약을 취소하시겠습니까?')) {
+      dispatch(__cancelReservation(payload)).then(res => {
+        const { type, payload } = res;
+        if (type === 'cancelReservation/fulfilled') {
+          if (
+            payload.message ===
+            '예약 취소 할 수 없습니다. 호스트에게 문의하세요.'
+          ) {
+            alert(
+              `${payload.message} \n캠핑장 전화번호: ${payload.hostPhoneNumber}`,
+            );
+          }
+          if (payload.message === '예약을 취소하였습니다') {
+            alert(`${payload.message}`);
+            window.location.reload();
+          }
+        } // 에러처리
+        else if (type === 'cancelReservation/rejected') {
+          alert(`${payload.response.data.errorMessage}`);
         }
-        if (payload.message === '예약을 취소하였습니다') {
-          alert(`${payload.message}`);
-          window.location.reload();
-        }
-      } // 에러처리
-      else if (type === 'cancelReservation/rejected') {
-        alert(`${payload.response.data.errorMessage}`);
-      }
-    });
+      });
+    }
   };
 
   return (
@@ -63,7 +66,6 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
             >
               {book.siteName}{' '}
             </SiteNameText>
-            <button onClick={() => cancleR(book.bookId)}>예약취소</button>
           </SiteName>
           <div
             onClick={() => {
@@ -75,9 +77,12 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
             }}
           >
             <DescText height="30px">
-              {book.checkInDate.split(' ')[0] +
-                ' ~ ' +
-                book.checkInDate.split(' ')[0]}
+              <div>
+                {book.checkInDate.split(' ')[0] +
+                  ' ~ ' +
+                  book.checkInDate.split(' ')[0]}
+              </div>
+              <button onClick={() => cancleR(book.bookId)}>예약취소</button>
             </DescText>
             <SiteDesc>
               <p>{book.siteDesc}</p>
@@ -179,6 +184,7 @@ const SiteNameText = styled.div`
   font-size: 22px;
   font-weight: bold;
   border-bottom: 1px solid black;
+  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -198,6 +204,7 @@ const DescText = styled.div<{ height: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 20px;
   width: 400px;
   height: ${({ height }) => height};
   border-bottom: 1px solid black;

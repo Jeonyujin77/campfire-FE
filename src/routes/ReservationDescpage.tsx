@@ -15,6 +15,9 @@ import CheckAuth from '../components/common/CheckAuth';
 import ImgSwiper from '../components/reservations/imgSwiper';
 import Button from '../components/common/Button';
 import TextModal from '../components/common/TextModal';
+//이미지
+import closeArrow from '../asset/closeArrow.png';
+import openArrow from '../asset/openArrow.png';
 
 const ReservationDescpage = () => {
   const location = useLocation();
@@ -87,29 +90,77 @@ const ReservationDescpage = () => {
     });
   };
 
+  const [showInfo, setShowInfo] = useState(false);
+  const [showCaution, setShowCaution] = useState(false);
+
   return site ? (
     <>
       <CheckAuth />
-      <TextModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        headText={headText}
-        bodyText={bodyText}
-      />
       <Wrap onSubmit={onSubmit}>
         <ImgSwiper
           campMainImage={site.siteMainImage}
           campSubImages={site.siteSubImages}
         />
-        <TextBox minWidth="40px" fontSize="33px" fontWeight="bold">
+        <TextBox
+          fontStyle="SEBANG_Gothic"
+          minWidth="40px"
+          fontSize="33px"
+          fontWeight="bold"
+          margin="20px"
+        >
           {site.siteName}
         </TextBox>
-        <DdayBox dDay={dDay} />
+        <TopWrap>
+          <SiteDescWrap>
+            <TextBoxHeader>내가 선택한 상품정보</TextBoxHeader>
+            <SiteDesc>
+              <DescLeft>
+                <DescLeftItem>상품유형</DescLeftItem>
+                <DescLeftItem>기준인원</DescLeftItem>
+                <DescLeftItem>사이트크기</DescLeftItem>
+                <DescLeftItem>입퇴실시간</DescLeftItem>
+              </DescLeft>
+              <DescRight>
+                <DescRightItem>{site.typeLists.join(', ')}</DescRightItem>
+                <DescRightItem>
+                  {'기준인원 '}
+                  {site.minPeople}
+                  {' - '}
+                  {'최대인원 '}
+                  {site.maxPeople}
+                </DescRightItem>
+                <DescRightItem>업체에 문의</DescRightItem>
+                <DescRightItem>
+                  {'입실 '}
+                  {site.checkIn.split(':')[0]}
+                  {':'}
+                  {site.checkIn.split(':')[1]}
+                  {' - '}
+                  {'퇴실 '}
+                  {site.checkOut.split(':')[0]}
+                  {':'}
+                  {site.checkOut.split(':')[1]}
+                </DescRightItem>
+              </DescRight>
+            </SiteDesc>
+          </SiteDescWrap>
+          <SiteDescWrap>
+            <TextBoxHeader color="#FE802C">나의 캠핑까지</TextBoxHeader>
+            <DdayBox
+              dDay={dDay}
+              representStart={representStart}
+              representEnd={representEnd}
+            />
+          </SiteDescWrap>
+        </TopWrap>
         <TextBox>
           <TextBoxHeader>상품정보</TextBoxHeader>
           <div
             style={{
-              margin: '10px 10px 10px 10px',
+              margin: '10px 10px 0px 10px',
+              backgroundColor: '#FFECE0',
+              padding: '20px',
+              borderRadius: '20px',
             }}
           >
             <CampIntro>{site.siteDesc}</CampIntro>
@@ -120,113 +171,79 @@ const ReservationDescpage = () => {
           <div
             style={{
               margin: '10px 10px 0px 10px',
+              backgroundColor: '#FFECE0',
+              padding: '20px',
+              borderRadius: '20px 20px 0px 0px',
             }}
           >
-            <CampInfo>{site.siteDesc}</CampInfo>
+            <CampInfo show={showInfo}>{site.siteDesc}</CampInfo>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <DetailBtn
+          {showInfo ? (
+            <CloseBtn
               onClick={() => {
-                setHeadText('캠핑장 이용안내');
-                setBodyText(`${site.siteDesc}`);
-                setIsOpen(!isOpen);
+                setShowInfo(!showInfo);
               }}
             >
-              상세보기
-            </DetailBtn>
-          </div>
+              <ArrowImg src={closeArrow} />
+              접기
+            </CloseBtn>
+          ) : (
+            <OpenBtn
+              onClick={() => {
+                setShowInfo(!showInfo);
+              }}
+            >
+              <ArrowImg src={openArrow} />
+              펼치기
+            </OpenBtn>
+          )}
         </TextBox>
         <TextBox>
           <TextBoxHeader>주의사항</TextBoxHeader>
           <div
             style={{
-              margin: '10px 10px 10px 10px',
+              margin: '10px 10px 0px 10px',
+              backgroundColor: '#FFECE0',
+              padding: '20px',
+              borderRadius: '20px 20px 0px 0px',
             }}
           >
-            <CampInfo>{site.siteInfo}</CampInfo>
+            <CampInfo show={showCaution}>{site.siteInfo}</CampInfo>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <DetailBtn
+          {showCaution ? (
+            <>
+              <CloseBtn
+                onClick={() => {
+                  setShowCaution(!showCaution);
+                }}
+              >
+                <ArrowImg src={closeArrow} />
+                접기
+              </CloseBtn>
+            </>
+          ) : (
+            <OpenBtn
               onClick={() => {
-                setHeadText('캠핑장 이용 주의사항');
-                setBodyText(`${site.siteInfo}`);
-                setIsOpen(!isOpen);
+                setShowCaution(!showCaution);
               }}
             >
-              상세보기
-            </DetailBtn>
-          </div>
+              <ArrowImg src={openArrow} />
+              펼치기
+            </OpenBtn>
+          )}
         </TextBox>
-        <>
-          {/* <CheckBox
-          isAllChecked={isAllChecked}
-          setAllChecked={setAllChecked}
-          checkedState={checkedState}
-          setCheckedState={setCheckedState}
-          handleAllCheck={handleAllCheck}
-          handleMonoCheck={handleMonoCheck}
-        /> */}
-          {/* <CancleBox>
-          <CancleTextBox onClick={() => setCancleInfo(!cancleInfo)}>
-            <CancleText>취소 수수료 안내</CancleText>
-            <CancleBtnOpen cancleInfo={cancleInfo}>[열기 🔽]</CancleBtnOpen>
-            <CancleBtnClose cancleInfo={cancleInfo}>[닫기 🔼]</CancleBtnClose>
-          </CancleTextBox>
-          <CancleDetail cancleInfo={cancleInfo}>
-            <CancleDetailLeft>
-              <div>수수료테이블 만들어야함 이것도 서버에서 줘야할듯</div>
-            </CancleDetailLeft>
-            <CancleDetailRight>
-              <span>[ 취소수수료 규정 안내 ]</span>
-              <span>
-                * 예약취소는 구매한 사이트 "MYPAGE" 혹은 "예약확인/취소"에서
-                가능합니다.
-              </span>
-              <span>
-                * 취소수수료는 예약 시점과는 무관하게 '입실일로부터 남은 날짜'
-                기준으로 부과되오니 신중히 예약 바랍니다.
-              </span>
-              <span>
-                * 예약 이용일 변경은 불가합니다. (취소 수수료 확인 후) 기존 예약
-                건 취소 및 재예약하셔야 합니다.
-              </span>
-              <span>
-                * 중복예약 취소, 업체 요청에 의한 취소, 법령에 의한 취소 등은
-                반드시 캠프파이어 고객센터(000-0000-0000) 또는 해당 숙소를
-                통하여 도움을 받으십시오.
-              </span>
-              <span>
-                * 미성년자는 예약이 불가하며, 보호자 동반 없이 이용 불가합니다.
-              </span>
-            </CancleDetailRight>
-          </CancleDetail>
-        </CancleBox> */}
-        </>
-        <RepresentDate
-          representStart={representStart}
-          representEnd={representEnd}
-        />
         <ReservationPageNav>
           <Button
             onClick={() => {
               return;
             }}
-            width="250px"
+            width="100%"
             height="50px"
             fontSize="22px"
             fontWeight="bold"
+            margin="10px 30px"
+            bgColor="#A1C182"
+            color="white"
           >
             예약하기
           </Button>
@@ -250,59 +267,144 @@ const Wrap = styled.form`
   width: 1200px;
   max-height: 100%;
   min-height: 100vh;
-  border: 1px solid red;
+  /* border: 1px solid red; */
+`;
+
+const TopWrap = styled.div`
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: space-between; */
+  gap: 50px;
+  padding: 10px;
+`;
+
+const SiteDescWrap = styled.div``;
+
+const SiteDesc = styled.div`
+  margin: 10px 10px 0px 10px;
+  background-color: #ffece0;
+  padding: 10px;
+  border-radius: 20px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DescLeft = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  width: 130px;
+  /* border: 1px solid black; */
+`;
+
+const DescLeftItem = styled.div`
+  margin: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* border: 1px solid red; */
+`;
+
+const DescRight = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const DescRightItem = styled.div`
+  margin: 10px;
+  font-size: 20px;
+  /* font-weight: bold; */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* border: 1px solid red; */
+`;
+
+const OpenBtn = styled.div`
+  margin: 0px 10px 10px 10px;
+  background-color: #ffece0;
+  padding: 0px 20px 20px 20px;
+  border-radius: 0px 0px 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+`;
+
+const CloseBtn = styled.div`
+  margin: 0px 10px 10px 10px;
+  background-color: #ffece0;
+  padding: 0px 20px 20px 20px;
+  border-radius: 0px 0px 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+`;
+
+const ArrowImg = styled.img`
+  width: 30px;
+  height: 20px;
 `;
 
 const TextBox = styled.div<{
   minWidth?: string;
   fontWeight?: string;
   fontSize?: string;
+  fontStyle?: string;
+  margin?: string;
 }>`
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 1200;
+  /* width: 1200; */
   max-height: 100%;
   min-height: ${({ minWidth }) => (minWidth ? minWidth : '100px')};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : '16px')};
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 'normal')};
+  font-family: ${({ fontStyle }) => (fontStyle ? fontStyle : 'NanumSquare')};
   margin-bottom: 5px;
+  margin: ${({ margin }) => (margin ? margin : '0px')};
   padding: 10px;
   word-break: break-all;
   word-wrap: break-word;
 `;
 
-const TextBoxHeader = styled.div`
+const TextBoxHeader = styled.div<{ color?: string }>`
+  /* border: 1px solid black; */
   margin: 10px 10px 0px 10px;
+  padding: 0px 20px;
   font-size: 25px;
   font-weight: bold;
+  color: ${({ color }) => (color ? color : 'black')};
 `;
 
-const CampInfo = styled.p`
+const CampInfo = styled.p<{ show: boolean }>`
   white-space: pre-wrap;
   display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: ${({ show }) => (show ? 'inherit' : '3')};
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  height: 75px;
+  /* word-wrap: break-word; */
+  /* text-overflow: ellipsis; */
+  /* height: 75px; */
   margin-bottom: 0px;
-`;
-
-const DetailBtn = styled.div`
-  width: 150px;
-  height: 40px;
-  background-color: #d9d6d6;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
-  &:hover {
-    background-color: #bcbcbc;
-  }
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ffd8be;
 `;
 
 const CampIntro = styled.div`

@@ -5,3 +5,19 @@
 .swiper-button-next {
   --swiper-theme-color: #fe802c;
 }
+
+.swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: 0px;
+}
+/* .swiper-pagination-horizontal {
+  opacity: 0.5;
+} */
+/* .swiper-button-next {
+  --swiper-theme-color: rgb(72, 70, 66);
+}
+.swiper-button-prev {
+  --swiper-theme-color: rgb(72, 70, 66);
+} */
+.swiper-pagination-bullet-active {
+  --swiper-theme-color: #ff6600;
+}

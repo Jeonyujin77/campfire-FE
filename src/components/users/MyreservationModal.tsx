@@ -97,46 +97,46 @@ const MyReservationModal = (props: MRProps) => {
       ></ModalBackground>
       <ModalWrap isOpen={props.isOpen}>
         <ModalHeader>
+          <TitleWrap>
+            <ReserveTitle
+              selectBooks={selectBooks}
+              onClick={() => {
+                setSelectBooks(true);
+                setSelectCompleted(false);
+                setSelectCanceled(false);
+              }}
+            >
+              예약 내역
+            </ReserveTitle>
+            <CompleteTitle
+              selectCompleted={selectCompleted}
+              onClick={() => {
+                setSelectBooks(false);
+                setSelectCompleted(true);
+                setSelectCanceled(false);
+              }}
+            >
+              이용 완료내역
+            </CompleteTitle>
+            <CancleTitle
+              selectCanceled={selectCanceled}
+              onClick={() => {
+                setSelectBooks(false);
+                setSelectCompleted(false);
+                setSelectCanceled(true);
+              }}
+            >
+              예약 취소내역
+            </CancleTitle>
+          </TitleWrap>
           <ModalCloseBtn
             onClick={() => {
               props.setIsOpen(!props.isOpen);
             }}
           >
-            x
+            ❌
           </ModalCloseBtn>
         </ModalHeader>
-        <TitleWrap>
-          <ReserveTitle
-            selectBooks={selectBooks}
-            onClick={() => {
-              setSelectBooks(true);
-              setSelectCompleted(false);
-              setSelectCanceled(false);
-            }}
-          >
-            예약 내역
-          </ReserveTitle>
-          <CompleteTitle
-            selectCompleted={selectCompleted}
-            onClick={() => {
-              setSelectBooks(false);
-              setSelectCompleted(true);
-              setSelectCanceled(false);
-            }}
-          >
-            이용 완료내역
-          </CompleteTitle>
-          <CancleTitle
-            selectCanceled={selectCanceled}
-            onClick={() => {
-              setSelectBooks(false);
-              setSelectCompleted(false);
-              setSelectCanceled(true);
-            }}
-          >
-            예약 취소내역
-          </CancleTitle>
-        </TitleWrap>
         {selectBooks ? (
           books ? (
             books.books.map(book => (
@@ -187,7 +187,9 @@ const ModalBackground = styled.div<{ isOpen: boolean }>`
 `;
 
 const ModalWrap = styled.div<{ isOpen: boolean }>`
-  border: 1px solid red;
+  /* outline: 3px solid #fe802c; */
+  border: 3px solid #fe802c;
+  border-radius: 20px 10px 10px 20px;
   position: fixed;
   margin: auto;
   top: calc(50vh - 45vh);
@@ -197,31 +199,58 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   height: 90vh;
   flex-direction: column;
   align-items: center;
-  padding: 5px;
+  padding: 0px 5px 5px 5px;
   gap: 10px;
   z-index: 2000;
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   overflow-y: scroll;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: #fe802c;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
 `;
 
 const ModalHeader = styled.div`
-  border: 1px solid green;
-  width: 980px;
-  margin: 10px;
-  margin-top: 20px;
+  /* border: 1px solid green; */
+  width: 99%;
+  /* margin-bottom: 10px; */
+  margin-top: 10px;
+  margin-bottom: 20px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: flex-end;
+  /* flex-direction: column; */
+`;
+
+const ModalCloseBtn = styled.button`
+  background: none;
+  height: 50px;
+  border: none;
+  display: flex;
+  align-items: flex-start;
   justify-content: center;
-  flex-direction: column;
+  color: red;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer;
 `;
 
 const TitleWrap = styled.div`
   width: 980px;
   height: 50px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 `;
 
 const ReserveTitle = styled.div<{ selectBooks: boolean }>`
@@ -232,9 +261,14 @@ const ReserveTitle = styled.div<{ selectBooks: boolean }>`
   justify-content: center;
   user-select: none;
   cursor: pointer;
-  background-color: ${({ selectBooks }) => (selectBooks ? '#dddddd' : 'white')};
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 25px;
+  background-color: ${({ selectBooks }) => (selectBooks ? '#FE802C' : 'white')};
+  color: ${({ selectBooks }) => (selectBooks ? 'white' : 'black')};
   &:hover {
-    background-color: #f7f3f3;
+    background-color: ${({ selectBooks }) =>
+      selectBooks ? '#FE802C' : '#FFECE0'};
   }
 `;
 
@@ -246,10 +280,15 @@ const CompleteTitle = styled.div<{ selectCompleted: boolean }>`
   justify-content: center;
   user-select: none;
   cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 25px;
   background-color: ${({ selectCompleted }) =>
-    selectCompleted ? '#dddddd' : 'white'};
+    selectCompleted ? '#FE802C' : 'white'};
+  color: ${({ selectCompleted }) => (selectCompleted ? 'white' : 'black')};
   &:hover {
-    background-color: #f7f3f3;
+    background-color: ${({ selectCompleted }) =>
+      selectCompleted ? '#FE802C' : '#FFECE0'};
   }
 `;
 
@@ -261,20 +300,16 @@ const CancleTitle = styled.div<{ selectCanceled: boolean }>`
   justify-content: center;
   user-select: none;
   cursor: pointer;
-  background-color: ${({ selectCanceled }) =>
-    selectCanceled ? '#dddddd' : 'white'};
-  &:hover {
-    background-color: #f7f3f3;
-  }
-`;
-
-const ModalCloseBtn = styled.button`
-  background: none;
-  border: none;
-  color: red;
+  font-size: 20px;
   font-weight: bold;
-  font-size: 15px;
-  cursor: pointer;
+  border-radius: 25px;
+  background-color: ${({ selectCanceled }) =>
+    selectCanceled ? '#FE802C' : 'white'};
+  color: ${({ selectCanceled }) => (selectCanceled ? 'white' : 'black')};
+  &:hover {
+    background-color: ${({ selectCanceled }) =>
+      selectCanceled ? '#FE802C' : '#FFECE0'};
+  }
 `;
 
 export default MyReservationModal;
