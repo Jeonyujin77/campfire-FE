@@ -1,25 +1,18 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
-  const navigate = useNavigate();
-
   //토큰
   const [accesstoken, setAccesstoken] = useState<any>();
   const [refreshtoken, setRefreshtoken] = useState<any>();
+
   useEffect(() => {
     setAccesstoken(localStorage.getItem('accessToken'));
     setRefreshtoken(localStorage.getItem('refreshToken'));
   }, []);
 
-  //onClick
-  const logOut = () => {
-    localStorage.clear();
-    navigate('/');
-    window.location.reload();
-  };
   const goToHome = () => {
     window.location.href = '/';
   };
@@ -33,14 +26,13 @@ const Footer = () => {
   return (
     <FooterWrapper>
       <FooterMenu>
-        <Menu onClick={goToHome}>홈</Menu>
-        <Menu onClick={goToSearch}>검색</Menu>
         {accesstoken && refreshtoken ? (
           <>
+            <Menu onClick={goToHome}>홈</Menu>
+            <Menu onClick={goToSearch}>검색</Menu>
             <Menu>
               <Link to="/mypage">마이페이지</Link>
             </Menu>
-            <Menu onClick={logOut}>로그아웃</Menu>
           </>
         ) : (
           <>
@@ -59,6 +51,7 @@ const Footer = () => {
 };
 
 const FooterWrapper = styled.div`
+  display: none;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -67,6 +60,10 @@ const FooterWrapper = styled.div`
   line-height: 50px;
   background-color: whitesmoke;
   z-index: 1000;
+
+  @media (max-width: 1200px) {
+    display: block;
+  }
 `;
 
 const FooterMenu = styled.div`
@@ -90,6 +87,9 @@ const Menu = styled.div`
     display: inline-block;
     text-decoration: none;
     color: inherit;
+  }
+  a.active {
+    color: rgb(254, 128, 44);
   }
 `;
 
