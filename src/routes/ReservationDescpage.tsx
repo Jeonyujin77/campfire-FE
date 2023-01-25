@@ -1,20 +1,18 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 //api
-import { __getCampsByParams, __getSiteByParams } from '../apis/campApi';
+import { __getSiteByParams } from '../apis/campApi';
 import { __reserveCamps } from '../apis/reservationApi';
 //훅
 import useReserveInfo from '../hooks/useReserveInfo';
 //컴포넌트
-import RepresentDate from '../components/reservations/RepresentDate';
 import DdayBox from '../components/reservations/DdayBox';
 import CheckAuth from '../components/common/CheckAuth';
 import ImgSwiper from '../components/reservations/imgSwiper';
 import Button from '../components/common/Button';
-import TextModal from '../components/common/TextModal';
 //이미지
 import closeArrow from '../asset/closeArrow.png';
 import openArrow from '../asset/openArrow.png';
@@ -26,9 +24,6 @@ const ReservationDescpage = () => {
   const siteparams = Number(useParams().siteId);
 
   const { pathname } = useLocation();
-  const [headText, setHeadText] = useState('');
-  const [bodyText, setBodyText] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
 
   //해당 캠프 데이터 받아오기
   const [site, setSite] = useState<any>();
@@ -49,9 +44,6 @@ const ReservationDescpage = () => {
   useEffect(() => {
     dispatch(__getSiteByParams({ campparams, siteparams })).then(res => {
       const { payload, type }: any = res;
-      console.log('res:', res);
-      console.log('payload:', payload);
-      console.log('type:', type);
       if (type === 'getSiteByParams/fulfilled') {
         setSite(payload.site);
       }
@@ -65,11 +57,6 @@ const ReservationDescpage = () => {
   //예약하기 버튼
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log('캠핑장아이디: ', state.campId);
-    // console.log('시작일: ', startday);
-    // console.log('종료일: ', endday);
-    // console.log('성인수: ', adult);
-    // console.log('아동수: ', child);
 
     const reserveInfo = {
       campId: campparams,
@@ -288,7 +275,13 @@ const TopWrap = styled.div`
   }
 `;
 
-const SiteDescWrap = styled.div``;
+const SiteDescWrap = styled.div`
+  @media (max-width: 1200px) {
+    div {
+      font-size: 16px;
+    }
+  }
+`;
 
 const SiteDesc = styled.div`
   margin: 10px 10px 0px 10px;
@@ -313,6 +306,7 @@ const DescLeft = styled.div`
   width: 130px;
   @media (max-width: 1200px) {
     width: 30%;
+    font-size: 14px;
   }
 `;
 
@@ -362,6 +356,9 @@ const OpenBtn = styled.div`
   gap: 10px;
   cursor: pointer;
   user-select: none;
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const CloseBtn = styled.div`
@@ -376,11 +373,19 @@ const CloseBtn = styled.div`
   gap: 10px;
   cursor: pointer;
   user-select: none;
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 `;
 
 const ArrowImg = styled.img`
   width: 30px;
   height: 20px;
+
+  @media (max-width: 1200px) {
+    width: 20px;
+    height: 12px;
+  }
 `;
 
 const TextBox = styled.div<{
@@ -405,6 +410,7 @@ const TextBox = styled.div<{
   word-wrap: break-word;
   @media (max-width: 1200px) {
     min-width: 90%;
+    font-size: 14px;
   }
 `;
 
@@ -414,6 +420,10 @@ const TextBoxHeader = styled.div<{ color?: string }>`
   font-size: 25px;
   font-weight: bold;
   color: ${({ color }) => (color ? color : 'black')};
+  @media (max-width: 1200px) {
+    font-size: 16px;
+    padding: 0;
+  }
 `;
 
 const CampInfo = styled.p<{ show: boolean }>`
@@ -425,9 +435,6 @@ const CampInfo = styled.p<{ show: boolean }>`
   margin-bottom: 0px;
   padding-bottom: 20px;
   border-bottom: 1px solid #ffd8be;
-  /* height: ${({ show }) => (show ? '100%' : '40px')};
-  max-height: 10000px;
-  transition: max-height 1s; */
 `;
 
 const CampIntro = styled.div`
@@ -441,6 +448,12 @@ const ReservationPageNav = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 1200px) {
+    button {
+      font-size: 14px;
+    }
+  }
 `;
 
 export default ReservationDescpage;

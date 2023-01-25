@@ -7,7 +7,6 @@ const useReserveInfo = (state: Location['state']) => {
     return [];
   }
 
-  console.log('useReserveInfo:', state);
   const adult = state.countState.adult; // 성인 수
   const child = state.countState.child; // 아동 수
   const startday = state.dateState.startday; // 체크인날짜
