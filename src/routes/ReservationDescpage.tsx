@@ -108,7 +108,11 @@ const ReservationDescpage = () => {
                 <DescLeftItem>입퇴실시간</DescLeftItem>
               </DescLeft>
               <DescRight>
-                <DescRightItem>{site.typeLists.join(', ')}</DescRightItem>
+                {site.typeLists ? (
+                  <DescRightItem>{site.typeLists.join(', ')}</DescRightItem>
+                ) : (
+                  <DescRightItem>캠핑장</DescRightItem>
+                )}
                 <DescRightItem>
                   {'기준인원 '}
                   {site.minPeople}
