@@ -10,6 +10,7 @@ import Main from '../routes/Main';
 import ProfileModify from '../routes/ProfileModify';
 import OAuthKakao from '../routes/OAuthKakao';
 import OAuthNaver from '../routes/OAuthNaver';
+import OAuthGoogle from '../routes/OAuthGoogle';
 import Search from '../routes/Search';
 
 const Router = () => {
@@ -34,6 +35,7 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/api/auths/kakao" element={<OAuthKakao />} />
           <Route path="api/auths/naver" element={<OAuthNaver />} />
+          <Route path="api/auths/google" element={<OAuthGoogle />} />
         </Routes>
       </Layout>
     </BrowserRouter>

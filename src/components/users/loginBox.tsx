@@ -5,7 +5,11 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
 //api
 import { __signin } from '../../apis/userApi';
-import { KAKAO_AUTH_URL, NAVER_AUTH_URL } from '../../apis/loginkeys';
+import {
+  GOOGLE_AUTH_URL,
+  KAKAO_AUTH_URL,
+  NAVER_AUTH_URL,
+} from '../../apis/loginkeys';
 //훅
 import useInput from '../../hooks/useInput';
 import useInputValid from '../../hooks/useInputValid';
@@ -16,6 +20,10 @@ import Button from '../common/Button';
 //이미지
 import kakao_login_medium_wide from '../../asset/kakao_login_medium_wide.png';
 import naver_login from '../../asset/naver_login.png';
+import google_btn from '../../asset/google_btn.png';
+import google_logo from '../../asset/google_logo.png';
+import kakao_logo from '../../asset/kakao_logo.png';
+import naver_logo from '../../asset/naver_logo.png';
 import pwHide from '../../asset/pwHide.png';
 import pwShow from '../../asset/pwShow.png';
 import { EMAIL_NOT_VALID, PW_NOT_VALID } from '../../constant/message';
@@ -54,6 +62,10 @@ const LoginBox = () => {
   //네이버로그인
   const handleNaverLogin = () => {
     window.location.href = NAVER_AUTH_URL;
+  };
+  //구글로그인
+  const handleGoogleLogin = () => {
+    window.location.href = GOOGLE_AUTH_URL;
   };
 
   return (
@@ -130,12 +142,31 @@ const LoginBox = () => {
           로그인
         </Button>
       </FormWrap>
-      <KakaoBtn onClick={handleKakaoLogin}>
-        <Kakao src={kakao_login_medium_wide} />
-      </KakaoBtn>
-      <KakaoBtn onClick={handleNaverLogin}>
-        <Kakao src={naver_login} />
-      </KakaoBtn>
+      <SocialLoginBtn
+        onClick={handleKakaoLogin}
+        bgColor="rgb(254,229,0)"
+        color="black"
+      >
+        <LoginLogo src={kakao_logo} />
+        <p>카카오 로그인</p>
+      </SocialLoginBtn>
+      <SocialLoginBtn
+        onClick={handleNaverLogin}
+        bgColor="rgb(2,199,90)"
+        color="white"
+      >
+        <LoginLogo src={naver_logo} />
+        <p>네이버 로그인</p>
+      </SocialLoginBtn>
+      <SocialLoginBtn
+        onClick={handleGoogleLogin}
+        bgColor="#ffffff"
+        color="black"
+        border="2px solid rgb(66,133,244)"
+      >
+        <LoginLogo src={google_logo} />
+        <p>구글 로그인</p>
+      </SocialLoginBtn>
       <Button
         width="400px"
         height="50px"
@@ -264,25 +295,43 @@ const BottomText = styled.div`
   gap: 10px;
 `;
 
-const KakaoBtn = styled.button`
+const SocialLoginBtn = styled.div<{
+  bgColor: string;
+  color: string;
+  border?: string;
+}>`
+  width: 400px;
+  height: 50px;
   padding: 0px;
-  border: none;
-  background-color: transparent;
+  border: ${({ border }) => (border ? border : 'none')};
+  border-radius: 12px;
+  background-color: ${({ bgColor }) => bgColor};
+  color: ${({ color }) => color};
   cursor: pointer;
   margin-bottom: 10px;
-`;
-
-const Kakao = styled.img`
-  width: 400px;
-  height: 59px;
-  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
     filter: brightness(95%);
   }
+  p {
+    margin: 0px 90px 0px 60px;
+    font-size: 20px;
+    font-weight: bold;
+  }
   @media (max-width: 1200px) {
     width: 80%;
-    height: 80%;
+    p {
+      margin: 0px 20px 0px 30px;
+      font-size: 15px;
+    }
   }
+`;
+
+const LoginLogo = styled.img`
+  width: 30px;
+  height: 30px;
 `;
 
 export default LoginBox;
