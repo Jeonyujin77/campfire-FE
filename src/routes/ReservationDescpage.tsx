@@ -16,6 +16,7 @@ import Button from '../components/common/Button';
 //이미지
 import closeArrow from '../asset/closeArrow.png';
 import openArrow from '../asset/openArrow.png';
+import { changeFormat } from '../hooks/useChangeDateFormat';
 
 const ReservationDescpage = () => {
   const location = useLocation();
@@ -61,8 +62,8 @@ const ReservationDescpage = () => {
     const reserveInfo = {
       campId: campparams,
       siteId: siteparams,
-      checkInDate: startday,
-      checkOutDate: endday,
+      checkInDate: changeFormat(startday, 'yyyy-MM-DD'),
+      checkOutDate: changeFormat(endday, 'yyyy-MM-DD'),
       adults: adult,
       children: child,
     };
@@ -108,7 +109,11 @@ const ReservationDescpage = () => {
                 <DescLeftItem>입퇴실시간</DescLeftItem>
               </DescLeft>
               <DescRight>
-                <DescRightItem>{site.typeLists.join(', ')}</DescRightItem>
+                {site.typeLists ? (
+                  <DescRightItem>{site.typeLists.join(', ')}</DescRightItem>
+                ) : (
+                  <DescRightItem>캠핑장</DescRightItem>
+                )}
                 <DescRightItem>
                   {'기준인원 '}
                   {site.minPeople}

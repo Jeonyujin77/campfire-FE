@@ -194,6 +194,26 @@ export const __naverLogin = createAsyncThunk(
   },
 );
 
+//구글로그인
+export const __googleLogin = createAsyncThunk(
+  'googleLogin',
+  async (payload: any, thunkAPI) => {
+    console.log(payload);
+    try {
+      const response = await api.get<any>(`/api/auths/google?code=${payload}`);
+      console.log(response);
+      if (response.status === 200) {
+        const { accesstoken, refreshtoken }: any = response.headers;
+        localStorage.setItem('accessToken', accesstoken);
+        localStorage.setItem('refreshToken', refreshtoken);
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 //찜한 캠핑장 불러오기
 export const __likeCamps = createAsyncThunk(
   'likeCamps',
