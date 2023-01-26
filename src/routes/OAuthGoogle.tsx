@@ -20,6 +20,7 @@ const OAuthGoogle = () => {
       // 에러처리
       else if (type === 'googleLogin/rejected') {
         alert(`${payload.response.data.errorMessage}`);
+        window.location.href = '/login';
       }
     });
   };

@@ -5,41 +5,46 @@ import { cancreser } from '../../interfaces/Users';
 
 const CancReserveItem = ({ book }: { book: cancreser }) => {
   return (
-    <div>
+    <>
       <ReserveWrap key={book.bookId}>
-        <Cover />
-        <div>
+        <MainImgBox>
           <MainImg src={book.siteMainImage} alt="캠핑장 메인 이미지" />
-        </div>
+        </MainImgBox>
         <CampDesc>
-          <SiteName>{book.siteName}</SiteName>
-          <DescText height="30px">
-            {book.checkInDate.split(' ')[0] +
-              ' ~ ' +
-              book.checkInDate.split(' ')[0]}
-          </DescText>
-          <SiteDesc>
-            <p>{book.siteDesc}</p>
-          </SiteDesc>
-          <SiteInfo>
-            <p>{book.siteInfo}</p>
-          </SiteInfo>
+          <SiteName>
+            <SiteNameText>{book.siteName}</SiteNameText>
+          </SiteName>
+          <ReserveInfo>
+            <p>
+              <label>요금</label>
+              <span>{book.sitePrice}원</span>
+            </p>
+            <p>
+              <label>선택인원</label>
+              <span>
+                성인{book.adults} / 아동{book.children}
+              </span>
+            </p>
+            <p>
+              <label>입퇴실시간</label>
+              <span>
+                입실 {book.Camp_checkIn} / 퇴실 {book.Camp_checkOut}
+              </span>
+            </p>
+            <p>
+              <label>예약일</label>
+              <span>
+                {book.checkInDate.split(' ')[0] +
+                  ' ~ ' +
+                  book.checkInDate.split(' ')[0]}
+              </span>
+            </p>
+          </ReserveInfo>
         </CampDesc>
       </ReserveWrap>
-    </div>
+    </>
   );
 };
-
-const Cover = styled.div`
-  z-index: 2500;
-  background-color: red;
-  position: absolute;
-  width: 995px;
-  height: 5px;
-  top: 135px;
-  left: -23px;
-  transform: rotate(-16.5deg);
-`;
 
 const ReserveWrap = styled.div`
   position: relative;
@@ -47,81 +52,109 @@ const ReserveWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 10px;
-  width: 930px;
-  height: 260px;
-  border: 1px solid black;
+  width: 1111px;
+  height: 377px;
+  opacity: 0.7;
   position: relative;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  box-sizing: border-box;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    height: auto;
+  }
+`;
+
+const MainImgBox = styled.div`
+  width: 549px;
+  height: 347px;
+  padding: 15px;
+  @media (max-width: 1300px) {
+    width: 45%;
+  }
+  @media (max-width: 900px) {
+    display: none;
+  }
 `;
 
 const MainImg = styled.img`
-  display: block;
-  width: 500px;
-  height: 260px;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  @media (max-width: 900px) {
+    display: none;
+  }
 `;
 
 const SiteName = styled.div`
-  width: 400px;
-  height: 30px;
-  padding: 5px 10px 10px 10px;
-  display: block;
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
-  gap: 10px;
   font-size: 22px;
   font-weight: bold;
-  border-bottom: 1px solid black;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (max-width: 1200px) {
+    justify-content: left;
+    button {
+      width: 85px;
+      height: 30px;
+      font-size: 14px;
+    }
+  }
+`;
+
+const SiteNameText = styled.div`
+  font-size: 22px;
+  font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  @media (max-width: 1200px) {
+    width: 99%;
+    font-size: 18px;
+  }
 `;
 
 const CampDesc = styled.div`
-  width: 400px;
-  padding: 10px;
-  min-height: 240px;
-  max-height: 100%;
+  width: 47%;
+  height: 90%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    padding: 20px;
+    font-size: 14px;
+  }
 `;
 
-const DescText = styled.div<{ height: string }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 400px;
-  height: ${({ height }) => height};
-  border-bottom: 1px solid black;
-  padding-bottom: 7px;
-`;
+const ReserveInfo = styled.div`
+  padding-right: 20px;
+  p {
+    display: flex;
+  }
 
-const SiteDesc = styled.div`
-  white-space: pre-wrap;
-  display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 400px;
-  height: 80px;
-  border-bottom: 1px solid black;
-`;
+  label,
+  span {
+    display: inline-block;
+  }
 
-const SiteInfo = styled.div`
-  white-space: pre-wrap;
-  display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 400px;
-  height: 77px;
-  margin-bottom: 7px;
-`;
+  label {
+    min-width: 130px;
+    font-weight: bold;
+  }
 
+  @media (max-width: 900px) {
+    padding: 0;
+    width: 100%;
+  }
+`;
 export default CancReserveItem;

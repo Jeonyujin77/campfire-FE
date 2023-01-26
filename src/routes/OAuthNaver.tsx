@@ -15,6 +15,7 @@ const OAuthNaver = () => {
         window.location.href = `${process.env.REACT_APP_REDIRECT_URI}`;
       } else if (type === 'naverLogin/rejected') {
         alert(`${payload.response.data.errorMessage}`);
+        window.location.href = '/login';
       }
     });
   };
