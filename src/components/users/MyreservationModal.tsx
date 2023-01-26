@@ -18,6 +18,8 @@ import {
 import ReservationItem from './ReservationItem';
 import CompReserveItem from './CompReserveItem';
 import CancReserveItem from './CancReserveItem';
+//이미지
+import closePopupBtn from '../../asset/reserveModalCloseBtn.png';
 
 interface MRProps {
   isOpen: boolean;
@@ -41,9 +43,6 @@ const MyReservationModal = (props: MRProps) => {
     if (props.isOpen === true) {
       dispatch(__reserveUser()).then(res => {
         const { type, payload }: any = res;
-        console.log('res:', res);
-        console.log('type:', type);
-        console.log('payload:', payload);
         if (type === 'reserveUser/fulfilled') {
           setBooks(payload);
         }
@@ -52,6 +51,7 @@ const MyReservationModal = (props: MRProps) => {
           alert(`${payload.response.data.errorMessage}`);
         }
       });
+      document.body.style.overflow = 'hidden';
     }
   }, [selectBooks, props.isOpen]);
 
@@ -68,6 +68,7 @@ const MyReservationModal = (props: MRProps) => {
           alert(`${payload.response.data.errorMessage}`);
         }
       });
+      document.body.style.overflow = 'hidden';
     }
   }, [selectCompleted, props.isOpen]);
 
@@ -84,93 +85,101 @@ const MyReservationModal = (props: MRProps) => {
           alert(`${payload.response.data.errorMessage}`);
         }
       });
+      document.body.style.overflow = 'hidden';
     }
   }, [selectCanceled, props.isOpen]);
+
+  const onClose = () => {
+    props.setIsOpen(!props.isOpen);
+    document.body.style.overflow = 'auto';
+  };
 
   return (
     <>
       <ModalBackground
-        onClick={() => {
-          props.setIsOpen(!props.isOpen);
-        }}
+        onClick={onClose}
         isOpen={props.isOpen}
       ></ModalBackground>
-      <ModalWrap isOpen={props.isOpen}>
-        <ModalHeader>
-          <TitleWrap>
-            <ReserveTitle
-              selectBooks={selectBooks}
-              onClick={() => {
-                setSelectBooks(true);
-                setSelectCompleted(false);
-                setSelectCanceled(false);
-              }}
-            >
-              예약 내역
-            </ReserveTitle>
-            <CompleteTitle
-              selectCompleted={selectCompleted}
-              onClick={() => {
-                setSelectBooks(false);
-                setSelectCompleted(true);
-                setSelectCanceled(false);
-              }}
-            >
-              이용 완료내역
-            </CompleteTitle>
-            <CancleTitle
-              selectCanceled={selectCanceled}
-              onClick={() => {
-                setSelectBooks(false);
-                setSelectCompleted(false);
-                setSelectCanceled(true);
-              }}
-            >
-              예약 취소내역
-            </CancleTitle>
-          </TitleWrap>
-          <ModalCloseBtn
-            onClick={() => {
-              props.setIsOpen(!props.isOpen);
-            }}
-          >
-            ❌
-          </ModalCloseBtn>
-        </ModalHeader>
-        {selectBooks ? (
-          books ? (
-            books.books.map(book => (
-              <ReservationItem key={book.bookId} book={book} />
-            ))
+      <ModalBox isOpen={props.isOpen}>
+        <ModalCloseBtn
+          isOpen={props.isOpen}
+          onClick={() => {
+            props.setIsOpen(!props.isOpen);
+          }}
+        >
+          <img src={closePopupBtn} alt="닫기" />
+        </ModalCloseBtn>
+
+        <ModalWrap>
+          <ModalHeader>
+            <TitleWrap>
+              <ReserveTitle
+                selectBooks={selectBooks}
+                onClick={() => {
+                  setSelectBooks(true);
+                  setSelectCompleted(false);
+                  setSelectCanceled(false);
+                }}
+              >
+                예약 내역
+              </ReserveTitle>
+              <CompleteTitle
+                selectCompleted={selectCompleted}
+                onClick={() => {
+                  setSelectBooks(false);
+                  setSelectCompleted(true);
+                  setSelectCanceled(false);
+                }}
+              >
+                이용 완료내역
+              </CompleteTitle>
+              <CancleTitle
+                selectCanceled={selectCanceled}
+                onClick={() => {
+                  setSelectBooks(false);
+                  setSelectCompleted(false);
+                  setSelectCanceled(true);
+                }}
+              >
+                예약 취소내역
+              </CancleTitle>
+            </TitleWrap>
+          </ModalHeader>
+          {selectBooks ? (
+            books ? (
+              books.books.map(book => (
+                <ReservationItem key={book.bookId} book={book} />
+              ))
+            ) : (
+              <></>
+            )
           ) : (
             <></>
-          )
-        ) : (
-          <></>
-        )}
-        {selectCompleted ? (
-          completedBooks ? (
-            completedBooks.expiredBooks.map(book => (
-              <CompReserveItem key={book.bookId} book={book} />
-            ))
+          )}
+          {selectCompleted ? (
+            completedBooks ? (
+              completedBooks.expiredBooks.map(book => (
+                <CompReserveItem key={book.bookId} book={book} />
+              ))
+            ) : (
+              <></>
+            )
           ) : (
             <></>
-          )
-        ) : (
-          <></>
-        )}
-        {selectCanceled ? (
-          canceledBooks ? (
-            canceledBooks.cancelBooks.map(book => (
-              <CancReserveItem key={book.bookId} book={book} />
-            ))
+          )}
+          {selectCanceled ? (
+            canceledBooks ? (
+              canceledBooks.cancelBooks.map(book => (
+                <CancReserveItem key={book.bookId} book={book} />
+              ))
+            ) : (
+              <></>
+            )
           ) : (
             <></>
-          )
-        ) : (
-          <></>
-        )}
-      </ModalWrap>
+          )}
+        </ModalWrap>
+      </ModalBox>
     </>
   );
 };
@@ -186,23 +195,33 @@ const ModalBackground = styled.div<{ isOpen: boolean }>`
   z-index: 1500;
 `;
 
-const ModalWrap = styled.div<{ isOpen: boolean }>`
-  /* outline: 3px solid #fe802c; */
-  border: 3px solid #fe802c;
+const ModalBox = styled.div<{ isOpen: boolean }>`
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  position: relative;
+  width: 1200px;
+  margin: 0 auto;
+  height: 80vh;
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
+`;
+
+const ModalWrap = styled.div`
+  border: 1px solid #fe802c;
   border-radius: 20px 10px 10px 20px;
   position: fixed;
   margin: auto;
-  top: calc(50vh - 45vh);
-  left: calc(50vw - 550px);
+  top: calc(50vh - 40vh);
+  left: calc(50vw - 590px);
   background-color: white;
-  width: 1100px;
-  height: 90vh;
+  width: 1200px;
+  height: 80vh;
   flex-direction: column;
   align-items: center;
   padding: 0px 5px 5px 5px;
   gap: 10px;
   z-index: 2000;
-  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  display: flex;
   overflow-y: scroll;
   ::-webkit-scrollbar {
     width: 8px;
@@ -216,46 +235,72 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
     background: #f1f1f1;
     border-radius: 10px;
   }
+
+  @media (max-width: 1300px) {
+    width: 100%;
+    left: 0;
+    right: 0;
+    padding: 0;
+  }
 `;
 
 const ModalHeader = styled.div`
-  /* border: 1px solid green; */
-  width: 99%;
-  /* margin-bottom: 10px; */
-  margin-top: 10px;
+  margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  /* flex-direction: column; */
+
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
 `;
 
-const ModalCloseBtn = styled.button`
+const ModalCloseBtn = styled.button<{ isOpen: boolean }>`
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  img {
+    display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  }
+  position: absolute;
+  top: -14px;
+  right: -10px;
   background: none;
-  height: 50px;
   border: none;
-  display: flex;
   align-items: flex-start;
   justify-content: center;
-  color: red;
-  font-weight: bold;
-  font-size: 20px;
   cursor: pointer;
+  z-index: 1500;
+
+  @media (max-width: 600px) {
+    top: -10px;
+    right: 0;
+    width: 30px;
+    img {
+      width: 30px;
+    }
+  }
 `;
 
 const TitleWrap = styled.div`
-  width: 980px;
-  height: 50px;
-  /* border: 1px solid black; */
+  position: relative;
+  width: 1149px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  background-color: #d9d9d9;
+  border-radius: 29px;
+
+  @media (max-width: 1300px) {
+    width: 100%;
+    height: 50px;
+  }
 `;
 
 const ReserveTitle = styled.div<{ selectBooks: boolean }>`
-  width: 320px;
-  height: 50px;
+  width: 383px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -264,17 +309,24 @@ const ReserveTitle = styled.div<{ selectBooks: boolean }>`
   font-size: 20px;
   font-weight: bold;
   border-radius: 25px;
-  background-color: ${({ selectBooks }) => (selectBooks ? '#FE802C' : 'white')};
-  color: ${({ selectBooks }) => (selectBooks ? 'white' : 'black')};
+  background-color: ${({ selectBooks }) =>
+    selectBooks ? '#FE802C' : '#d9d9d9'};
+  color: #fff;
   &:hover {
     background-color: ${({ selectBooks }) =>
       selectBooks ? '#FE802C' : '#FFECE0'};
   }
+
+  @media (max-width: 1300px) {
+    width: 33%;
+    height: 50px;
+    font-size: 16px;
+  }
 `;
 
 const CompleteTitle = styled.div<{ selectCompleted: boolean }>`
-  width: 320px;
-  height: 50px;
+  width: 383px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -284,17 +336,22 @@ const CompleteTitle = styled.div<{ selectCompleted: boolean }>`
   font-weight: bold;
   border-radius: 25px;
   background-color: ${({ selectCompleted }) =>
-    selectCompleted ? '#FE802C' : 'white'};
-  color: ${({ selectCompleted }) => (selectCompleted ? 'white' : 'black')};
+    selectCompleted ? '#FE802C' : '#d9d9d9'};
+  color: #fff;
   &:hover {
     background-color: ${({ selectCompleted }) =>
       selectCompleted ? '#FE802C' : '#FFECE0'};
   }
+  @media (max-width: 1300px) {
+    width: 33%;
+    height: 50px;
+    font-size: 16px;
+  }
 `;
 
 const CancleTitle = styled.div<{ selectCanceled: boolean }>`
-  width: 320px;
-  height: 50px;
+  width: 383px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -304,11 +361,16 @@ const CancleTitle = styled.div<{ selectCanceled: boolean }>`
   font-weight: bold;
   border-radius: 25px;
   background-color: ${({ selectCanceled }) =>
-    selectCanceled ? '#FE802C' : 'white'};
-  color: ${({ selectCanceled }) => (selectCanceled ? 'white' : 'black')};
+    selectCanceled ? '#FE802C' : '#d9d9d9'};
+  color: #fff;
   &:hover {
     background-color: ${({ selectCanceled }) =>
       selectCanceled ? '#FE802C' : '#FFECE0'};
+  }
+  @media (max-width: 1300px) {
+    width: 33%;
+    height: 50px;
+    font-size: 16px;
   }
 `;
 

@@ -6,6 +6,10 @@ import { useAppDispatch } from '../../redux/store';
 import { __cancelReservation } from '../../apis/reservationApi';
 //인터페이스
 import { Reservation } from '../../interfaces/Users';
+import Button from '../common/Button';
+//이미지
+import closeArrow from '../../asset/downArrow.png';
+import openArrow from '../../asset/upArrow.png';
 
 const ReservationItem = ({ book }: { book: Reservation }) => {
   const dispatch = useAppDispatch();
@@ -38,9 +42,9 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
   };
 
   return (
-    <div>
+    <>
       <ReserveWrap key={book.bookId}>
-        <div>
+        <MainImgBox>
           <MainImg
             src={book.siteMainImage}
             alt="캠핑장 메인 이미지"
@@ -52,7 +56,7 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
               }
             }}
           />
-        </div>
+        </MainImgBox>
         <CampDesc>
           <SiteName>
             <SiteNameText
@@ -64,51 +68,84 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
                 }
               }}
             >
-              {book.siteName}{' '}
+              {book.siteName}
             </SiteNameText>
+            <Button
+              width="120px"
+              height="36px"
+              bgColor="#A1C182"
+              color="#fff"
+              borderRadius="29px"
+              onClick={() => cancleR(book.bookId)}
+            >
+              예약취소
+            </Button>
           </SiteName>
-          <div
-            onClick={() => {
-              if (display === 0) {
-                setDisplay(1);
-              } else if (display === 1) {
-                setDisplay(0);
-              }
-            }}
-          >
-            <DescText height="30px">
-              <div>
+          <ReserveInfo>
+            <p>
+              <label>요금</label>
+              <span>{book.sitePrice}원</span>
+            </p>
+            <p>
+              <label>선택인원</label>
+              <span>
+                성인{book.adults} / 아동{book.children}
+              </span>
+            </p>
+            <p>
+              <label>입퇴실시간</label>
+              <span>
+                입실 {book.Camp_checkIn} / 퇴실 {book.Camp_checkOut}
+              </span>
+            </p>
+            <p>
+              <label>예약일</label>
+              <span>
                 {book.checkInDate.split(' ')[0] +
                   ' ~ ' +
                   book.checkInDate.split(' ')[0]}
-              </div>
-              <button onClick={() => cancleR(book.bookId)}>예약취소</button>
-            </DescText>
-            <SiteDesc>
-              <p>{book.siteDesc}</p>
-            </SiteDesc>
-            <SiteInfo>
-              <p>{book.siteInfo}</p>
-            </SiteInfo>
-          </div>
+              </span>
+            </p>
+            <hr style={{ border: '1px solid #D9D9D9' }} />
+            <p>
+              <label>주의사항</label>
+              <span style={{ color: 'red' }}>
+                아래 내용을 읽지 않고 이용 시 발생하는 불이익에 대해 책임지지
+                않습니다. 꼭 읽어주세요.
+              </span>
+            </p>
+          </ReserveInfo>
         </CampDesc>
       </ReserveWrap>
-      <DropdownWrap display={display}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            border: '1px solid red',
+      <DropdownBtn>
+        <Button
+          width="1111px"
+          height="47px"
+          bgColor="#fe802c"
+          color="#fff"
+          borderRadius="29px"
+          onClick={() => {
+            if (display === 0) {
+              setDisplay(1);
+            } else if (display === 1) {
+              setDisplay(0);
+            }
           }}
         >
-          <button
-            onClick={() => {
-              setDisplay(1);
-            }}
-          >
-            x
-          </button>
-        </div>
+          {display === 0 ? (
+            <>
+              <ArrowImg src={openArrow} />
+              접기
+            </>
+          ) : (
+            <>
+              <ArrowImg src={closeArrow} />
+              상세보기
+            </>
+          )}
+        </Button>
+      </DropdownBtn>
+      <DropdownWrap display={display}>
         <CampName>{book.siteName}</CampName>
         <CampAboutBox>
           <CampAboutTitle>상세정보</CampAboutTitle>
@@ -137,115 +174,140 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
           <p>가격 : {book.sitePrice}원</p>
         </div>
       </DropdownWrap>
-    </div>
+    </>
   );
 };
 
 const ReserveWrap = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 10px;
-  width: 930px;
-  height: 260px;
-  cursor: pointer;
+  width: 1111px;
+  height: 377px;
   &:hover {
     box-shadow: 1px 1px 1px 1px #c0bdbd;
   }
-  border: 1px solid black;
   position: relative;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  box-sizing: border-box;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    height: auto;
+  }
+`;
+
+const MainImgBox = styled.div`
+  width: 549px;
+  height: 347px;
+  padding: 15px;
+  @media (max-width: 1300px) {
+    width: 45%;
+  }
+  @media (max-width: 900px) {
+    display: none;
+  }
 `;
 
 const MainImg = styled.img`
-  width: 500px;
-  height: 260px;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  @media (max-width: 900px) {
+    display: none;
+  }
 `;
 
 const SiteName = styled.div`
-  width: 400px;
-  height: 30px;
-  padding: 5px 10px 10px 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   font-size: 22px;
   font-weight: bold;
-  border-bottom: 1px solid black;
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: left;
+    button {
+      width: 85px;
+      height: 30px;
+      font-size: 14px;
+    }
+  }
 `;
 
 const SiteNameText = styled.div`
-  width: 350px;
+  max-width: 350px;
   font-size: 22px;
   font-weight: bold;
-  border-bottom: 1px solid black;
-  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  @media (max-width: 1200px) {
+    width: 99%;
+    font-size: 18px;
+  }
 `;
 
 const CampDesc = styled.div`
-  width: 400px;
-  padding: 10px;
-  min-height: 240px;
-  max-height: 100%;
+  width: 47%;
+  height: 90%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    padding: 20px;
+    font-size: 14px;
+  }
 `;
 
-const DescText = styled.div<{ height: string }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  width: 400px;
-  height: ${({ height }) => height};
-  border-bottom: 1px solid black;
-  padding-bottom: 7px;
-`;
-
-const SiteDesc = styled.div`
-  white-space: pre-wrap;
-  display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 400px;
-  height: 80px;
-  border-bottom: 1px solid black;
-`;
-
-const SiteInfo = styled.div`
-  white-space: pre-wrap;
-  display: -webkit-box;
-  word-wrap: break-word;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 400px;
-  height: 77px;
-  margin-bottom: 7px;
+const DropdownBtn = styled.div`
+  button {
+    margin: 0;
+  }
+  @media (max-width: 1200px) {
+    width: 100%;
+    button {
+      width: 100%;
+      margin: 0;
+    }
+  }
 `;
 
 const DropdownWrap = styled.div<{ display: number }>`
   display: ${({ display }) => (display === 0 ? 'block' : 'none')};
-  border: 1px solid green;
-  z-index: 2100;
-  position: absolute;
-  background-color: #c5c5c5;
-  width: 890px;
-  margin: 5px 20px 0px 20px;
-  padding: 10px;
+  background-color: #ffece0;
+  margin-top: -30px;
+  padding: 20px;
+  width: 1071px;
+  z-index: -1;
+
+  @media (max-width: 1200px) {
+    width: calc(100% - 40px);
+    font-size: 14px;
+  }
+`;
+
+const ArrowImg = styled.img`
+  width: 30px;
+  height: 20px;
+  vertical-align: middle;
+  @media (max-width: 1200px) {
+    width: 20px;
+    height: 12px;
+  }
 `;
 
 const CampName = styled.h3``;
@@ -257,11 +319,37 @@ const CampAboutBox = styled.div`
 const CampAboutTitle = styled.p`
   font-size: 20px;
   font-weight: bold;
+
+  @media (max-width: 1200px) {
+    font-size: 15px;
+  }
 `;
 
 const CamtAbout = styled.p`
   word-break: break-all;
   white-space: pre-wrap;
+`;
+
+const ReserveInfo = styled.div`
+  padding-right: 20px;
+  p {
+    display: flex;
+  }
+
+  label,
+  span {
+    display: inline-block;
+  }
+
+  label {
+    min-width: 130px;
+    font-weight: bold;
+  }
+
+  @media (max-width: 900px) {
+    padding: 0;
+    width: 100%;
+  }
 `;
 
 export default ReservationItem;
