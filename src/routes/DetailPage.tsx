@@ -28,6 +28,11 @@ import phoneImg from '../asset/phoneImg.png';
 import adultImg from '../asset/adultImg.png';
 import childImg from '../asset/childImg.png';
 import { roadMap } from '../utils/CampsUtil';
+import { KAKAO_AUTH_URL } from '../apis/loginkeys';
+import { campGeocoder } from '../utils/Geocoder';
+import campSlice from '../redux/modules/campSlice';
+import useGeolocation from '../hooks/useGeolocation';
+import { changeFormat } from '../hooks/useChangeDateFormat';
 
 interface dateType {
   startday?: any;
@@ -106,6 +111,30 @@ const DetailPage = () => {
     }
   }, [mapContainer, camp]);
 
+  //캠핑장 위도, 경도 불러오기
+  const [campLat, setCampLat] = useState(); //위도
+  const [campLng, setCampLng] = useState(); //경도
+  useEffect(() => {
+    if (camp) {
+      campGeocoder(camp.campAddress, setCampLat, setCampLng);
+    }
+  }, [camp]);
+
+  //사용자 위치정보 불러오기
+  const location = useGeolocation();
+  //길찾기 버튼 이동함수
+  const getDirection = () => {
+    if (location.error) {
+      alert(`위치 액세스가 허용되어야 사용이 가능합니다!`);
+      return;
+    }
+    if (location.coordinates) {
+      window.open(
+        `https://map.kakao.com/link/from/사용자위치,${location.coordinates.lat},${location.coordinates.lng}/to/${camp.campName},${campLat},${campLng}/`,
+      );
+    }
+  };
+
   // 요일 계산
   const getday = (dayNum: number) => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
@@ -139,7 +168,13 @@ const DetailPage = () => {
   const getCampSites = () => {
     if (start && end) {
       dispatch(
-        __getCampSitesByParams({ params, adult, child, start, end }),
+        __getCampSitesByParams({
+          params,
+          adult,
+          child,
+          start: changeFormat(start, 'yyyy-MM-DD'),
+          end: changeFormat(end, 'yyyy-MM-DD'),
+        }),
       ).then(res => {
         const { type, payload }: any = res;
         if (type === 'getCampSitesByParams/fulfilled') {
@@ -202,14 +237,7 @@ const DetailPage = () => {
           <div>
             <div>
               <DescBox>
-                <CampName>
-                  {camp.campName}
-                  <button
-                    onClick={() => {
-                      console.log(sites);
-                    }}
-                  ></button>
-                </CampName>
+                <CampName>{camp.campName}</CampName>
                 <div style={{ cursor: 'pointer' }} onClick={likeCamp}>
                   {like ? (
                     <img
@@ -231,16 +259,17 @@ const DetailPage = () => {
               <CampDesc>
                 <IconLo src={locationImg} />
                 <div>{camp.campAddress}</div>
-                {/* <Button
+                <Button
                   bgColor="#fff2e9"
                   width="54px"
                   height="27px"
                   fontSize="12px"
                   borderRadius="13.5px"
                   margin="0px"
+                  onClick={getDirection}
                 >
                   길찾기
-                </Button> */}
+                </Button>
               </CampDesc>
               <CampDesc>
                 <IconPh src={phoneImg} />
