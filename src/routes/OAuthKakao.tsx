@@ -20,6 +20,7 @@ const OAuthKakao = () => {
       // 에러처리
       else if (type === 'kakaoLogin/rejected') {
         alert(`${payload.response.data.errorMessage}`);
+        window.location.href = '/login';
       }
     });
   };
