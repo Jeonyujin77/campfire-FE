@@ -9,6 +9,7 @@ import { CommentInfo } from '../../interfaces/Comment';
 //컴포넌트
 import Comment from './comment';
 import InsertComment from './InsertComment';
+import { __getUser } from '../../apis/userApi';
 
 interface CommentProps {
   isCmtOpen: boolean;
@@ -24,6 +25,9 @@ const CommentList = (props: CommentProps) => {
   const [moreCnt, setMoreCnt] = useState(true);
   const [comments, setComments] = useState<CommentInfo[]>([]);
   const { campId } = props;
+  const loggedInUserId = Number(localStorage.getItem('userId'));
+  const [loggedInUserName, setLoggedInUserName] = useState('');
+  const [loggedInUserImg, setLoggedInUserImg] = useState('');
 
   useEffect(() => {
     getCampReviews(cmtPage);
@@ -67,9 +71,47 @@ const CommentList = (props: CommentProps) => {
     getCampReviews(next);
   };
 
+  //유저정보 가져오기
+  useEffect(() => {
+    if (
+      localStorage.getItem('accessToken') &&
+      localStorage.getItem('refreshToken') &&
+      localStorage.getItem('userId')
+    ) {
+      dispatch(__getUser(loggedInUserId)).then(res => {
+        const { type, payload } = res;
+        if (type === 'getUser/fulfilled') {
+          const {
+            userName,
+            profileImg,
+          }: {
+            userName: string;
+            profileImg: string;
+          } = payload.user;
+          setLoggedInUserName(userName);
+          setLoggedInUserImg(profileImg);
+        }
+        // 에러처리
+        else if (type === 'getUser/rejected') {
+          alert(`${payload.response.data.errorMessage}`);
+        }
+      });
+    } else {
+      window.location.href = '/login';
+    }
+  }, []);
+
   return (
     <List isCmtOpen={props.isCmtOpen}>
-      <CommentTitle>리뷰</CommentTitle>
+      <CommentTitle>
+        <CommentTitleDiv>
+          <Profile>
+            <img src={loggedInUserImg} alt="프로필" />
+            <p>{loggedInUserName}</p>
+          </Profile>
+          <p>리뷰</p>
+        </CommentTitleDiv>
+      </CommentTitle>
       <InsertComment campId={campId} />
       {comments.length !== 0 ? (
         comments.map(comment => (
@@ -106,11 +148,68 @@ const List = styled.div<{ isCmtOpen: boolean }>`
 const CommentTitle = styled.div`
   margin: 50px 0px 10px 0px;
   width: 100%;
-  text-align: left;
+  background-color: #fe802c;
+  height: 58px;
+  border-radius: 29px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* text-align: left; */
   font-size: 22px;
   font-weight: bold;
   @media (max-width: 1200px) {
     font-size: 18px;
+  }
+`;
+
+const CommentTitleDiv = styled.div`
+  margin: 5px;
+  max-width: 100%;
+  min-width: calc(50% + 12.5px);
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 25px;
+  p {
+    margin: 0px;
+  }
+`;
+
+const Profile = styled.div`
+  background-color: white;
+  padding: 0px 10px;
+  max-width: 100%;
+  min-width: 127px;
+  height: 52px;
+  border-radius: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 15px;
+  color: black;
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    margin-right: 10px;
+  }
+  p {
+    line-height: 0;
+    font-weight: bold;
+    max-width: 100%;
+  }
+
+  @media (max-width: 1200px) {
+    margin-right: 5px;
+    font-size: 12px;
+    img {
+      width: 25px;
+      height: 25px;
+    }
   }
 `;
 
@@ -123,6 +222,7 @@ const MoreComment = styled.div`
   height: 50px;
   border-radius: 15px;
   cursor: pointer;
+  margin-bottom: 10px;
   &:hover {
     background-color: #e8d2c4;
   }

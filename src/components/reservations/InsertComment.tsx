@@ -46,7 +46,11 @@ const InsertComment = ({ campId }: { campId: number }) => {
       ) : (
         <WriteCommentForm onSubmit={onSubmit}>
           <textarea value={comment} onChange={commentHandler} maxLength={500} />
-          <Button bgColor="#ffece0">등록</Button>
+          <div>
+            <Button bgColor="#A1C182" color="white">
+              등록하기
+            </Button>
+          </div>
         </WriteCommentForm>
       )}
     </>
@@ -58,12 +62,21 @@ const WriteCommentForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  border: 2px solid #fe802c;
+  border-radius: 20px;
   textarea {
-    width: 100%;
+    margin: 10px 10px 0px 10px;
+    width: 98%;
     height: 150px;
     resize: none;
     border-radius: 5px;
+    border: none;
+  }
+  div {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
   @media (max-width: 1200px) {
     textarea,
