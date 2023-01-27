@@ -53,7 +53,7 @@ const Header = () => {
           )}
           <div
             onClick={() => {
-              window.location.href = 'https://campfire-host-fe.vercel.app/';
+              window.open('https://campfire-host-fe.vercel.app/');
             }}
           >
             관리자모드

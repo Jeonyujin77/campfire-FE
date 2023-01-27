@@ -121,7 +121,7 @@ const CommentList = (props: CommentProps) => {
           />
         ))
       ) : (
-        <>작성된 리뷰가 없습니다. 리뷰를 등록해보세요.</>
+        <></>
       )}
       {moreCnt ? (
         <MoreComment onClick={() => getCommentsByPageno(cmtPage, cmtPage + 1)}>

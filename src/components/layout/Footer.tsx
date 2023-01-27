@@ -20,7 +20,7 @@ const Footer = () => {
     window.location.href = '/search';
   };
   const goToHostPage = () => {
-    window.location.href = 'https://campfire-host-fe.vercel.app/';
+    window.open('https://campfire-host-fe.vercel.app/');
   };
 
   return (
