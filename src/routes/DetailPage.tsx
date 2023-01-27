@@ -27,12 +27,10 @@ import locationImg from '../asset/locationImg.png';
 import phoneImg from '../asset/phoneImg.png';
 import adultImg from '../asset/adultImg.png';
 import childImg from '../asset/childImg.png';
-import { roadMap } from '../utils/CampsUtil';
-import { KAKAO_AUTH_URL } from '../apis/loginkeys';
 import { campGeocoder } from '../utils/Geocoder';
-import campSlice from '../redux/modules/campSlice';
 import useGeolocation from '../hooks/useGeolocation';
 import { changeFormat } from '../hooks/useChangeDateFormat';
+import CategoryFromBounds from '../components/camps/CategoryFromBounds';
 
 interface dateType {
   startday?: any;
@@ -65,7 +63,9 @@ const DetailPage = () => {
     adult: adult,
     child: child,
   }); // 인원수
-  const mapContainer = useRef(null); // 캠핑장 지도
+  //캠핑장 위도, 경도 불러오기
+  const [campLat, setCampLat] = useState(''); //위도
+  const [campLng, setCampLng] = useState(''); //경도
 
   //페이지 이동 시 스크롤 최상단으로 이동
   useEffect(() => {
@@ -104,16 +104,7 @@ const DetailPage = () => {
     }
   }, [start, end, adult, child]);
 
-  // 카카오 맵 API로 지도 출력
-  useEffect(() => {
-    if (mapContainer !== null && camp !== undefined) {
-      roadMap(camp.campAddress, camp.campName);
-    }
-  }, [mapContainer, camp]);
-
-  //캠핑장 위도, 경도 불러오기
-  const [campLat, setCampLat] = useState(); //위도
-  const [campLng, setCampLng] = useState(); //경도
+  // 캠핑장 위치 위도, 경도 구하기
   useEffect(() => {
     if (camp) {
       campGeocoder(camp.campAddress, setCampLat, setCampLng);
@@ -440,7 +431,11 @@ const DetailPage = () => {
             <></>
           )}
           <MapBox>
-            <div id="map" className="mapViewPopUp" ref={mapContainer}></div>
+            <CategoryFromBounds
+              campLat={campLat}
+              campLng={campLng}
+              campName={camp.campName}
+            />
           </MapBox>
           {isCmtOpen ? (
             <CmtBox onClick={() => isCmtOpenChange()}>
@@ -666,13 +661,15 @@ const MapBox = styled.div`
   width: 100%;
   height: 500px;
   margin-bottom: 20px;
+
   #map {
     width: 100%;
     height: 100%;
+    border-radius: 20px;
   }
 
   @media (max-width: 1200px) {
-    height: 300px;
+    height: 400px;
   }
 `;
 

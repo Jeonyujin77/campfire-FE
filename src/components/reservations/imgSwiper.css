@@ -1,23 +1,47 @@
 .swiper-button-prev {
-  --swiper-theme-color: #fe802c;
+  --swiper-theme-color: transparent;
 }
 
 .swiper-button-next {
-  --swiper-theme-color: #fe802c;
+  --swiper-theme-color: transparent;
 }
 
 .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
   bottom: 0px;
 }
-/* .swiper-pagination-horizontal {
-  opacity: 0.5;
-} */
-/* .swiper-button-next {
-  --swiper-theme-color: rgb(72, 70, 66);
-}
-.swiper-button-prev {
-  --swiper-theme-color: rgb(72, 70, 66);
-} */
 .swiper-pagination-bullet-active {
   --swiper-theme-color: #ff6600;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  top: 40%;
+  background-color: rgba(255, 255, 255, 0.5);
+  height: 212px;
+  width: 45px;
+  border-radius: 20px;
+}
+.swiper-button-next:after {
+  background-image: url(/src/asset/rightArrow.png);
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+.swiper-button-prev:after {
+  background-image: url(/src/asset/leftArrow.png);
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+@media (max-width: 1200px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    height: 50%;
+    width: 30px;
+  }
+  .swiper-button-prev:after,
+  .swiper-button-next:after {
+    width: 20px;
+    height: 20px;
+  }
 }
