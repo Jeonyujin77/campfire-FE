@@ -112,6 +112,10 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   gap: 5px;
   z-index: 2000;
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  @media (max-width: 1200px) {
+    left: calc(50vw - 170px);
+    width: 320px;
+  }
 `;
 
 const DateText = styled.div`
