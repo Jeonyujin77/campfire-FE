@@ -92,14 +92,20 @@ const ReservationItemDetail = ({
                   book.checkOutDate.split(' ')[0]}
               </span>
             </p>
-            <hr style={{ border: '1px solid #D9D9D9' }} />
-            <p>
-              <label>주의사항</label>
-              <span style={{ color: 'red' }}>
-                아래 내용을 읽지 않고 이용 시 발생하는 불이익에 대해 책임지지
-                않습니다. 꼭 읽어주세요.
-              </span>
-            </p>
+            {status === 0 ? (
+              <>
+                <hr style={{ border: '1px solid #D9D9D9' }} />
+                <p>
+                  <label>주의사항</label>
+                  <span style={{ color: 'red' }}>
+                    아래 내용을 읽지 않고 이용 시 발생하는 불이익에 대해
+                    책임지지 않습니다. 꼭 읽어주세요.
+                  </span>
+                </p>
+              </>
+            ) : (
+              <></>
+            )}
           </ReserveInfo>
         </CampDesc>
       </ReserveWrap>
