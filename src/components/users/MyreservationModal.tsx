@@ -99,12 +99,7 @@ const MyReservationModal = (props: MRProps) => {
         isOpen={props.isOpen}
       ></ModalBackground>
       <ModalBox isOpen={props.isOpen}>
-        <ModalCloseBtn
-          isOpen={props.isOpen}
-          onClick={() => {
-            props.setIsOpen(!props.isOpen);
-          }}
-        >
+        <ModalCloseBtn isOpen={props.isOpen} onClick={onClose}>
           <img src={closePopupBtn} alt="닫기" />
         </ModalCloseBtn>
         <ModalWrap>
