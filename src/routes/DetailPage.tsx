@@ -1,16 +1,21 @@
 //라이브러리
 import styled from '@emotion/styled';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
+import dayjs from 'dayjs';
 //api
 import {
   __getCampsByParams,
   __getCampSitesByParams,
   __likeCampByParams,
 } from '../apis/campApi';
+//훅
+import { campGeocoder } from '../utils/Geocoder';
+import useGeolocation from '../hooks/useGeolocation';
 //interface
 import { SiteList } from '../interfaces/camp';
+import { countType, dateType } from '../interfaces/Reservations';
 //컴포넌트
 import DateChoiceModal from '../components/reservations/dateChoiceModal';
 import CommentList from '../components/reservations/commentList';
@@ -19,6 +24,7 @@ import CheckAuth from '../components/common/CheckAuth';
 import Sites from '../components/camps/Sites';
 import CampAmenities from '../components/reservations/campAmenities';
 import ImgSwiper from '../components/reservations/imgSwiper';
+import CategoryFromBounds from '../components/camps/CategoryFromBounds';
 //이미지
 import likeOn from '../asset/likeOn.png';
 import likeOff from '../asset/likeOff.png';
@@ -27,20 +33,6 @@ import locationImg from '../asset/locationImg.png';
 import phoneImg from '../asset/phoneImg.png';
 import adultImg from '../asset/adultImg.png';
 import childImg from '../asset/childImg.png';
-import { campGeocoder } from '../utils/Geocoder';
-import useGeolocation from '../hooks/useGeolocation';
-import { changeFormat } from '../hooks/useChangeDateFormat';
-import CategoryFromBounds from '../components/camps/CategoryFromBounds';
-
-interface dateType {
-  startday?: any;
-  endday?: any;
-}
-
-interface countType {
-  adult?: any;
-  child?: any;
-}
 
 const DetailPage = () => {
   const dispatch = useAppDispatch();
@@ -63,9 +55,8 @@ const DetailPage = () => {
     adult: adult,
     child: child,
   }); // 인원수
-  //캠핑장 위도, 경도 불러오기
-  const [campLat, setCampLat] = useState(''); //위도
-  const [campLng, setCampLng] = useState(''); //경도
+  const [campLat, setCampLat] = useState(''); // 캠핑장위도
+  const [campLng, setCampLng] = useState(''); // 캠핑장경도
 
   //페이지 이동 시 스크롤 최상단으로 이동
   useEffect(() => {
@@ -88,16 +79,17 @@ const DetailPage = () => {
     });
   }, []);
 
+  // 날짜 변경
   useEffect(() => {
     setDateObj({ ...dateObj, startday: start, endday: end });
   }, [start, end]);
 
+  // 인원수 변경
   useEffect(() => {
     setCountObj({ ...countObj, adult: adult, child: child });
   }, [adult, child]);
 
-  //검색 후 날짜나 인원수를 바꾸면 사이트목록을 비워
-  //다시 검색하도록 유도한다.
+  //검색 후 날짜나 인원수를 바꾸면 사이트목록을 비워 다시 검색하도록 유도한다.
   useEffect(() => {
     if (sites) {
       setSites(null);
@@ -113,8 +105,9 @@ const DetailPage = () => {
 
   //사용자 위치정보 불러오기
   const location = useGeolocation();
+
   //길찾기 버튼 이동함수
-  const getDirection = () => {
+  const getDirection = useCallback(() => {
     if (location.error) {
       alert(`위치 액세스가 허용되어야 사용이 가능합니다!`);
       return;
@@ -124,47 +117,51 @@ const DetailPage = () => {
         `https://map.kakao.com/link/from/사용자위치,${location.coordinates.lat},${location.coordinates.lng}/to/${camp.campName},${campLat},${campLng}/`,
       );
     }
-  };
+  }, [campLat, campLng]);
 
   // 요일 계산
-  const getday = (dayNum: number) => {
+  const getday = useCallback((dayNum: number) => {
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     return days[dayNum];
-  };
+  }, []);
 
   // 성인수 감소
-  const adultMinusButton = () => {
+  const adultMinusButton = useCallback(() => {
     if (adult <= 1) return;
     setAdult(adult - 1);
-  };
+  }, [adult]);
+
   // 성인수 증가
-  const adultPlusButton = () => {
+  const adultPlusButton = useCallback(() => {
     setAdult(adult + 1);
-  };
+  }, [adult]);
+
   // 아동수 감소
-  const childMinusButton = () => {
+  const childMinusButton = useCallback(() => {
     if (child <= 0) return;
     setChild(child - 1);
-  };
+  }, [child]);
+
   // 아동수 증가
-  const childPlusButton = () => {
+  const childPlusButton = useCallback(() => {
     setChild(child + 1);
-  };
+  }, [child]);
+
   // 접기/열기
-  const isCmtOpenChange = () => {
+  const isCmtOpenChange = useCallback(() => {
     setIsCmtOpen(!isCmtOpen);
-  };
+  }, [isCmtOpen]);
 
   //사이트 검색 버튼 onClick
-  const getCampSites = () => {
+  const getCampSites = useCallback(() => {
     if (start && end) {
       dispatch(
         __getCampSitesByParams({
           params,
           adult,
           child,
-          start: changeFormat(start, 'yyyy-MM-DD'),
-          end: changeFormat(end, 'yyyy-MM-DD'),
+          start: dayjs(start).format('YYYY-MM-DD'),
+          end: dayjs(end).format('YYYY-MM-DD'),
         }),
       ).then(res => {
         const { type, payload }: any = res;
@@ -179,10 +176,10 @@ const DetailPage = () => {
     } else {
       alert('날짜를 선택하세요!');
     }
-  };
+  }, [adult, child, start, end, params, dispatch]);
 
   //찜하기, 찜취소하기 버튼 onClick
-  const likeCamp = () => {
+  const likeCamp = useCallback(() => {
     dispatch(__likeCampByParams(params)).then(res => {
       const { type, payload }: any = res;
       if (type === 'likeCampByParams/fulfilled') {
@@ -198,7 +195,7 @@ const DetailPage = () => {
         alert(`${payload.response.data.errorMessage}`);
       }
     });
-  };
+  }, [dispatch, params]);
 
   //번호 복사 함수
   const handleCopyClipBoard = async () => {
@@ -313,79 +310,82 @@ const DetailPage = () => {
             <HeadText>방문인원</HeadText>
             <HeadCount>
               <CountWrap>
-                <IconAd src={adultImg} />
-                성인
-                <Button
-                  width="27px"
-                  height="27px"
-                  bgColor="rgb(254,128,44)"
-                  borderRadius="13.5px"
-                  fontSize="23px"
-                  fontWeight="bold"
-                  color="white"
-                  margin="12px"
-                  onClick={() => {
-                    adultMinusButton();
-                  }}
-                >
-                  -
-                </Button>
-                {adult}
-                <Button
-                  width="27px"
-                  height="27px"
-                  bgColor="rgb(254,128,44)"
-                  borderRadius="13.5px"
-                  fontSize="23px"
-                  fontWeight="bold"
-                  color="white"
-                  margin="12px"
-                  onClick={() => {
-                    adultPlusButton();
-                  }}
-                >
-                  +
-                </Button>
-                <IconAd src={childImg} />
-                아동
-                <Button
-                  width="27px"
-                  height="27px"
-                  bgColor="rgb(254,128,44)"
-                  borderRadius="13.5px"
-                  fontSize="23px"
-                  fontWeight="bold"
-                  color="white"
-                  margin="12px"
-                  onClick={() => {
-                    childMinusButton();
-                  }}
-                >
-                  -
-                </Button>
-                {child}
-                <Button
-                  width="27px"
-                  height="27px"
-                  bgColor="rgb(254,128,44)"
-                  borderRadius="13.5px"
-                  fontSize="23px"
-                  fontWeight="bold"
-                  color="white"
-                  margin="12px"
-                  onClick={() => {
-                    childPlusButton();
-                  }}
-                >
-                  +
-                </Button>
+                <AdultWrap>
+                  <IconAd src={adultImg} />
+                  성인
+                  <Button
+                    width="27px"
+                    height="27px"
+                    bgColor="rgb(254,128,44)"
+                    borderRadius="13.5px"
+                    fontSize="23px"
+                    fontWeight="bold"
+                    color="white"
+                    margin="12px"
+                    onClick={() => {
+                      adultMinusButton();
+                    }}
+                  >
+                    -
+                  </Button>
+                  {adult}
+                  <Button
+                    width="27px"
+                    height="27px"
+                    bgColor="rgb(254,128,44)"
+                    borderRadius="13.5px"
+                    fontSize="23px"
+                    fontWeight="bold"
+                    color="white"
+                    margin="12px"
+                    onClick={() => {
+                      adultPlusButton();
+                    }}
+                  >
+                    +
+                  </Button>
+                </AdultWrap>
+                <AdultWrap>
+                  <IconAd src={childImg} />
+                  아동
+                  <Button
+                    width="27px"
+                    height="27px"
+                    bgColor="rgb(254,128,44)"
+                    borderRadius="13.5px"
+                    fontSize="23px"
+                    fontWeight="bold"
+                    color="white"
+                    margin="12px"
+                    onClick={() => {
+                      childMinusButton();
+                    }}
+                  >
+                    -
+                  </Button>
+                  {child}
+                  <Button
+                    width="27px"
+                    height="27px"
+                    bgColor="rgb(254,128,44)"
+                    borderRadius="13.5px"
+                    fontSize="23px"
+                    fontWeight="bold"
+                    color="white"
+                    margin="12px"
+                    onClick={() => {
+                      childPlusButton();
+                    }}
+                  >
+                    +
+                  </Button>
+                </AdultWrap>
               </CountWrap>
               <Button bgColor="#FFECE0" onClick={getCampSites}>
                 검색하기
               </Button>
             </HeadCount>
           </HeadCountWrap>
-
           {camp.campAmenities ? (
             <AmenityWrap>
               <div
@@ -401,7 +401,7 @@ const DetailPage = () => {
                 {camp.campAmenities ? (
                   <Amenities>
                     {camp.campAmenities.map((amenity: any) => (
-                      <CampAmenities key={amenity}>{amenity}</CampAmenities>
+                      <CampAmenities key={amenity} amenity={amenity} />
                     ))}
                   </Amenities>
                 ) : (
@@ -437,22 +437,16 @@ const DetailPage = () => {
               campName={camp.campName}
             />
           </MapBox>
-          {isCmtOpen ? (
-            <CmtBox onClick={() => isCmtOpenChange()}>
-              {'접기 '}
-              {/* <ArrImg src={upArrowOrange} /> */}
-            </CmtBox>
-          ) : (
-            <CmtBox onClick={() => isCmtOpenChange()}>
-              {'열기 '}
-              {/* <ArrImgDown src={upArrowOrange} /> */}
-            </CmtBox>
-          )}
           <CommentList
             isCmtOpen={isCmtOpen}
             setIsCmtOpen={setIsCmtOpen}
             campId={params}
           />
+          {isCmtOpen ? (
+            <CmtBox onClick={() => isCmtOpenChange()}>{'접기 '}</CmtBox>
+          ) : (
+            <CmtBox onClick={() => isCmtOpenChange()}>{'열기 '}</CmtBox>
+          )}
         </DescWrap>
       </Wrap>
     </>
@@ -600,6 +594,13 @@ const CountWrap = styled.div`
   @media (max-width: 1200px) {
     gap: 3%;
   }
+`;
+
+const AdultWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 `;
 
 const AmenityWrap = styled.div`

@@ -130,6 +130,12 @@ const MapWrap = styled.div`
     li.on .category_bg {
       background-position-x: -46px;
     }
+
+    @media (max-width: 1200px) {
+      li {
+        width: 40px;
+      }
+    }
   }
   .placeinfo_wrap {
     position: absolute;

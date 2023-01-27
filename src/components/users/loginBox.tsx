@@ -18,9 +18,6 @@ import { emailValid, pwValid } from '../../utils/RegExp';
 import Input from '../common/Input';
 import Button from '../common/Button';
 //이미지
-import kakao_login_medium_wide from '../../asset/kakao_login_medium_wide.png';
-import naver_login from '../../asset/naver_login.png';
-import google_btn from '../../asset/google_btn.png';
 import google_logo from '../../asset/google_logo.png';
 import kakao_logo from '../../asset/kakao_logo.png';
 import naver_logo from '../../asset/naver_logo.png';
@@ -75,7 +72,7 @@ const LoginBox = () => {
           <Span>
             <Input
               type="email"
-              width="412px"
+              width="394px"
               placeholder="아이디(ID)"
               height="59px"
               fontSize="20px"
@@ -177,7 +174,7 @@ const LoginBox = () => {
         margin="0px 0px 20px 0px"
         mwidth="70%"
         onClick={() => {
-          window.location.href = 'https://campfire-host-fe.vercel.app/';
+          window.open('https://campfire-host-fe.vercel.app/');
         }}
       >
         관리자모드
@@ -256,11 +253,19 @@ const PswdShow = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  @media (max-width: 1200px) {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const PswdImg = styled.img`
   width: 30px;
   height: 20px;
+  @media (max-width: 1200px) {
+    width: 25px;
+    height: 15px;
+  }
 `;
 
 const ErrWrap = styled.div`
@@ -274,7 +279,7 @@ const ErrWrap = styled.div`
 
 const ErrorText = styled.div`
   color: red;
-  width: 412px;
+  width: 394px;
   font-size: 12px;
   @media (max-width: 1200px) {
     width: 100%;

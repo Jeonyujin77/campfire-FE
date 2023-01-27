@@ -6,3 +6,13 @@ export interface ReserveInfo {
   adults: number;
   children: number;
 }
+
+export interface dateType {
+  startday?: any;
+  endday?: any;
+}
+
+export interface countType {
+  adult?: any;
+  child?: any;
+}

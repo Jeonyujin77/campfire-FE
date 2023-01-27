@@ -10,6 +10,11 @@ import WithdrawalModal from '../components/users/WithdrawalModal';
 import MyLikeList from '../components/users/MyLikeList';
 import MyReservationModal from '../components/users/MyreservationModal';
 import Button from '../components/common/Button';
+//이미지
+import modifyIcon from '../asset/mypageIcons/modifyIcon.png';
+import myReservationIcon from '../asset/mypageIcons/myReservationIcon.png';
+import userLikedIcon from '../asset/mypageIcons/userLikedIcon.png';
+import withdrawalIcon from '../asset/mypageIcons/withdrawalIcon.png';
 
 const MyPage = () => {
   const dispatch = useAppDispatch();
@@ -109,71 +114,69 @@ const MyPage = () => {
         </UserInfoDiv>
         <IconsDiv>
           <IconsTop>
-            <Icon
-              onClick={() => {
-                if (
-                  accesstoken &&
-                  accesstoken !== 'undefined' &&
-                  refreshtoken &&
-                  refreshtoken !== 'undefined'
-                ) {
-                  setIsOpen(!isOpen);
-                } else {
-                  alert('로그인 해주세요!');
-                }
-              }}
-            >
-              <img src="https://via.placeholder.com/80" alt="내예약 이미지" />
-              <div>내 예약</div>
-            </Icon>
-            <Icon
-              onClick={() => {
-                if (
-                  accesstoken &&
-                  accesstoken !== 'undefined' &&
-                  refreshtoken &&
-                  refreshtoken !== 'undefined'
-                ) {
-                  navigate('/mypage/edit');
-                } else {
-                  alert('로그인 해주세요!');
-                }
-              }}
-            >
-              <img
-                src="https://via.placeholder.com/80"
-                alt="프로필수정 이미지"
-              />
-              <div>프로필 수정</div>
-            </Icon>
-            <Icon
-              onClick={() => {
-                if (
-                  accesstoken &&
-                  accesstoken !== 'undefined' &&
-                  refreshtoken &&
-                  refreshtoken !== 'undefined'
-                ) {
-                  setIsLikeOpen(!isOpen);
-                } else {
-                  alert('로그인 해주세요!');
-                }
-              }}
-            >
-              <img src="https://via.placeholder.com/80" alt="찜한 캠핑장" />
-              <div>찜한 캠핑장</div>
-            </Icon>
-            <Icon
-              onClick={() => {
-                setIsWithdrawalOpen(!isWithdrawalOpen);
-              }}
-            >
-              <img
-                src="https://via.placeholder.com/80"
-                alt="프로필수정 이미지"
-              />
-              <div>회원 탈퇴</div>
-            </Icon>
+            <Icons>
+              <Icon
+                onClick={() => {
+                  if (
+                    accesstoken &&
+                    accesstoken !== 'undefined' &&
+                    refreshtoken &&
+                    refreshtoken !== 'undefined'
+                  ) {
+                    setIsOpen(!isOpen);
+                  } else {
+                    alert('로그인 해주세요!');
+                  }
+                }}
+              >
+                <img src={myReservationIcon} alt="내예약 아이콘" />
+                <div>내 예약</div>
+              </Icon>
+              <Icon
+                onClick={() => {
+                  if (
+                    accesstoken &&
+                    accesstoken !== 'undefined' &&
+                    refreshtoken &&
+                    refreshtoken !== 'undefined'
+                  ) {
+                    navigate('/mypage/edit');
+                  } else {
+                    alert('로그인 해주세요!');
+                  }
+                }}
+              >
+                <img src={modifyIcon} alt="프로필수정 아이콘" />
+                <div>프로필 수정</div>
+              </Icon>
+            </Icons>
+            <Icons>
+              <Icon
+                onClick={() => {
+                  if (
+                    accesstoken &&
+                    accesstoken !== 'undefined' &&
+                    refreshtoken &&
+                    refreshtoken !== 'undefined'
+                  ) {
+                    setIsLikeOpen(!isOpen);
+                  } else {
+                    alert('로그인 해주세요!');
+                  }
+                }}
+              >
+                <img src={userLikedIcon} alt="찜한 캠핑장 아이콘" />
+                <div>찜한 캠핑장</div>
+              </Icon>
+              <Icon
+                onClick={() => {
+                  setIsWithdrawalOpen(!isWithdrawalOpen);
+                }}
+              >
+                <img src={withdrawalIcon} alt="회원탈퇴 아이콘" />
+                <div>회원 탈퇴</div>
+              </Icon>
+            </Icons>
           </IconsTop>
         </IconsDiv>
         <Button
@@ -256,14 +259,13 @@ const ProfileImg = styled.img`
 `;
 
 const IconsDiv = styled.div`
-  width: 895px;
-  height: 159px;
+  width: 900px;
+  max-height: 100%;
+  min-height: 159px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 15px;
-  background: #ffece0;
-  border-radius: 101px;
   @media (max-width: 1200px) {
     width: 100%;
   }
@@ -275,22 +277,37 @@ const IconsTop = styled.div`
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
+  @media (max-width: 1200px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+`;
+
+const Icons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 50%;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `;
 
 const Icon = styled.div`
-  width: 25%;
-  height: 120px;
+  width: 190px;
+  height: 134px;
+  background-color: #ffece0;
+  border-radius: 67px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 17px;
   cursor: pointer;
 
   img {
     width: 72px;
     height: 72px;
-    border-radius: 50%;
   }
 
   @media (max-width: 1200px) {

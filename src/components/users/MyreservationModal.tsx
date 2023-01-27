@@ -16,10 +16,9 @@ import {
 } from '../../interfaces/Users';
 //컴포넌트
 import ReservationItem from './ReservationItem';
-import CompReserveItem from './CompReserveItem';
-import CancReserveItem from './CancReserveItem';
 //이미지
 import closePopupBtn from '../../asset/reserveModalCloseBtn.png';
+import ReservationItemDetail from './ReservationItemDetail';
 
 interface MRProps {
   isOpen: boolean;
@@ -28,12 +27,10 @@ interface MRProps {
 
 const MyReservationModal = (props: MRProps) => {
   const dispatch = useAppDispatch();
-
   const [books, setBooks] = useState<ReservationList>(); //예약내역
   const [completedBooks, setCompletedBooks] =
     useState<CompletedReservationList>(); //이용 완료내역
   const [canceledBooks, setCanceledBooks] = useState<CanceledReservationList>(); //예약 취소내역
-
   const [selectBooks, setSelectBooks] = useState(true); //예약내역선택
   const [selectCompleted, setSelectCompleted] = useState(false); //이용 완료내역선택
   const [selectCanceled, setSelectCanceled] = useState(false); //예약 취소내역 선택
@@ -53,7 +50,7 @@ const MyReservationModal = (props: MRProps) => {
       });
       document.body.style.overflow = 'hidden';
     }
-  }, [selectBooks, props.isOpen]);
+  }, [selectBooks, props.isOpen, dispatch]);
 
   //페이지 진입 시 완료내역 한번 불러오고, 완료내역이 선택될 때마다 데이터를 불러옴
   useEffect(() => {
@@ -70,7 +67,7 @@ const MyReservationModal = (props: MRProps) => {
       });
       document.body.style.overflow = 'hidden';
     }
-  }, [selectCompleted, props.isOpen]);
+  }, [selectCompleted, props.isOpen, dispatch]);
 
   //페이지 진입 시 취소내역 한번 불러오고, 취소내역이 선택될 때마다 데이터를 불러옴
   useEffect(() => {
@@ -87,8 +84,9 @@ const MyReservationModal = (props: MRProps) => {
       });
       document.body.style.overflow = 'hidden';
     }
-  }, [selectCanceled, props.isOpen]);
+  }, [selectCanceled, props.isOpen, dispatch]);
 
+  // 팝업 종료
   const onClose = () => {
     props.setIsOpen(!props.isOpen);
     document.body.style.overflow = 'auto';
@@ -109,7 +107,6 @@ const MyReservationModal = (props: MRProps) => {
         >
           <img src={closePopupBtn} alt="닫기" />
         </ModalCloseBtn>
-
         <ModalWrap>
           <ModalHeader>
             <TitleWrap>
@@ -159,7 +156,11 @@ const MyReservationModal = (props: MRProps) => {
           {selectCompleted ? (
             completedBooks ? (
               completedBooks.expiredBooks.map(book => (
-                <CompReserveItem key={book.bookId} book={book} />
+                <ReservationItemDetail
+                  key={book.bookId}
+                  book={book}
+                  status={1}
+                />
               ))
             ) : (
               <></>
@@ -170,7 +171,11 @@ const MyReservationModal = (props: MRProps) => {
           {selectCanceled ? (
             canceledBooks ? (
               canceledBooks.cancelBooks.map(book => (
-                <CancReserveItem key={book.bookId} book={book} />
+                <ReservationItemDetail
+                  key={book.bookId}
+                  book={book}
+                  status={-1}
+                />
               ))
             ) : (
               <></>

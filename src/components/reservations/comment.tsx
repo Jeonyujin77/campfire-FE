@@ -86,23 +86,26 @@ const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {
   return (
     <>
       <CommentWrapper>
-        <Profile>
-          <img src={profileImg} alt="프로필" />
-          <p>{userName}</p>
-        </Profile>
-        <CommentBox>
-          {!isModify ? (
-            <p>{content}</p>
-          ) : (
-            <textarea
-              defaultValue={content}
-              onChange={commentHandler}
-              maxLength={500}
-            />
-          )}
-
-          <span>{updatedAt}</span>
-        </CommentBox>
+        <CommentBoxWrap>
+          <CommentBox>
+            {!isModify ? (
+              <p>{content}</p>
+            ) : (
+              <textarea
+                defaultValue={content}
+                onChange={commentHandler}
+                maxLength={500}
+              />
+            )}
+          </CommentBox>
+          <CommentBoxBottom>
+            <Profile>
+              <img src={profileImg} alt="프로필" />
+              <p>{userName}</p>
+            </Profile>
+            <span>{updatedAt.split(' ').join(' / ')}</span>
+          </CommentBoxBottom>
+        </CommentBoxWrap>
         {content.length > 500 ? <button>더보기</button> : <></>}
         {Number(loggedInUserId) === userId ? (
           !isModify ? (
@@ -150,8 +153,7 @@ const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {
 
 const CommentWrapper = styled.div`
   width: 100%;
-  border-bottom: 1px solid #e3e3e3;
-  padding: 10px 0px 30px 0px;
+  padding: 10px 0px 10px 0px;
 `;
 
 const Profile = styled.div`
@@ -177,6 +179,20 @@ const Profile = styled.div`
   }
 `;
 
+const CommentBoxWrap = styled.div`
+  padding: 10px 10px;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  margin-bottom: 10px;
+`;
+
+const CommentBoxBottom = styled.div`
+  padding: 0px 20px 0px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const CommentBox = styled.div`
   textarea {
     width: 100%;
@@ -186,6 +202,7 @@ const CommentBox = styled.div`
   }
   p {
     white-space: pre-wrap;
+    margin: 10px 0px;
   }
 
   @media (max-width: 1200px) {
