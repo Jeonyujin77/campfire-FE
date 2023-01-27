@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
+import dayjs from 'dayjs';
 //api
 import { __getSiteByParams } from '../apis/campApi';
 import { __reserveCamps } from '../apis/reservationApi';
@@ -16,7 +17,6 @@ import Button from '../components/common/Button';
 //이미지
 import closeArrow from '../asset/closeArrow.png';
 import openArrow from '../asset/openArrow.png';
-import { changeFormat } from '../hooks/useChangeDateFormat';
 
 const ReservationDescpage = () => {
   const location = useLocation();
@@ -62,8 +62,8 @@ const ReservationDescpage = () => {
     const reserveInfo = {
       campId: campparams,
       siteId: siteparams,
-      checkInDate: changeFormat(startday, 'yyyy-MM-DD'),
-      checkOutDate: changeFormat(endday, 'yyyy-MM-DD'),
+      checkInDate: dayjs(startday).format('YYYY-MM-DD'),
+      checkOutDate: dayjs(endday).format('YYYY-MM-DD'),
       adults: adult,
       children: child,
     };

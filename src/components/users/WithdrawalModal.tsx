@@ -52,6 +52,7 @@ const WithdrawalModal = ({
           </ModalCloseBtn>
         </ModalHeader>
         <p>CAMPFIRE를 탈퇴하시겠습니까?</p>
+        <p>비밀번호를 입력해주세요</p>
         <Input
           width="270px"
           height="37px"

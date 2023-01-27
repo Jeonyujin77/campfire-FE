@@ -3,12 +3,16 @@ import styled from '@emotion/styled';
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
+import dayjs from 'dayjs';
 //api
 import {
   __getCampsByParams,
   __getCampSitesByParams,
   __likeCampByParams,
 } from '../apis/campApi';
+//훅
+import { campGeocoder } from '../utils/Geocoder';
+import useGeolocation from '../hooks/useGeolocation';
 //interface
 import { SiteList } from '../interfaces/camp';
 //컴포넌트
@@ -19,6 +23,7 @@ import CheckAuth from '../components/common/CheckAuth';
 import Sites from '../components/camps/Sites';
 import CampAmenities from '../components/reservations/campAmenities';
 import ImgSwiper from '../components/reservations/imgSwiper';
+import CategoryFromBounds from '../components/camps/CategoryFromBounds';
 //이미지
 import likeOn from '../asset/likeOn.png';
 import likeOff from '../asset/likeOff.png';
@@ -27,10 +32,6 @@ import locationImg from '../asset/locationImg.png';
 import phoneImg from '../asset/phoneImg.png';
 import adultImg from '../asset/adultImg.png';
 import childImg from '../asset/childImg.png';
-import { campGeocoder } from '../utils/Geocoder';
-import useGeolocation from '../hooks/useGeolocation';
-import { changeFormat } from '../hooks/useChangeDateFormat';
-import CategoryFromBounds from '../components/camps/CategoryFromBounds';
 
 interface dateType {
   startday?: any;
@@ -163,8 +164,8 @@ const DetailPage = () => {
           params,
           adult,
           child,
-          start: changeFormat(start, 'yyyy-MM-DD'),
-          end: changeFormat(end, 'yyyy-MM-DD'),
+          start: dayjs(start).format('YYYY-MM-DD'),
+          end: dayjs(end).format('YYYY-MM-DD'),
         }),
       ).then(res => {
         const { type, payload }: any = res;
@@ -313,72 +314,76 @@ const DetailPage = () => {
             <HeadText>방문인원</HeadText>
             <HeadCount>
               <CountWrap>
-                <IconAd src={adultImg} />
-                성인
-                <Button
-                  width="27px"
-                  height="27px"
-                  bgColor="rgb(254,128,44)"
-                  borderRadius="13.5px"
-                  fontSize="23px"
-                  fontWeight="bold"
-                  color="white"
-                  margin="12px"
-                  onClick={() => {
-                    adultMinusButton();
-                  }}
-                >
-                  -
-                </Button>
-                {adult}
-                <Button
-                  width="27px"
-                  height="27px"
-                  bgColor="rgb(254,128,44)"
-                  borderRadius="13.5px"
-                  fontSize="23px"
-                  fontWeight="bold"
-                  color="white"
-                  margin="12px"
-                  onClick={() => {
-                    adultPlusButton();
-                  }}
-                >
-                  +
-                </Button>
-                <IconAd src={childImg} />
-                아동
-                <Button
-                  width="27px"
-                  height="27px"
-                  bgColor="rgb(254,128,44)"
-                  borderRadius="13.5px"
-                  fontSize="23px"
-                  fontWeight="bold"
-                  color="white"
-                  margin="12px"
-                  onClick={() => {
-                    childMinusButton();
-                  }}
-                >
-                  -
-                </Button>
-                {child}
-                <Button
-                  width="27px"
-                  height="27px"
-                  bgColor="rgb(254,128,44)"
-                  borderRadius="13.5px"
-                  fontSize="23px"
-                  fontWeight="bold"
-                  color="white"
-                  margin="12px"
-                  onClick={() => {
-                    childPlusButton();
-                  }}
-                >
-                  +
-                </Button>
+                <AdultWrap>
+                  <IconAd src={adultImg} />
+                  성인
+                  <Button
+                    width="27px"
+                    height="27px"
+                    bgColor="rgb(254,128,44)"
+                    borderRadius="13.5px"
+                    fontSize="23px"
+                    fontWeight="bold"
+                    color="white"
+                    margin="12px"
+                    onClick={() => {
+                      adultMinusButton();
+                    }}
+                  >
+                    -
+                  </Button>
+                  {adult}
+                  <Button
+                    width="27px"
+                    height="27px"
+                    bgColor="rgb(254,128,44)"
+                    borderRadius="13.5px"
+                    fontSize="23px"
+                    fontWeight="bold"
+                    color="white"
+                    margin="12px"
+                    onClick={() => {
+                      adultPlusButton();
+                    }}
+                  >
+                    +
+                  </Button>
+                </AdultWrap>
+                <AdultWrap>
+                  <IconAd src={childImg} />
+                  아동
+                  <Button
+                    width="27px"
+                    height="27px"
+                    bgColor="rgb(254,128,44)"
+                    borderRadius="13.5px"
+                    fontSize="23px"
+                    fontWeight="bold"
+                    color="white"
+                    margin="12px"
+                    onClick={() => {
+                      childMinusButton();
+                    }}
+                  >
+                    -
+                  </Button>
+                  {child}
+                  <Button
+                    width="27px"
+                    height="27px"
+                    bgColor="rgb(254,128,44)"
+                    borderRadius="13.5px"
+                    fontSize="23px"
+                    fontWeight="bold"
+                    color="white"
+                    margin="12px"
+                    onClick={() => {
+                      childPlusButton();
+                    }}
+                  >
+                    +
+                  </Button>
+                </AdultWrap>
               </CountWrap>
               <Button bgColor="#FFECE0" onClick={getCampSites}>
                 검색하기
@@ -401,7 +406,7 @@ const DetailPage = () => {
                 {camp.campAmenities ? (
                   <Amenities>
                     {camp.campAmenities.map((amenity: any) => (
-                      <CampAmenities key={amenity}>{amenity}</CampAmenities>
+                      <CampAmenities key={amenity} amenity={amenity} />
                     ))}
                   </Amenities>
                 ) : (
@@ -437,22 +442,16 @@ const DetailPage = () => {
               campName={camp.campName}
             />
           </MapBox>
-          {isCmtOpen ? (
-            <CmtBox onClick={() => isCmtOpenChange()}>
-              {'접기 '}
-              {/* <ArrImg src={upArrowOrange} /> */}
-            </CmtBox>
-          ) : (
-            <CmtBox onClick={() => isCmtOpenChange()}>
-              {'열기 '}
-              {/* <ArrImgDown src={upArrowOrange} /> */}
-            </CmtBox>
-          )}
           <CommentList
             isCmtOpen={isCmtOpen}
             setIsCmtOpen={setIsCmtOpen}
             campId={params}
           />
+          {isCmtOpen ? (
+            <CmtBox onClick={() => isCmtOpenChange()}>{'접기 '}</CmtBox>
+          ) : (
+            <CmtBox onClick={() => isCmtOpenChange()}>{'열기 '}</CmtBox>
+          )}
         </DescWrap>
       </Wrap>
     </>
@@ -600,6 +599,13 @@ const CountWrap = styled.div`
   @media (max-width: 1200px) {
     gap: 3%;
   }
+`;
+
+const AdultWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 `;
 
 const AmenityWrap = styled.div`
