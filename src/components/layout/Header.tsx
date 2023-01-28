@@ -1,6 +1,7 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 //컴포넌트
 import TopButton from '../common/TopButton';
 import Logo from '../common/Logo';
@@ -22,6 +23,52 @@ const Header = () => {
     window.location.href = '/search';
   };
 
+  const [homeURL, setHomeURL] = useState<boolean>();
+  const [searchURL, setSearchURL] = useState<boolean>();
+  const [mypageURL, setMypageURL] = useState<boolean>();
+  const [signupURL, setSignupURL] = useState<boolean>();
+
+  useEffect(() => {
+    switch (window.location.pathname.split('/')[1]) {
+      case '':
+      case 'login': {
+        setHomeURL(true);
+        setSearchURL(false);
+        setMypageURL(false);
+        setSignupURL(false);
+        break;
+      }
+      case 'search': {
+        setHomeURL(false);
+        setSearchURL(true);
+        setMypageURL(false);
+        setSignupURL(false);
+        break;
+      }
+      case 'mypage': {
+        setHomeURL(false);
+        setSearchURL(false);
+        setMypageURL(true);
+        setSignupURL(false);
+        break;
+      }
+      case 'signup': {
+        setHomeURL(false);
+        setSearchURL(false);
+        setMypageURL(false);
+        setSignupURL(true);
+        break;
+      }
+      default: {
+        setHomeURL(false);
+        setSearchURL(false);
+        setMypageURL(false);
+        setSignupURL(false);
+        break;
+      }
+    }
+  }, [window.location.pathname]);
+
   return (
     <>
       <HeaderComponent>
@@ -35,29 +82,33 @@ const Header = () => {
         <MenuBar>
           {!isLoggedIn ? (
             <>
-              <div>
+              <MenuBarItem URL={homeURL}>
                 <Link to="/login">로그인</Link>
-              </div>
-              <div>
+              </MenuBarItem>
+              <MenuBarItem URL={signupURL}>
                 <Link to="/signup">회원가입</Link>
-              </div>
+              </MenuBarItem>
             </>
           ) : (
             <>
-              <div onClick={goToHome}>홈</div>
-              <div onClick={goToSearch}>검색</div>
-              <div>
+              <MenuBarItem URL={homeURL} onClick={goToHome}>
+                홈
+              </MenuBarItem>
+              <MenuBarItem URL={searchURL} onClick={goToSearch}>
+                검색
+              </MenuBarItem>
+              <MenuBarItem URL={mypageURL}>
                 <Link to="/mypage">마이페이지</Link>
-              </div>
+              </MenuBarItem>
             </>
           )}
-          <div
+          <MenuBarItem
             onClick={() => {
               window.open('https://campfire-host-fe.vercel.app/');
             }}
           >
             관리자모드
-          </div>
+          </MenuBarItem>
         </MenuBar>
       </HeaderComponent>
       <TopButton />
@@ -127,6 +178,16 @@ const MenuBar = styled.div`
   @media (max-width: 1200px) {
     display: none;
   }
+`;
+
+const MenuBarItem = styled.div<{ URL?: boolean }>`
+  cursor: pointer;
+  margin: 0 20px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 18px;
+  border-bottom: ${({ URL }) => (URL ? '5px solid #A1C182' : 'none')};
+  font-weight: ${({ URL }) => (URL ? 'bold' : 'normal')};
 `;
 
 export default Header;
