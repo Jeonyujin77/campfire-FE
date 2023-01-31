@@ -18,12 +18,6 @@ export const pwValid = (pw: string) => {
   return regExp.test(pw);
 };
 
-export const phoneValid = (phone: string) => {
-  let regExp = /^\d{3}\d{3,4}\d{4}$/;
-
-  return regExp.test(phone);
-};
-
 export const telValid = (tel: string) => {
   let regExp = /^\d{2,3}\d{3,4}\d{4}$/;
 
