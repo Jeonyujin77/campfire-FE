@@ -186,9 +186,11 @@ export const __naverLogin = createAsyncThunk(
       );
       console.log(response);
       if (response.status === 200) {
-        const { accesstoken, refreshtoken }: any = response.headers;
-        localStorage.setItem('accessToken', accesstoken);
-        localStorage.setItem('refreshToken', refreshtoken);
+        if (response.headers.accesstoken && response.headers.refreshtoken) {
+          const { accesstoken, refreshtoken }: any = response.headers;
+          localStorage.setItem('accessToken', accesstoken);
+          localStorage.setItem('refreshToken', refreshtoken);
+        }
         return thunkAPI.fulfillWithValue(response.data);
       }
     } catch (error) {
@@ -206,9 +208,11 @@ export const __googleLogin = createAsyncThunk(
       const response = await api.get<any>(`/api/auths/google?code=${payload}`);
       console.log(response);
       if (response.status === 200) {
-        const { accesstoken, refreshtoken }: any = response.headers;
-        localStorage.setItem('accessToken', accesstoken);
-        localStorage.setItem('refreshToken', refreshtoken);
+        if (response.headers.accesstoken && response.headers.refreshtoken) {
+          const { accesstoken, refreshtoken }: any = response.headers;
+          localStorage.setItem('accessToken', accesstoken);
+          localStorage.setItem('refreshToken', refreshtoken);
+        }
         return thunkAPI.fulfillWithValue(response.data);
       }
     } catch (error) {
