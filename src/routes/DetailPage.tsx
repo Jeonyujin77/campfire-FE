@@ -45,8 +45,8 @@ const DetailPage = () => {
     adult: adult,
     child: child,
   }); // 인원수
-  const [campLat, setCampLat] = useState(''); // 캠핑장위도
-  const [campLng, setCampLng] = useState(''); // 캠핑장경도
+  // const [campLat, setCampLat] = useState(''); // 캠핑장위도
+  // const [campLng, setCampLng] = useState(''); // 캠핑장경도
   const location = useGeolocation(); //사용자 위치정보 불러오기
 
   //페이지 이동 시 스크롤 최상단으로 이동
@@ -62,8 +62,6 @@ const DetailPage = () => {
       console.log(payload.camp);
       if (type === 'getCampsByParams/fulfilled') {
         setCamp(payload.camp);
-        setCampLat(payload.camp.mapX);
-        setCampLng(payload.camp.mapY);
       }
       // 에러처리
       else if (type === 'getCampsByParams/rejected') {
@@ -106,10 +104,10 @@ const DetailPage = () => {
     }
     if (location.coordinates) {
       window.open(
-        `https://map.kakao.com/link/from/사용자위치,${location.coordinates.lat},${location.coordinates.lng}/to/${camp.campName},${campLat},${campLng}/`,
+        `https://map.kakao.com/link/from/사용자위치,${location.coordinates.lat},${location.coordinates.lng}/to/${camp.campName},${camp.mapX},${camp.mapY}/`,
       );
     }
-  }, [campLat, campLng]);
+  }, [camp.mapX, camp.mapY]);
 
   //번호 복사 함수
   const handleCopyClipBoard = async () => {
@@ -235,8 +233,8 @@ const DetailPage = () => {
           )}
           <MapBox>
             <CategoryFromBounds
-              campLat={campLat}
-              campLng={campLng}
+              campLat={camp.mapX}
+              campLng={camp.mapY}
               campName={camp.campName}
             />
           </MapBox>
