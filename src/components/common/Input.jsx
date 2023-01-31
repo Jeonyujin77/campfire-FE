@@ -17,6 +17,9 @@ const StInput = styled.input`
   ::placeholder {
     font-size: 20px;
   }
+  :focus {
+    outline: ${props => props.outline};
+  }
   @media (max-width: 1200px) {
     width: 80%;
     height: 70%;
