@@ -96,6 +96,7 @@ const SocialSignupBox = ({
         setCertifiStatus(true);
       } else if (type === 'certifiTest/rejected') {
         alert(`${payload.response.data.errorMessage}`);
+        setGetCertifiStatus(false);
         setCertifiNum('');
       }
     });
