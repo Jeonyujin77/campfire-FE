@@ -14,25 +14,38 @@ export interface DetailCampDesc {
 }
 
 const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
-  const images = [campMainImage, ...campSubImages];
+  // const images = [campMainImage, ...campSubImages];
+  // const mainImg = campMainImage;
 
   return (
     <>
-      <StyledSwiper
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={20}
-        slidesPerView={1}
-        autoplay={{ delay: 4000 }}
-        navigation
-        loop={true}
-        pagination={{ clickable: true }}
-      >
-        {images.map(image => (
-          <StyledSwiperSlide key={image + Math.random()}>
-            <CampImg src={image} />
-          </StyledSwiperSlide>
-        ))}
-      </StyledSwiper>
+      {campMainImage ? (
+        <StyledSwiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={20}
+          slidesPerView={1}
+          autoplay={{ delay: 4000 }}
+          navigation
+          loop={true}
+          pagination={{ clickable: true }}
+        >
+          {campSubImages ? (
+            <>
+              {[campMainImage, ...campSubImages].map(image => (
+                <StyledSwiperSlide key={image + Math.random()}>
+                  <CampImg src={image} />
+                </StyledSwiperSlide>
+              ))}
+            </>
+          ) : (
+            <StyledSwiperSlide>
+              <CampImg src={campMainImage} />
+            </StyledSwiperSlide>
+          )}
+        </StyledSwiper>
+      ) : (
+        <></>
+      )}
     </>
   );
 };
