@@ -233,8 +233,8 @@ const DetailPage = () => {
           )}
           <MapBox>
             <CategoryFromBounds
-              campLat={camp.mapX}
-              campLng={camp.mapY}
+              campLat={camp.mapY}
+              campLng={camp.mapX}
               campName={camp.campName}
             />
           </MapBox>
