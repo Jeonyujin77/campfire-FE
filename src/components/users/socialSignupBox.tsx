@@ -1,6 +1,6 @@
 //라이브러리
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
 //api
@@ -10,6 +10,7 @@ import {
   __checkNickDup,
   __getCertifiNum,
   __signup,
+  __Socialsignup,
 } from '../../apis/userApi';
 //훅
 import useInput from '../../hooks/useInput';
@@ -35,81 +36,27 @@ import {
   TELNUM_NOT_VALID,
 } from '../../constant/message';
 
-const SignupBox = () => {
+interface SocialState {
+  kakaoemail: string;
+  kakaoprofileImg: string;
+  kakaoprovider: string;
+  kakaouserName: string;
+  kakaosnsId: any;
+}
+
+const SocialSignupBox = ({
+  kakaoemail,
+  kakaoprofileImg,
+  kakaoprovider,
+  kakaouserName,
+  kakaosnsId,
+}: SocialState) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // 아이디, 비밀번호, 비밀번호 확인, 이름
-  const [email, setEmail] = useState(''); // 이메일
-  const [nickname, setNickname] = useState(''); // 닉네임
-  const [password, setPassword, passwordHandler] = useInput(''); // 비밀번호
-  const [passwordCheck, setPasswordCheck, passwordCheckHandler] = useInput(''); // 비밀번호 재확인
+
+  // 번호
   const [telNum, setTelNum, telNumHandler] = useInput(''); // 전화번호
-  const [emailValidFlag, emailFlagHandler] = useInputValid(email, emailValid); // 이메일검증 flag
-  const [nickValidFlag, nickFlagHandler] = useInputValid(
-    nickname,
-    nicknameValid,
-  ); // 닉네임검증 flag
-  const [pwValidFlag, pwFlagHandler] = useInputValid(password, pwValid); // 비밀번호검증 flag
   const [telValidFlag, setTelValidFlag] = useInputValid(telNum, telValid); // 전화번호검증 flag
-  const [pwChkValidFlag, setPwChkValidFlag] = useState(true); // 비밀번호 재확인검증 flag
-  const [emailDupFlag, setEmailDupFlag] = useState(false); // 이메일중복확인 flag
-  const [nickDupFlag, setNickDupFlag] = useState(false); // 닉네임중복확인 flag
-  //비밀번호 value 보이기, 숨기기
-  const [showPswd, setShowPswd] = useState(false);
-  const [showPswdCheck, setShowPswdCheck] = useState(false);
-
-  // 이메일 변경 시
-  const emailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setEmailDupFlag(false);
-  };
-
-  // 닉네임 변경 시
-  const nicknameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-    setNickDupFlag(false);
-  };
-
-  // 패스워드 유효성 검사
-  const onBlurPasswordCheck = () => {
-    if (password !== passwordCheck) {
-      setPwChkValidFlag(false);
-    } else {
-      setPwChkValidFlag(true);
-    }
-  };
-
-  // 이메일 중복검사
-  const checkEmailDup = () => {
-    if (email === '') return;
-
-    dispatch(__checkEmailDup(email)).then(res => {
-      const { type, payload } = res;
-      if (type === 'checkEmailDup/fulfilled') {
-        setEmailDupFlag(true);
-        alert(`${payload.message}`);
-      } else if (type === 'checkEmailDup/rejected') {
-        setEmailDupFlag(false);
-        alert(`${payload.response.data.errorMessage}`);
-      }
-    });
-  };
-
-  // 닉네임 중복검사
-  const checkNickDup = () => {
-    if (nickname === '') return;
-
-    dispatch(__checkNickDup(nickname)).then(res => {
-      const { type, payload } = res;
-      if (type === 'checkNickDup/fulfilled') {
-        setNickDupFlag(true);
-        alert(`${payload.message}`);
-      } else if (type === 'checkNickDup/rejected') {
-        setNickDupFlag(false);
-        alert(`${payload.response.data.errorMessage}`);
-      }
-    });
-  };
 
   const [certifiNum, setCertifiNum] = useState<any>();
   const certifiNumHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,35 +106,27 @@ const SignupBox = () => {
     e.preventDefault();
 
     // 입력값 검증 및 중복확인이 정상이면
-    if (
-      emailValidFlag &&
-      emailDupFlag &&
-      nickValidFlag &&
-      nickDupFlag &&
-      pwValidFlag &&
-      pwChkValidFlag &&
-      telValidFlag
-    ) {
+    if (getCertifiStatus && certifiStatus) {
       const userInfo = {
-        email,
-        userName: nickname,
-        password,
+        email: kakaoemail,
+        userName: kakaouserName,
+        password: null,
         phoneNumber: telNum,
+        profileImg: kakaoprofileImg,
+        provider: kakaoprovider,
+        snsId: kakaosnsId,
       };
-      dispatch(__signup(userInfo)).then(res => {
+      dispatch(__Socialsignup(userInfo)).then(res => {
         const { type, payload } = res;
-        if (type === 'signup/fulfilled') {
-          alert(`${payload.message}`);
-          localStorage.clear();
-          navigate('/login');
-        } else if (type === 'signup/rejected') {
-          localStorage.clear();
+        if (type === 'Socialsignup/fulfilled') {
+          alert('가입이 완료되었습니다!');
+          localStorage.setItem('userId', payload.userId);
+          window.location.href = '/';
+        } else if (type === 'Socialsignup/rejected') {
           alert(`${payload.response.data.errorMessage}`);
+          window.location.href = '/login';
         }
       });
-    } else {
-      localStorage.clear();
-      alert('중복확인 및 입력 형식을 확인해주세요.');
     }
   };
 
@@ -199,9 +138,9 @@ const SignupBox = () => {
             <Span>
               <Input
                 required
-                value={email}
-                onChange={emailHandler}
-                onBlur={emailFlagHandler}
+                value={kakaoemail}
+                readOnly
+                outline="none"
                 name="email"
                 type="email"
                 placeholder="example123@email.com"
@@ -211,19 +150,17 @@ const SignupBox = () => {
                 borderRadius="20px 0px 0px 20px"
                 bgColor="#D9D9D9"
               />
-              <InputBtn onClick={checkEmailDup}>중복확인</InputBtn>
+              <InputBtn></InputBtn>
             </Span>
-            <ErrWrap>
-              {!emailValidFlag ? <Guide>{EMAIL_NOT_VALID}</Guide> : <></>}
-            </ErrWrap>
+            <ErrWrap />
           </div>
           <div>
             <Span>
               <Input
                 required
-                value={nickname}
-                onChange={nicknameHandler}
-                onBlur={nickFlagHandler}
+                value={kakaouserName}
+                readOnly
+                outline="none"
                 name="userName"
                 type="text"
                 placeholder="닉네임"
@@ -233,87 +170,9 @@ const SignupBox = () => {
                 borderRadius="20px 0px 0px 20px"
                 bgColor="#D9D9D9"
               />
-              <InputBtn onClick={checkNickDup}>중복확인</InputBtn>
+              <InputBtn></InputBtn>
             </Span>
-            <ErrWrap>
-              {!nickValidFlag ? <Guide>{NICK_NOT_VALID}</Guide> : <></>}
-            </ErrWrap>
-          </div>
-          <div>
-            <SpanPswd>
-              <Input
-                value={password}
-                onChange={passwordHandler}
-                onBlur={pwFlagHandler}
-                required
-                name="password"
-                type={showPswd ? 'text' : 'password'}
-                placeholder="비밀번호"
-                width="352px"
-                height="59px"
-                fontSize="20px"
-                borderRadius="20px 0px 0px 20px"
-                bgColor="#D9D9D9"
-              />
-              {showPswd ? (
-                <PswdShow
-                  onClick={() => {
-                    setShowPswd(!showPswd);
-                  }}
-                >
-                  <PswdImg src={pwShow} />
-                </PswdShow>
-              ) : (
-                <PswdShow
-                  onClick={() => {
-                    setShowPswd(!showPswd);
-                  }}
-                >
-                  <PswdImg src={pwHide} />
-                </PswdShow>
-              )}
-            </SpanPswd>
-            <ErrWrap>
-              {!pwValidFlag ? <Guide>{PW_NOT_VALID}</Guide> : <></>}
-            </ErrWrap>
-          </div>
-          <div>
-            <SpanPswd>
-              <Input
-                value={passwordCheck}
-                onChange={passwordCheckHandler}
-                onBlur={onBlurPasswordCheck}
-                required
-                name="passwordCheck"
-                type={showPswdCheck ? 'text' : 'password'}
-                placeholder="비밀번호 확인"
-                width="352px"
-                height="59px"
-                fontSize="20px"
-                borderRadius="20px 0px 0px 20px"
-                bgColor="#D9D9D9"
-              />
-              {showPswdCheck ? (
-                <PswdShow
-                  onClick={() => {
-                    setShowPswdCheck(!showPswdCheck);
-                  }}
-                >
-                  <PswdImg src={pwShow} />
-                </PswdShow>
-              ) : (
-                <PswdShow
-                  onClick={() => {
-                    setShowPswdCheck(!showPswdCheck);
-                  }}
-                >
-                  <PswdImg src={pwHide} />
-                </PswdShow>
-              )}
-            </SpanPswd>
-            <ErrWrap>
-              {!pwChkValidFlag ? <Guide>{PWCHK_NOT_VALID}</Guide> : <></>}
-            </ErrWrap>
+            <ErrWrap />
           </div>
           <div>
             <Span>
@@ -398,13 +257,13 @@ const Wrap = styled.form`
   flex-direction: column;
 `;
 
-const SignupWrap = styled.form`
+const SignupWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 450px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
   @media (max-width: 1200px) {
     width: 95%;
     margin-bottom: 20px;
@@ -418,7 +277,8 @@ const InputWrap = styled.div`
   align-items: center;
   padding: 10px;
   width: 450px;
-  height: 500px;
+  max-height: 100%;
+  min-height: 350px;
   font-size: 25px;
   gap: 5px;
   margin-bottom: 10px;
@@ -439,6 +299,10 @@ const InputBtn = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  @media (max-width: 1200px) {
+    font-size: 13px;
+  }
 `;
 
 const Span = styled.span`
@@ -451,33 +315,6 @@ const Span = styled.span`
     width: 100%;
     justify-content: flex-start;
   }
-`;
-
-const SpanPswd = styled.span`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-radius: 20px;
-  background-color: #dadada;
-  @media (max-width: 1200px) {
-    width: 100%;
-  }
-`;
-
-const PswdShow = styled.div`
-  width: 60px;
-  height: 30px;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-const PswdImg = styled.img`
-  user-select: none;
-  width: 30px;
-  height: 20px;
 `;
 
 const ErrWrap = styled.div`
@@ -495,4 +332,4 @@ const Guide = styled.span<{ color?: string; fontWeight?: string }>`
   padding: 10px 0;
 `;
 
-export default SignupBox;
+export default SocialSignupBox;
