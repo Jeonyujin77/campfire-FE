@@ -59,8 +59,11 @@ const DetailPage = () => {
   useEffect(() => {
     dispatch(__getCampsByParams(params)).then(res => {
       const { payload, type }: any = res;
+      console.log(payload.camp);
       if (type === 'getCampsByParams/fulfilled') {
         setCamp(payload.camp);
+        setCampLat(payload.camp.mapX);
+        setCampLng(payload.camp.mapY);
       }
       // 에러처리
       else if (type === 'getCampsByParams/rejected') {
@@ -87,11 +90,11 @@ const DetailPage = () => {
   }, [adult, child]);
 
   // 캠핑장 위치 위도, 경도 구하기
-  useEffect(() => {
-    if (camp) {
-      campGeocoder(camp.campAddress, setCampLat, setCampLng);
-    }
-  }, [camp]);
+  // useEffect(() => {
+  //   if (camp) {
+  //     campGeocoder(camp.campAddress, setCampLat, setCampLng);
+  //   }
+  // }, [camp]);
 
   //길찾기 버튼 이동함수
   const getDirection = useCallback(() => {
