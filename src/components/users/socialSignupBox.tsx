@@ -184,7 +184,7 @@ const SocialSignupBox = ({
                 name="phoneNumber"
                 required
                 type="tel"
-                placeholder="010-0000-0000"
+                placeholder="-를 제외한 숫자만 입력해주세요."
                 width="352px"
                 height="59px"
                 fontSize="20px"
@@ -193,30 +193,32 @@ const SocialSignupBox = ({
               />
               <InputBtn onClick={certifiNumGet}>인증번호 발송</InputBtn>
             </Span>
-            <ErrWrap>
-              {!telValidFlag ? <Guide>{TELNUM_NOT_VALID}</Guide> : <></>}
-            </ErrWrap>
           </div>
+          <ErrWrap>
+            {!telValidFlag ? <Guide>{TELNUM_NOT_VALID}</Guide> : <></>}
+          </ErrWrap>
           {getCertifiStatus ? (
-            <div>
-              <Span>
-                <Input
-                  value={certifiNum || ''}
-                  onChange={certifiNumHandler}
-                  width="352px"
-                  height="59px"
-                  fontSize="20px"
-                  borderRadius="20px 0px 0px 20px"
-                  bgColor="#D9D9D9"
-                />
-                {certifiStatus ? (
-                  <InputBtn>
-                    <img src={greenChecked} alt="체크" />
-                  </InputBtn>
-                ) : (
-                  <InputBtn onClick={certifiTest}>인증번호 확인</InputBtn>
-                )}
-              </Span>
+            <>
+              <div>
+                <Span>
+                  <Input
+                    value={certifiNum || ''}
+                    onChange={certifiNumHandler}
+                    width="352px"
+                    height="59px"
+                    fontSize="20px"
+                    borderRadius="20px 0px 0px 20px"
+                    bgColor="#D9D9D9"
+                  />
+                  {certifiStatus ? (
+                    <InputBtn>
+                      <img src={greenChecked} alt="체크" />
+                    </InputBtn>
+                  ) : (
+                    <InputBtn onClick={certifiTest}>인증번호 확인</InputBtn>
+                  )}
+                </Span>
+              </div>
               <ErrWrap>
                 {certifiStatus ? (
                   <Guide color="#13da01" fontWeight="bold">
@@ -226,7 +228,7 @@ const SocialSignupBox = ({
                   <></>
                 )}
               </ErrWrap>
-            </div>
+            </>
           ) : (
             <></>
           )}
