@@ -3,19 +3,31 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '../redux/store';
 //api
 import { __kakaoLogin } from '../apis/userApi';
+import { useNavigate } from 'react-router-dom';
 
 //카카오페이지에서 작업하고 리다이렉트되는 곳
 const OAuthKakao = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const kakaoLogin = (payload: any) => {
     dispatch(__kakaoLogin(payload)).then(res => {
-      console.log(res);
       const { type, payload }: any = res;
-      console.log(payload);
       if (type === 'kakaoLogin/fulfilled') {
-        localStorage.setItem('userId', payload.userId);
-        window.location.href = `${process.env.REACT_APP_REDIRECT_URI}`;
+        if (payload.userId) {
+          localStorage.setItem('userId', payload.userId);
+          window.location.href = `${process.env.REACT_APP_REDIRECT_URI}`;
+        } else {
+          navigate(`/socialsignup`, {
+            state: {
+              email: payload.user.email,
+              profileImg: payload.user.profileImg,
+              provider: payload.user.provider,
+              userName: payload.user.userName,
+              snsId: payload.user.snsId,
+            },
+          });
+        }
       }
       // 에러처리
       else if (type === 'kakaoLogin/rejected') {

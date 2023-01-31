@@ -9,6 +9,17 @@ export interface UserInfo {
   profileImg?: string;
 }
 
+// 유저 소셜회원가입 추가정보
+export interface SocialUserInfo {
+  provider: string;
+  email: string;
+  userName: string;
+  password: null;
+  phoneNumber: string;
+  profileImg?: string;
+  snsId: any;
+}
+
 // 유저 로그인 정보
 export interface UserLogin {
   email: string;
@@ -134,6 +145,7 @@ export interface Reservation {
   siteInfo: string;
   sitePrice: number;
   siteMainImage: string;
+  confirmBook?: boolean;
 }
 
 export interface compreser {
@@ -209,4 +221,12 @@ export interface Like {
   campMainImage: string;
   campAddress: string;
   typeLists: [string];
+}
+
+export interface CertifiPayload {
+  type: string;
+  countryCode: string;
+  from: any;
+  content: string;
+  messages: any;
 }

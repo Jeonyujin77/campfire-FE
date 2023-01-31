@@ -3,6 +3,7 @@ import {
   DeleteUser,
   LikesCamp,
   PutUserInfo,
+  SocialUserInfo,
   UserInfo,
   UserLogin,
 } from '../interfaces/Users';
@@ -161,9 +162,11 @@ export const __kakaoLogin = createAsyncThunk(
       const response = await api.get<any>(`/api/auths/kakao?code=${payload}`);
       console.log(response);
       if (response.status === 200) {
-        const { accesstoken, refreshtoken }: any = response.headers;
-        localStorage.setItem('accessToken', accesstoken);
-        localStorage.setItem('refreshToken', refreshtoken);
+        if (response.headers.accesstoken && response.headers.refreshtoken) {
+          const { accesstoken, refreshtoken }: any = response.headers;
+          localStorage.setItem('accessToken', accesstoken);
+          localStorage.setItem('refreshToken', refreshtoken);
+        }
         return thunkAPI.fulfillWithValue(response.data);
       }
     } catch (error) {
@@ -222,6 +225,73 @@ export const __likeCamps = createAsyncThunk(
       const response = await api.get<LikesCamp>(`/api/likes`);
 
       if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+//인증번호 발급받기
+export const __getCertifiNum = createAsyncThunk(
+  'getCertifiNum',
+  async (payload: string, thunkAPI) => {
+    try {
+      const response = await api.get<any>(`/api/auths/sms/${payload}`);
+
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+//인증번호 검증하기
+export const __certifiTest = createAsyncThunk(
+  'certifiTest',
+  async (payload: any, thunkAPI) => {
+    try {
+      const response = await api.post<any>(`/api/auths/sms/verify`, payload);
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 인증 후 데이터 전송하기
+export const __Socialsignup = createAsyncThunk(
+  'Socialsignup',
+  async (payload: SocialUserInfo, thunkAPI) => {
+    try {
+      const {
+        email,
+        userName,
+        password,
+        phoneNumber,
+        profileImg,
+        provider,
+        snsId,
+      } = payload;
+
+      const response = await api.post('/api/auths/signup', {
+        email,
+        userName,
+        password,
+        phoneNumber,
+        profileImg,
+        provider,
+        snsId,
+      });
+      if (response.status === 200) {
+        const { accesstoken, refreshtoken }: any = response.headers;
+        localStorage.setItem('accessToken', accesstoken);
+        localStorage.setItem('refreshToken', refreshtoken);
         return thunkAPI.fulfillWithValue(response.data);
       }
     } catch (error) {

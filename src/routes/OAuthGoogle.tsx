@@ -3,19 +3,31 @@ import { useEffect } from 'react';
 import { useAppDispatch } from '../redux/store';
 //api
 import { __googleLogin } from '../apis/userApi';
+import { useNavigate } from 'react-router-dom';
 
 //구글페이지에서 작업하고 리다이렉트되는 곳
 const OAuthGoogle = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const googleLogin = (payload: any) => {
     dispatch(__googleLogin(payload)).then(res => {
-      console.log(res);
       const { type, payload }: any = res;
-      console.log(payload);
       if (type === 'googleLogin/fulfilled') {
-        localStorage.setItem('userId', payload.userId);
-        window.location.href = `${process.env.REACT_APP_REDIRECT_URI}`;
+        if (payload.userId) {
+          localStorage.setItem('userId', payload.userId);
+          window.location.href = `${process.env.REACT_APP_REDIRECT_URI}`;
+        } else {
+          navigate(`/socialsignup`, {
+            state: {
+              email: payload.user.email,
+              profileImg: payload.user.profileImg,
+              provider: payload.user.provider,
+              userName: payload.user.userName,
+              snsId: payload.user.snsId,
+            },
+          });
+        }
       }
       // 에러처리
       else if (type === 'googleLogin/rejected') {
