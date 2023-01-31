@@ -12,6 +12,7 @@ import OAuthKakao from '../routes/OAuthKakao';
 import OAuthNaver from '../routes/OAuthNaver';
 import OAuthGoogle from '../routes/OAuthGoogle';
 import Search from '../routes/Search';
+import SocialSignup from '../routes/SocialSignup';
 
 const Router = () => {
   return (
@@ -25,10 +26,6 @@ const Router = () => {
             path="/camp/:campId/sitedesc/:siteId"
             element={<ReservationDescpage />}
           />
-          {/* <Route
-            path="/camp/:campId/sitereservation/:siteId"
-            element={<ReservationPage />}
-          /> */}
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/edit" element={<ProfileModify />} />
           <Route path="/signup" element={<Signup />} />
@@ -36,6 +33,7 @@ const Router = () => {
           <Route path="/api/auths/kakao" element={<OAuthKakao />} />
           <Route path="api/auths/naver" element={<OAuthNaver />} />
           <Route path="api/auths/google" element={<OAuthGoogle />} />
+          <Route path="/socialsignup" element={<SocialSignup />} />
         </Routes>
       </Layout>
     </BrowserRouter>

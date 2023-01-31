@@ -92,6 +92,18 @@ const ReservationItemDetail = ({
                   book.checkOutDate.split(' ')[0]}
               </span>
             </p>
+            <p>
+              <label>예약상태</label>
+              {book.confirmBook ? (
+                <span style={{ color: '#13da01', fontWeight: 'bold' }}>
+                  예약 확정
+                </span>
+              ) : (
+                <span style={{ color: '#ff0000', fontWeight: 'bold' }}>
+                  예약 대기중
+                </span>
+              )}
+            </p>
             {status === 0 ? (
               <>
                 <hr style={{ border: '1px solid #D9D9D9' }} />
