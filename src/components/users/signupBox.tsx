@@ -149,6 +149,7 @@ const SignupBox = () => {
         setCertifiStatus(true);
       } else if (type === 'certifiTest/rejected') {
         alert(`${payload.response.data.errorMessage}`);
+        setGetCertifiStatus(false);
         setCertifiNum('');
       }
     });
@@ -166,7 +167,9 @@ const SignupBox = () => {
       nickDupFlag &&
       pwValidFlag &&
       pwChkValidFlag &&
-      telValidFlag
+      telValidFlag &&
+      getCertifiStatus &&
+      certifiStatus
     ) {
       const userInfo = {
         email,
