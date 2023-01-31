@@ -107,7 +107,7 @@ const DetailPage = () => {
         `https://map.kakao.com/link/from/사용자위치,${location.coordinates.lat},${location.coordinates.lng}/to/${camp.campName},${camp.mapX},${camp.mapY}/`,
       );
     }
-  }, [camp.mapX, camp.mapY]);
+  }, [camp]);
 
   //번호 복사 함수
   const handleCopyClipBoard = async () => {
