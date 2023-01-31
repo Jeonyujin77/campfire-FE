@@ -8,7 +8,7 @@ const Input = ({ width, height = '26px', ...props }) => {
 const StInput = styled.input`
   width: ${props => props.width};
   height: ${props => props.height};
-  border: 1px solid #dadada;
+  border: ${props => (props.border ? props.border : '1px solid #dadada')};
   border-radius: ${props => (props.borderRadius ? props.borderRadius : '4px')};
   padding: 3px 0 3px 8px;
   min-width: 150px;

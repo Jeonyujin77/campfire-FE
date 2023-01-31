@@ -231,7 +231,9 @@ const ProfileModify = () => {
                   type="tel"
                   required
                   value={phoneNumber}
-                  onChange={pNumChange}
+                  bgColor="transparent"
+                  border="none"
+                  readOnly
                   onBlur={setphoneNumberValidFlag}
                 />
               </InputBox>
