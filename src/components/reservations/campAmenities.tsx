@@ -22,7 +22,9 @@ interface AmenityProps {
 }
 
 const CampAmenities = ({ children, amenity }: AmenityProps) => {
+  const temporal = 'https://via.placeholder.com/35*35';
   let srcs = new Map([
+    //캠핑톡 캠핑장 아이콘
     ['전기', electricIcon],
     ['인터넷', internetIcon],
     ['화장실', toiletIcon],
@@ -33,6 +35,17 @@ const CampAmenities = ({ children, amenity }: AmenityProps) => {
     ['화로/바베큐', barbecueIcon],
     ['공용주차장', parkinglotIcon],
     ['까페', cafeIcon],
+    //공공api 캠핑장 아이콘
+    ['무선인터넷', internetIcon],
+    ['장작판매', temporal],
+    ['온수', hotwaterAvailableIcon],
+    ['트렘폴린', temporal],
+    ['물놀이장', temporal],
+    ['놀이터', temporal],
+    ['산책로', temporal],
+    ['운동시설', temporal],
+    ['마트.편의점', storeIcon],
+    ['운동장', temporal],
   ]);
   return (
     <Amenity>
