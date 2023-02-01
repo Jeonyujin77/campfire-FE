@@ -56,7 +56,6 @@ const DetailPage = () => {
   useEffect(() => {
     dispatch(__getCampsByParams(params)).then(res => {
       const { payload, type }: any = res;
-      console.log(payload.camp);
       if (type === 'getCampsByParams/fulfilled') {
         setCamp(payload.camp);
       }
@@ -117,9 +116,9 @@ const DetailPage = () => {
   // 공공데이터 이동 함수
   const noPremiumHref = () => {
     if (camp.homepage) {
-      window.location.href = camp.homepage;
+      window.open(camp.homepage);
     } else {
-      window.location.href = `https://www.google.com/search?q=${camp.campName}`;
+      window.open(`https://www.google.com/search?q=${camp.campName}`);
     }
   };
 
