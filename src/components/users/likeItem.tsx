@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 //인터페이스
 import { Like } from '../../interfaces/Users';
+//이미지
+import noMainImg from '../../asset/campItem/noMainImg.png';
 
 const LikeItem = ({ like }: { like: Like }) => {
   const navigate = useNavigate();
@@ -12,7 +14,15 @@ const LikeItem = ({ like }: { like: Like }) => {
         navigate(`/camp/${like.campId}`);
       }}
     >
-      <ItemImg src={like.campMainImage} alt="캠핑장메인이미지" />
+      <ItemImg
+        src={like.campMainImage}
+        alt="캠핑장메인이미지"
+        onError={event => {
+          if (event.target instanceof HTMLImageElement) {
+            event.target.src = `${noMainImg}`;
+          }
+        }}
+      />
       <TextWrap>
         <div>
           <CampTitle>{like.campName}</CampTitle>
