@@ -42,8 +42,8 @@ const TopButton = () => {
 
 const ShowBtnWrap = styled.div`
   position: fixed;
-  right: 50px;
-  bottom: 70px;
+  right: 25px;
+  bottom: 100px;
   width: 60px;
   height: 60px;
   border-radius: 30px;
@@ -57,7 +57,7 @@ const ShowBtnWrap = styled.div`
   @media (max-width: 1200px) {
     width: 25px;
     height: 25px;
-    right: 1%;
+    right: 3%;
     bottom: 100px;
   }
 `;
