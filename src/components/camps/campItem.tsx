@@ -87,7 +87,15 @@ const CampItem = ({ camp }: { camp: CampType }) => {
             }}
           >
             {camp.campMainImage ? (
-              <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
+              <CampImg
+                src={camp.campMainImage}
+                alt="캠프장 메인사진"
+                onError={event => {
+                  if (event.target instanceof HTMLImageElement) {
+                    event.target.src = `${noMainImg}`;
+                  }
+                }}
+              />
             ) : (
               <CampImg src={noMainImg} alt="캠프장 메인사진" />
             )}
