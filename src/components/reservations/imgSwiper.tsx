@@ -1,5 +1,6 @@
 //라이브러리
 import styled from '@emotion/styled';
+import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper';
 // Swiper css
@@ -7,6 +8,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './imgSwiper.css';
+//이미지
+import noMainImg from '../../asset/campItem/noMainImg.png';
 
 export interface DetailCampDesc {
   campMainImage: string;
@@ -16,7 +19,7 @@ export interface DetailCampDesc {
 const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
   // const images = [campMainImage, ...campSubImages];
   // const mainImg = campMainImage;
-
+  const [display, setDisplay] = useState(0);
   return (
     <>
       {campMainImage ? (
@@ -28,12 +31,18 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
           navigation
           loop={true}
           pagination={{ clickable: true }}
+          display={display}
         >
           {campSubImages ? (
             <>
               {[campMainImage, ...campSubImages].map(image => (
                 <StyledSwiperSlide key={image + Math.random()}>
-                  <CampImg src={image} />
+                  <CampImg
+                    src={image}
+                    onError={() => {
+                      setDisplay(1);
+                    }}
+                  />
                 </StyledSwiperSlide>
               ))}
             </>
@@ -50,10 +59,10 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
   );
 };
 
-const StyledSwiper = styled(Swiper)`
+const StyledSwiper = styled(Swiper)<{ display: number }>`
   width: 1200px;
   height: 600px;
-  display: flex;
+  display: ${({ display }) => (display === 1 ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   flex-direction: row;
