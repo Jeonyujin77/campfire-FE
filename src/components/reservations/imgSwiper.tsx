@@ -37,8 +37,8 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
                 <StyledSwiperSlide key={image + Math.random()}>
                   <CampImg
                     src={image}
-                    onError={() => {
-                      setDisplay(1);
+                    onError={e => {
+                      e.currentTarget.src = noMainImg;
                     }}
                   />
                 </StyledSwiperSlide>
@@ -46,7 +46,12 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
             </>
           ) : (
             <StyledSwiperSlide>
-              <CampImg src={campMainImage} />
+              <CampImg
+                src={campMainImage}
+                onError={e => {
+                  e.currentTarget.src = noMainImg;
+                }}
+              />
             </StyledSwiperSlide>
           )}
         </StyledSwiper>
