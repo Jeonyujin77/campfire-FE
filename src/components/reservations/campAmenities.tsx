@@ -14,7 +14,7 @@ import sinkIcon from '../../asset/amenities/showerroomIcon.png';
 import storeIcon from '../../asset/amenities/storeIcon.png';
 import toiletIcon from '../../asset/amenities/toiletIcon.png';
 // import boardgameIcon from '../../asset/amenities/boardgameIcon.png';
-// import swimmingpoolIcon from '../../asset/amenities/swimmingpoolIcon.png';
+import swimmingpoolIcon from '../../asset/amenities/swimmingpoolIcon.png';
 
 interface AmenityProps {
   children?: ReactNode;
@@ -40,7 +40,7 @@ const CampAmenities = ({ children, amenity }: AmenityProps) => {
     ['장작판매', temporal],
     ['온수', hotwaterAvailableIcon],
     ['트렘폴린', temporal],
-    ['물놀이장', temporal],
+    ['물놀이장', swimmingpoolIcon],
     ['놀이터', temporal],
     ['산책로', temporal],
     ['운동시설', temporal],
