@@ -16,6 +16,8 @@ export interface CampType {
   likes: number;
   countReviews: number;
   likeStatus: boolean;
+  premium: boolean;
+  homepage: string | null;
 }
 
 export interface PagenoCamps {

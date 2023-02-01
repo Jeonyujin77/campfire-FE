@@ -8,6 +8,8 @@ import { CampType } from '../../interfaces/camp';
 import Liked from './Liked';
 //이미지
 import likeOn from '../../asset/likeOn.png';
+import campPremium from '../../asset/campItem/campPremium.png';
+import noMainImg from '../../asset/campItem/noMainImg.png';
 
 const CampItem = ({ camp }: { camp: CampType }) => {
   const navigate = useNavigate();
@@ -24,51 +26,108 @@ const CampItem = ({ camp }: { camp: CampType }) => {
 
   return (
     <>
-      <ItemWrap>
-        <Liked
-          campId={camp.campId}
-          likeStatus={camp.likeStatus}
-          likes={camp.likes}
-        />
-        <div
-          style={{ position: 'relative' }}
-          onClick={() => {
-            navigate(`/camp/${camp.campId}`);
-          }}
-        >
-          <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
-        </div>
-        <CampDescWrap
-          onClick={() => {
-            navigate(`/camp/${camp.campId}`);
-          }}
-        >
-          <CampHeadDesc>{camp.campName}</CampHeadDesc>
-          <CampDescBody>
-            <CampDescLeft>
-              <CampDescLAddress>
-                {campMinAddress[0]} {campMinAddress[1]}
-              </CampDescLAddress>
-              <CampDescL>
-                {camp.typeLists ? camp.typeLists.join(', ') : '캠핑장'}
-              </CampDescL>
-            </CampDescLeft>
-            <CampDescRight>
-              <CampDescR>
-                <div style={{ display: 'flex', gap: '5px' }}>
-                  <img
-                    style={{ width: '22px', height: '22px' }}
-                    src={likeOn}
-                    alt="하트"
-                  />
-                  <StarRate>{camp.likes}</StarRate>
-                </div>
-                <StarRate>{countR()}</StarRate>
-              </CampDescR>
-            </CampDescRight>
-          </CampDescBody>
-        </CampDescWrap>
-      </ItemWrap>
+      {camp.premium ? (
+        <ItemWrap>
+          <PremiumImg src={campPremium} />
+          <Liked
+            campId={camp.campId}
+            likeStatus={camp.likeStatus}
+            likes={camp.likes}
+          />
+          <div
+            style={{ position: 'relative' }}
+            onClick={() => {
+              navigate(`/camp/${camp.campId}`);
+            }}
+          >
+            <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
+          </div>
+          <CampDescWrap
+            onClick={() => {
+              navigate(`/camp/${camp.campId}`);
+            }}
+          >
+            <CampHeadDesc>{camp.campName}</CampHeadDesc>
+            <CampDescBody>
+              <CampDescLeft>
+                <CampDescLAddress>
+                  {campMinAddress[0]} {campMinAddress[1]}
+                </CampDescLAddress>
+                <CampDescL>
+                  {camp.typeLists ? camp.typeLists.join(', ') : '캠핑장'}
+                </CampDescL>
+              </CampDescLeft>
+              <CampDescRight>
+                <CampDescR>
+                  <div style={{ display: 'flex', gap: '5px' }}>
+                    <img
+                      style={{ width: '22px', height: '22px' }}
+                      src={likeOn}
+                      alt="하트"
+                    />
+                    <StarRate>{camp.likes}</StarRate>
+                  </div>
+                  <StarRate>{countR()}</StarRate>
+                </CampDescR>
+              </CampDescRight>
+            </CampDescBody>
+          </CampDescWrap>
+        </ItemWrap>
+      ) : (
+        <ItemWrap>
+          <Liked
+            campId={camp.campId}
+            likeStatus={camp.likeStatus}
+            likes={camp.likes}
+          />
+          <div
+            style={{ position: 'relative' }}
+            onClick={() => {
+              navigate(`/camp/${camp.campId}`);
+            }}
+          >
+            {camp.campMainImage ? (
+              <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
+            ) : (
+              <CampImg src={noMainImg} alt="캠프장 메인사진" />
+            )}
+          </div>
+          <CampDescWrap
+            onClick={() => {
+              navigate(`/camp/${camp.campId}`);
+            }}
+          >
+            <CampHeadDesc>{camp.campName}</CampHeadDesc>
+            <CampDescBody>
+              <CampDescLeft>
+                {campMinAddress ? (
+                  <CampDescLAddress>
+                    {campMinAddress[0]} {campMinAddress[1]}
+                  </CampDescLAddress>
+                ) : (
+                  <></>
+                )}
+                <CampDescL>
+                  {camp.typeLists ? camp.typeLists.join(', ') : '캠핑장'}
+                </CampDescL>
+              </CampDescLeft>
+              <CampDescRight>
+                <CampDescR>
+                  <div style={{ display: 'flex', gap: '5px' }}>
+                    <img
+                      style={{ width: '22px', height: '22px' }}
+                      src={likeOn}
+                      alt="하트"
+                    />
+                    <StarRate>{camp.likes}</StarRate>
+                  </div>
+                  <StarRate>{countR()}</StarRate>
+                </CampDescR>
+              </CampDescRight>
+            </CampDescBody>
+          </CampDescWrap>
+        </ItemWrap>
+      )}
     </>
   );
 };
@@ -88,6 +147,16 @@ const ItemWrap = styled.div`
   &:hover {
     box-shadow: 5px 5px 5px 0px #c6c6c6;
   }
+`;
+
+const PremiumImg = styled.img`
+  position: absolute;
+  z-index: 500;
+  top: 10px;
+  left: 10px;
+  width: 50px;
+  height: 21px;
+  border-radius: 7px;
 `;
 
 const CampImg = styled.img`

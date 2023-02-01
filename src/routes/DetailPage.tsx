@@ -104,7 +104,7 @@ const DetailPage = () => {
     }
     if (location.coordinates) {
       window.open(
-        `https://map.kakao.com/link/from/사용자위치,${location.coordinates.lat},${location.coordinates.lng}/to/${camp.campName},${camp.mapX},${camp.mapY}/`,
+        `https://map.kakao.com/link/from/사용자위치,${location.coordinates.lat},${location.coordinates.lng}/to/${camp.campName},${camp.mapY},${camp.mapX}/`,
       );
     }
   }, [camp]);
@@ -124,132 +124,229 @@ const DetailPage = () => {
     setIsCmtOpen(!isCmtOpen);
   }, [isCmtOpen]);
 
+  // 공공데이터 이동 함수
+  const noPremiumHref = () => {
+    if (camp.homepage) {
+      window.location.href = camp.homepage;
+    } else {
+      window.location.href = `https://www.google.com/search?q=${camp.campName}`;
+    }
+  };
+
   return camp ? (
     <>
-      <CheckAuth />
-      <Wrap>
-        <ImgSwiper
-          campMainImage={camp.campMainImage}
-          campSubImages={camp.campSubImages}
-        />
-        <DescWrap>
-          <div>
-            <div>
-              <DescBox>
-                <CampName>{camp.campName}</CampName>
-                <CampLikeButton params={params} />
-              </DescBox>
-              <CampDesc>
-                <IconLo src={locationImg} />
-                <div>{camp.campAddress}</div>
-                <Button
-                  bgColor="#fff2e9"
-                  width="54px"
-                  height="27px"
-                  fontSize="12px"
-                  borderRadius="13.5px"
-                  margin="0px"
-                  onClick={getDirection}
-                >
-                  길찾기
-                </Button>
-              </CampDesc>
-              <CampDesc>
-                <IconPh src={phoneImg} />
-                <div>{camp.phoneNumber}</div>
-                <Button
-                  bgColor="#fff2e9"
-                  fontSize="12px"
-                  width="45px"
-                  height="27px"
-                  borderRadius="13.5px"
-                  margin="0px"
-                  onClick={handleCopyClipBoard}
-                >
-                  복사
-                </Button>
-              </CampDesc>
-            </div>
-          </div>
-          <CampDatePicker
-            start={start}
-            end={end}
-            setStart={setStart}
-            setEnd={setEnd}
-          />
-          <CampHeadCounter
-            params={params}
-            adult={adult}
-            child={child}
-            start={start}
-            end={end}
-            setSites={setSites}
-            setAdult={setAdult}
-            setChild={setChild}
-          />
-          {camp.campAmenities ? (
-            <AmenityWrap>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontWeight: 'bold',
-                }}
-              >
-                부대시설
-              </div>
-              <div style={{ display: 'flex' }}>
-                {camp.campAmenities ? (
-                  <Amenities>
-                    {camp.campAmenities.map((amenity: any) => (
-                      <CampAmenities key={amenity} amenity={amenity} />
-                    ))}
-                  </Amenities>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </AmenityWrap>
-          ) : (
-            <></>
-          )}
-          {sites ? (
-            <>
-              <SiteLists sites={sites}>
-                {sites.getSiteLists.map(site => (
-                  <Sites
-                    key={site.siteId}
-                    theme={camp.themeLists}
-                    type={camp.typeLists}
-                    dateObj={dateObj}
-                    countObj={countObj}
-                    site={site}
-                  />
-                ))}
-              </SiteLists>
-            </>
-          ) : (
-            <></>
-          )}
-          <MapBox>
-            <CategoryFromBounds
-              campLat={camp.mapY}
-              campLng={camp.mapX}
-              campName={camp.campName}
+      {camp.premium ? (
+        <>
+          <CheckAuth />
+          <Wrap>
+            <ImgSwiper
+              campMainImage={camp.campMainImage}
+              campSubImages={camp.campSubImages}
             />
-          </MapBox>
-          <CommentList
-            isCmtOpen={isCmtOpen}
-            setIsCmtOpen={setIsCmtOpen}
-            campId={params}
-          />
-          {isCmtOpen ? (
-            <CmtBox onClick={() => isCmtOpenChange()}>{'접기 '}</CmtBox>
-          ) : (
-            <CmtBox onClick={() => isCmtOpenChange()}>{'열기 '}</CmtBox>
-          )}
-        </DescWrap>
-      </Wrap>
+            <DescWrap>
+              <div>
+                <div>
+                  <DescBox>
+                    <CampName>{camp.campName}</CampName>
+                    <CampLikeButton params={params} />
+                  </DescBox>
+                  <CampDesc>
+                    <IconLo src={locationImg} />
+                    <div>{camp.campAddress}</div>
+                    <Button
+                      bgColor="#fff2e9"
+                      width="54px"
+                      height="27px"
+                      fontSize="12px"
+                      borderRadius="13.5px"
+                      margin="0px"
+                      onClick={getDirection}
+                    >
+                      길찾기
+                    </Button>
+                  </CampDesc>
+                  <CampDesc>
+                    <IconPh src={phoneImg} />
+                    <div>{camp.phoneNumber}</div>
+                    <Button
+                      bgColor="#fff2e9"
+                      fontSize="12px"
+                      width="45px"
+                      height="27px"
+                      borderRadius="13.5px"
+                      margin="0px"
+                      onClick={handleCopyClipBoard}
+                    >
+                      복사
+                    </Button>
+                  </CampDesc>
+                </div>
+              </div>
+              <CampDatePicker
+                start={start}
+                end={end}
+                setStart={setStart}
+                setEnd={setEnd}
+              />
+              <CampHeadCounter
+                params={params}
+                adult={adult}
+                child={child}
+                start={start}
+                end={end}
+                setSites={setSites}
+                setAdult={setAdult}
+                setChild={setChild}
+              />
+              {camp.campAmenities ? (
+                <AmenityWrap>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    부대시설
+                  </div>
+                  <div style={{ display: 'flex' }}>
+                    {camp.campAmenities ? (
+                      <Amenities>
+                        {camp.campAmenities.map((amenity: any) => (
+                          <CampAmenities key={amenity} amenity={amenity} />
+                        ))}
+                      </Amenities>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </AmenityWrap>
+              ) : (
+                <></>
+              )}
+              {sites ? (
+                <>
+                  <SiteLists sites={sites}>
+                    {sites.getSiteLists.map(site => (
+                      <Sites
+                        key={site.siteId}
+                        theme={camp.themeLists}
+                        type={camp.typeLists}
+                        dateObj={dateObj}
+                        countObj={countObj}
+                        site={site}
+                      />
+                    ))}
+                  </SiteLists>
+                </>
+              ) : (
+                <></>
+              )}
+              <MapBox>
+                <CategoryFromBounds
+                  campLat={camp.mapY}
+                  campLng={camp.mapX}
+                  campName={camp.campName}
+                />
+              </MapBox>
+              <CommentList
+                isCmtOpen={isCmtOpen}
+                setIsCmtOpen={setIsCmtOpen}
+                campId={params}
+              />
+              {isCmtOpen ? (
+                <CmtBox onClick={() => isCmtOpenChange()}>{'접기 '}</CmtBox>
+              ) : (
+                <CmtBox onClick={() => isCmtOpenChange()}>{'열기 '}</CmtBox>
+              )}
+            </DescWrap>
+          </Wrap>
+        </>
+      ) : (
+        <>
+          <CheckAuth />
+          <Wrap>
+            <ImgSwiper
+              campMainImage={camp.campMainImage}
+              campSubImages={camp.campSubImages}
+            />
+            <DescWrap>
+              <div style={{ marginBottom: '20px' }}>
+                <div>
+                  <DescBox>
+                    <CampName>{camp.campName}</CampName>
+                    <CampLikeButton params={params} />
+                  </DescBox>
+                  <CampDesc>
+                    <IconLo src={locationImg} />
+                    <div>{camp.campAddress}</div>
+                    <Button
+                      bgColor="#fff2e9"
+                      width="54px"
+                      height="27px"
+                      fontSize="12px"
+                      borderRadius="13.5px"
+                      margin="0px"
+                      onClick={getDirection}
+                    >
+                      길찾기
+                    </Button>
+                  </CampDesc>
+                  <CampDesc>
+                    <IconPh src={phoneImg} />
+                    <div>{camp.phoneNumber}</div>
+                    <Button
+                      bgColor="#fff2e9"
+                      fontSize="12px"
+                      width="45px"
+                      height="27px"
+                      borderRadius="13.5px"
+                      margin="0px"
+                      onClick={handleCopyClipBoard}
+                    >
+                      복사
+                    </Button>
+                  </CampDesc>
+                </div>
+              </div>
+              {camp.campAmenities ? (
+                <AmenityWrap>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    부대시설
+                  </div>
+                  <div style={{ display: 'flex' }}>
+                    {camp.campAmenities ? (
+                      <Amenities>
+                        {camp.campAmenities.map((amenity: any) => (
+                          <CampAmenities key={amenity} amenity={amenity} />
+                        ))}
+                      </Amenities>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </AmenityWrap>
+              ) : (
+                <></>
+              )}
+              <MapBox>
+                <CategoryFromBounds
+                  campLat={camp.mapY}
+                  campLng={camp.mapX}
+                  campName={camp.campName}
+                />
+              </MapBox>
+              <CmtBox onClick={noPremiumHref}>{'캠핑장 페이지로 이동'}</CmtBox>
+            </DescWrap>
+          </Wrap>
+        </>
+      )}
     </>
   ) : null;
 };
@@ -376,6 +473,8 @@ const CmtBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  cursor: pointer;
+  user-select: none;
   @media (max-width: 1200px) {
     font-size: 14px;
   }
