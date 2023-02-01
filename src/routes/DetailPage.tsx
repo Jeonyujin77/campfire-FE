@@ -6,7 +6,6 @@ import { useAppDispatch } from '../redux/store';
 //api
 import { __getCampsByParams } from '../apis/campApi';
 //훅
-import { campGeocoder } from '../utils/Geocoder';
 import useGeolocation from '../hooks/useGeolocation';
 //interface
 import { SiteList } from '../interfaces/camp';
@@ -45,8 +44,6 @@ const DetailPage = () => {
     adult: adult,
     child: child,
   }); // 인원수
-  // const [campLat, setCampLat] = useState(''); // 캠핑장위도
-  // const [campLng, setCampLng] = useState(''); // 캠핑장경도
   const location = useGeolocation(); //사용자 위치정보 불러오기
 
   //페이지 이동 시 스크롤 최상단으로 이동
@@ -86,13 +83,6 @@ const DetailPage = () => {
   useEffect(() => {
     setCountObj({ ...countObj, adult: adult, child: child });
   }, [adult, child]);
-
-  // 캠핑장 위치 위도, 경도 구하기
-  // useEffect(() => {
-  //   if (camp) {
-  //     campGeocoder(camp.campAddress, setCampLat, setCampLng);
-  //   }
-  // }, [camp]);
 
   //길찾기 버튼 이동함수
   const getDirection = useCallback(() => {

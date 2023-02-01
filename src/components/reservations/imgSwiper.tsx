@@ -17,8 +17,6 @@ export interface DetailCampDesc {
 }
 
 const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
-  // const images = [campMainImage, ...campSubImages];
-  // const mainImg = campMainImage;
   const [display, setDisplay] = useState(0);
   return (
     <>
@@ -62,7 +60,7 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
 const StyledSwiper = styled(Swiper)<{ display: number }>`
   width: 1200px;
   height: 600px;
-  display: ${({ display }) => (display === 1 ? 'flex' : 'none')};
+  display: ${({ display }) => (display === 0 ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   flex-direction: row;

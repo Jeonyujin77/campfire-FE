@@ -242,7 +242,6 @@ const UserInfo = styled.div`
 
   @media (max-width: 600px) {
     label {
-      width: 15%;
       display: block;
     }
   }
