@@ -258,9 +258,11 @@ export const multipleMarkerImage = campList => {
 
   for (let i = 0; i < campList.length; i++) {
     const element = campList[i];
+
     if (element.mapX !== null && element.mapY !== null) {
       positions.push({
         title: element.campName,
+        address: element.campAddress,
         latlng: new window.kakao.maps.LatLng(element.mapY, element.mapX),
       });
     }
@@ -285,6 +287,26 @@ export const multipleMarkerImage = campList => {
       position: positions[j].latlng, // 마커를 표시할 위치
       title: positions[j].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
       image: markerImage, // 마커 이미지
+      clickable: true, // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
+    });
+
+    // 마커를 지도에 표시합니다.
+    marker.setMap(map);
+
+    // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+    let iwContent = `<div style="padding:5px;"><p>${positions[j].title}<p><p>${positions[j].address}<p></div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+      iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+    // 인포윈도우를 생성합니다
+    let infowindow = new window.kakao.maps.InfoWindow({
+      content: iwContent,
+      removable: iwRemoveable,
+    });
+
+    // 마커에 클릭이벤트를 등록합니다
+    window.kakao.maps.event.addListener(marker, 'click', function () {
+      // 마커 위에 인포윈도우를 표시합니다
+      infowindow.open(map, marker);
     });
   }
 };

@@ -64,6 +64,7 @@ const WriteCommentForm = styled.form`
   justify-content: center;
   align-items: center;
   border: 2px solid #fe802c;
+  margin-bottom: 10px;
   border-radius: 20px;
   textarea {
     margin: 10px 10px 0px 10px;
