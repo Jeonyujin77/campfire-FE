@@ -137,6 +137,7 @@ const HeaderComponent = styled.div`
   align-items: flex-end;
   text-align: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   color: black;
   /* padding: 10px 0px; */
 
@@ -184,6 +185,14 @@ const LogoDiv = styled.div`
   margin-left: 130px;
   margin-right: 33%;
   height: 100%;
+
+  @media (max-width: 1750px) {
+    margin-right: 20%;
+  }
+
+  @media (max-width: 1470px) {
+    margin-right: 0px;
+  }
 
   @media (max-width: 1200px) {
     margin: 0 auto;
