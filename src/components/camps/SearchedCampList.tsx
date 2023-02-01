@@ -18,7 +18,7 @@ const SearchedCampList = ({ campList }: { campList: CampType[] }) => {
 
   return camps?.length !== 0 ? (
     <>
-      <Button onClick={() => setToggleMap(!toggleMap)}>
+      <Button bgColor="#ffece0" onClick={() => setToggleMap(!toggleMap)}>
         {toggleMap ? '리스트로 보기' : '지도로 보기'}
       </Button>
       {toggleMap ? (

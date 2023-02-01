@@ -10,6 +10,7 @@ import Liked from './Liked';
 import likeOn from '../../asset/likeOn.png';
 import campPremium from '../../asset/campItem/campPremium.png';
 import noMainImg from '../../asset/campItem/noMainImg.png';
+import reviewIcon from '../../asset/campItem/reviewIcon.png';
 
 const CampItem = ({ camp }: { camp: CampType }) => {
   const navigate = useNavigate();
@@ -18,9 +19,9 @@ const CampItem = ({ camp }: { camp: CampType }) => {
   //리뷰 숫자 범위에따른 표현방식
   const countR = () => {
     if (camp.countReviews >= 100) {
-      return '📃 99+';
+      return ' 99+';
     } else {
-      return `📃 ${camp.countReviews}`;
+      return ` ${camp.countReviews}`;
     }
   };
 
@@ -67,7 +68,14 @@ const CampItem = ({ camp }: { camp: CampType }) => {
                     />
                     <StarRate>{camp.likes}</StarRate>
                   </div>
-                  <StarRate>{countR()}</StarRate>
+                  <div style={{ display: 'flex', gap: '5px' }}>
+                    <img
+                      style={{ width: '22px', height: '22px' }}
+                      src={reviewIcon}
+                      alt="하트"
+                    />
+                    <StarRate>{countR()}</StarRate>
+                  </div>
                 </CampDescR>
               </CampDescRight>
             </CampDescBody>
@@ -129,7 +137,14 @@ const CampItem = ({ camp }: { camp: CampType }) => {
                     />
                     <StarRate>{camp.likes}</StarRate>
                   </div>
-                  <StarRate>{countR()}</StarRate>
+                  <div style={{ display: 'flex', gap: '5px' }}>
+                    <img
+                      style={{ width: '22px', height: '22px' }}
+                      src={reviewIcon}
+                      alt="하트"
+                    />
+                    <StarRate>{countR()}</StarRate>
+                  </div>
                 </CampDescR>
               </CampDescRight>
             </CampDescBody>
