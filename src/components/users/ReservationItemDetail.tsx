@@ -1,4 +1,5 @@
 import { useCallback, memo } from 'react';
+import ReactGa from 'react-ga';
 import { __cancelReservation } from '../../apis/reservationApi';
 import { Reservation } from '../../interfaces/Users';
 import { useAppDispatch } from '../../redux/store';
@@ -18,6 +19,10 @@ const ReservationItemDetail = ({
   const cancleR = useCallback(
     (payload: number) => {
       if (window.confirm('해당 예약을 취소하시겠습니까?')) {
+        ReactGa.event({
+          category: '마이 페이지',
+          action: '예약취소',
+        });
         dispatch(__cancelReservation(payload)).then(res => {
           const { type, payload } = res;
           if (type === 'cancelReservation/fulfilled') {

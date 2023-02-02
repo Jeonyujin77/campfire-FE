@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __getCampsByParams } from '../apis/campApi';
 //훅
@@ -85,6 +86,10 @@ const DetailPage = () => {
 
   //길찾기 버튼 이동함수
   const getDirection = useCallback(() => {
+    ReactGa.event({
+      category: '디테일페이지 버튼',
+      action: '길찾기',
+    });
     if (location.error) {
       alert(
         `위치 액세스가 허용되어야 사용이 가능합니다.\n허용된 상태라면 새로고침을 해주세요.`,
@@ -100,6 +105,10 @@ const DetailPage = () => {
 
   //번호 복사 함수
   const handleCopyClipBoard = async () => {
+    ReactGa.event({
+      category: '디테일페이지 버튼',
+      action: '번호복사',
+    });
     try {
       navigator.clipboard.writeText(camp.phoneNumber);
       alert('클립보드에 번호가 복사되었습니다.');
@@ -110,11 +119,19 @@ const DetailPage = () => {
 
   // 접기/열기
   const isCmtOpenChange = useCallback(() => {
+    ReactGa.event({
+      category: '디테일페이지 버튼',
+      action: '리뷰 열기, 닫기',
+    });
     setIsCmtOpen(!isCmtOpen);
   }, [isCmtOpen]);
 
   // 공공데이터 이동 함수
   const noPremiumHref = () => {
+    ReactGa.event({
+      category: '디테일페이지 버튼',
+      action: '공공데이터 페이지이동함수',
+    });
     if (camp.homepage) {
       window.open(camp.homepage);
     } else {

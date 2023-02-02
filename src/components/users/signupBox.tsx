@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
+import ReactGa from 'react-ga';
 //api
 import {
   __certifiTest,
@@ -81,6 +82,10 @@ const SignupBox = () => {
 
   // 이메일 중복검사
   const checkEmailDup = () => {
+    ReactGa.event({
+      category: '일반 회원가입 페이지',
+      action: '이메일 중복검사',
+    });
     if (email === '') return;
 
     dispatch(__checkEmailDup(email)).then(res => {
@@ -97,6 +102,10 @@ const SignupBox = () => {
 
   // 닉네임 중복검사
   const checkNickDup = () => {
+    ReactGa.event({
+      category: '일반 회원가입 페이지',
+      action: '닉네임 중복검사',
+    });
     if (nickname === '') return;
 
     dispatch(__checkNickDup(nickname)).then(res => {
@@ -125,6 +134,10 @@ const SignupBox = () => {
 
   //인증번호 요청
   const certifiNumGet = () => {
+    ReactGa.event({
+      category: '일반 회원가입 페이지',
+      action: '인증번호 요청',
+    });
     if (telValidFlag) {
       dispatch(__getCertifiNum(telNum)).then(res => {
         const { type, payload } = res;
@@ -140,6 +153,10 @@ const SignupBox = () => {
 
   //인증번호 검증
   const certifiTest = () => {
+    ReactGa.event({
+      category: '일반 회원가입 페이지',
+      action: '인증번호 검증',
+    });
     dispatch(
       __certifiTest({ phoneNumber: telNum, verifyCode: certifiNum }),
     ).then(res => {
@@ -158,6 +175,10 @@ const SignupBox = () => {
   // 회원가입
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    ReactGa.event({
+      category: '일반 회원가입 페이지',
+      action: '가입하기 버튼',
+    });
 
     // 입력값 검증 및 중복확인이 정상이면
     if (

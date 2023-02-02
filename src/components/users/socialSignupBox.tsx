@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
+import ReactGa from 'react-ga';
 //api
 import {
   __certifiTest,
@@ -72,6 +73,10 @@ const SocialSignupBox = ({
 
   //인증번호 요청
   const certifiNumGet = () => {
+    ReactGa.event({
+      category: '소셜 회원가입 페이지',
+      action: '인증번호 요청',
+    });
     if (telValidFlag) {
       dispatch(__getCertifiNum(telNum)).then(res => {
         const { type, payload } = res;
@@ -87,6 +92,10 @@ const SocialSignupBox = ({
 
   //인증번호 검증
   const certifiTest = () => {
+    ReactGa.event({
+      category: '소셜 회원가입 페이지',
+      action: '인증번호 검증',
+    });
     dispatch(
       __certifiTest({ phoneNumber: telNum, verifyCode: certifiNum }),
     ).then(res => {
@@ -105,6 +114,10 @@ const SocialSignupBox = ({
   // 회원가입
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    ReactGa.event({
+      category: '소셜 회원가입 페이지',
+      action: '회원가입 버튼',
+    });
 
     // 입력값 검증 및 중복확인이 정상이면
     if (getCertifiStatus && certifiStatus) {

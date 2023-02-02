@@ -1,4 +1,5 @@
 import axios from 'axios';
+import ReactGa from 'react-ga';
 
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_URL}`,
@@ -26,6 +27,10 @@ api.interceptors.response.use(
     // access토큰 만료시 재발급받은 토큰을 다시 넣어줌
     if (config.headers && config.headers.accesstoken) {
       localStorage.setItem('accessToken', config.headers.accesstoken);
+      ReactGa.event({
+        category: '토큰',
+        action: `accesstoken 재발급`,
+      });
     }
 
     return config;
@@ -42,6 +47,14 @@ api.interceptors.response.use(
       localStorage.clear();
       window.location.href = '/login';
     }
+
+    if (status === 419 || status === 400 || status === 412 || status === 404) {
+      ReactGa.event({
+        category: '에러발생',
+        action: `에러status: ${status}, 에러메시지: ${data.errorMessage} `,
+      });
+    }
+
     // 요청 오류가 있는 경우 작업 수행
     return Promise.reject(error);
   },

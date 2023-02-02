@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import Button from '../common/Button';
 import dateImg from '../../asset/dateImg.png';
 import DateChoiceModal from '../reservations/dateChoiceModal';
+import ReactGa from 'react-ga';
 
 const CampDatePicker = ({
   start,
@@ -22,6 +23,14 @@ const CampDatePicker = ({
     const days = ['일', '월', '화', '수', '목', '금', '토'];
     return days[dayNum];
   }, []);
+
+  const datePickerOpen = () => {
+    ReactGa.event({
+      category: '디테일 페이지',
+      action: '날짜선택 모달 열기',
+    });
+    setIsOpen(!isOpen);
+  };
 
   return (
     <DateWrap>
@@ -53,9 +62,7 @@ const CampDatePicker = ({
         height="27px"
         borderRadius="13.5px"
         margin="0px"
-        onClick={() => {
-          setIsOpen(!isOpen);
-        }}
+        onClick={datePickerOpen}
       >
         날짜선택
       </Button>

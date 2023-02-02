@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __signin } from '../../apis/userApi';
 import {
@@ -38,6 +39,10 @@ const LoginBox = () => {
   //로그인
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    ReactGa.event({
+      category: '로그인 페이지',
+      action: '일반로그인시도',
+    });
     dispatch(__signin({ email, password })).then(res => {
       const { type, payload } = res;
       if (type === 'signin/fulfilled') {
@@ -55,14 +60,26 @@ const LoginBox = () => {
   //카카오로그인
   const handleKakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
+    ReactGa.event({
+      category: '로그인 페이지',
+      action: '카카오로그인버튼클릭',
+    });
   };
   //네이버로그인
   const handleNaverLogin = () => {
     window.location.href = NAVER_AUTH_URL;
+    ReactGa.event({
+      category: '로그인 페이지',
+      action: '네이버로그인버튼클릭',
+    });
   };
   //구글로그인
   const handleGoogleLogin = () => {
     window.location.href = GOOGLE_AUTH_URL;
+    ReactGa.event({
+      category: '로그인 페이지',
+      action: '구글로그인버튼클릭',
+    });
   };
 
   return (
@@ -174,6 +191,10 @@ const LoginBox = () => {
         margin="0px 0px 20px 0px"
         mwidth="70%"
         onClick={() => {
+          ReactGa.event({
+            category: '로그인 페이지',
+            action: '관리자모드 버튼',
+          });
           window.open('https://campfire-host-fe.vercel.app/');
         }}
       >
