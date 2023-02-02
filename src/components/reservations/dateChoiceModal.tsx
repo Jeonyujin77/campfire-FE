@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { ko } from 'date-fns/esm/locale';
+import ReactGa from 'react-ga';
 //datePicker css
 import 'react-datepicker/dist/react-datepicker.css';
 import './dateChoiceModal.css';
@@ -31,12 +32,18 @@ const DateChoiceModal = (props: MProps) => {
     return days[dayNum];
   };
 
+  const selectCompleted = () => {
+    ReactGa.event({
+      category: '디테일 페이지',
+      action: '날짜 선택완료',
+    });
+    props.setIsOpen(!props.isOpen);
+  };
+
   return (
     <>
       <ModalBackground
-        onClick={() => {
-          props.setIsOpen(!props.isOpen);
-        }}
+        onClick={selectCompleted}
         isOpen={props.isOpen}
       ></ModalBackground>
       <ModalWrap isOpen={props.isOpen}>
@@ -69,9 +76,7 @@ const DateChoiceModal = (props: MProps) => {
         />
         <ModalBottom>
           <Button
-            onClick={() => {
-              props.setIsOpen(!props.isOpen);
-            }}
+            onClick={selectCompleted}
             margin="0px"
             bgColor="#fe802c"
             fontWeight="bold"

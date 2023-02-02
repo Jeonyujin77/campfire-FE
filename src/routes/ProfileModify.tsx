@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __checkNickDup, __getUser, __putUser } from '../apis/userApi';
 //훅
@@ -78,6 +79,10 @@ const ProfileModify = () => {
 
   // 닉네임 중복검사
   const checkNickDup = () => {
+    ReactGa.event({
+      category: '사용자 정보수정 페이지',
+      action: '닉네임 중복검사',
+    });
     if (userName === '') return;
 
     if (userName === prevName) {
@@ -132,11 +137,12 @@ const ProfileModify = () => {
   const nameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
   };
-  const pNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value + '');
-  };
 
   const SubmitProfile = () => {
+    ReactGa.event({
+      category: '사용자 정보수정 페이지',
+      action: '수정 완료 클릭',
+    });
     //데이터 안넣을 때 유효성 검사
     if (!profileImg) {
       alert('프로필 이미지를 작성해주세요!');
@@ -262,6 +268,10 @@ const ProfileModify = () => {
                 color="#fff"
                 onClick={() => {
                   if (window.confirm('프로필 수정을 취소하시겠습니까?')) {
+                    ReactGa.event({
+                      category: '사용자 정보수정 페이지',
+                      action: '수정 취소',
+                    });
                     navigate(-1);
                   }
                 }}

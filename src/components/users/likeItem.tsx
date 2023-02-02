@@ -1,6 +1,7 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
+import ReactGa from 'react-ga';
 //인터페이스
 import { Like } from '../../interfaces/Users';
 //이미지
@@ -11,6 +12,10 @@ const LikeItem = ({ like }: { like: Like }) => {
   return (
     <ItemWrap
       onClick={() => {
+        ReactGa.event({
+          category: '마이 페이지',
+          action: '찜한 캠핑장으로 이동',
+        });
         navigate(`/camp/${like.campId}`);
       }}
     >

@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __getCampReviews } from '../../apis/campApi';
 //인터페이스
@@ -65,6 +66,10 @@ const CommentList = (props: CommentProps) => {
 
   // 리뷰 더보기 클릭 시
   const getCommentsByPageno = (prev: number, next: number) => {
+    ReactGa.event({
+      category: '디테일페이지 버튼',
+      action: '리뷰 더보기',
+    });
     setIsClicked(true);
     setPrevPage(prev);
     setCmtPage(next);

@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __withdrawalUser } from '../../apis/userApi';
 //훅
@@ -66,6 +67,10 @@ const WithdrawalModal = ({
           color="#fff"
           onClick={() => {
             if (window.confirm('정말 탈퇴하시겠습니까? \n')) {
+              ReactGa.event({
+                category: '마이 페이지',
+                action: '회원탈퇴',
+              });
               dispatch(
                 __withdrawalUser({ userId: userId, password: password }),
               ).then(res => {

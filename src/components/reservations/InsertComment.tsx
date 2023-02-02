@@ -1,6 +1,7 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useAppDispatch } from '../../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __writeCampReview } from '../../apis/campApi';
 //커스텀훅
@@ -47,7 +48,16 @@ const InsertComment = ({ campId }: { campId: number }) => {
         <WriteCommentForm onSubmit={onSubmit}>
           <textarea value={comment} onChange={commentHandler} maxLength={500} />
           <div>
-            <Button bgColor="#A1C182" color="white">
+            <Button
+              onClick={() => {
+                ReactGa.event({
+                  category: '디테일페이지 버튼',
+                  action: '리뷰 등록',
+                });
+              }}
+              bgColor="#A1C182"
+              color="white"
+            >
               등록하기
             </Button>
           </div>

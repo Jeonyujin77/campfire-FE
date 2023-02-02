@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import { memo } from 'react';
+import ReactGa from 'react-ga';
 //인터페이스
 import { CampType } from '../../interfaces/camp';
 //컴포넌트
@@ -25,6 +26,14 @@ const CampItem = ({ camp }: { camp: CampType }) => {
     }
   };
 
+  const toDetail = () => {
+    ReactGa.event({
+      category: '메인페이지 버튼',
+      action: '캠핑장 선택',
+    });
+    navigate(`/camp/${camp.campId}`);
+  };
+
   return (
     <>
       {camp.premium ? (
@@ -35,19 +44,10 @@ const CampItem = ({ camp }: { camp: CampType }) => {
             likeStatus={camp.likeStatus}
             likes={camp.likes}
           />
-          <div
-            style={{ position: 'relative' }}
-            onClick={() => {
-              navigate(`/camp/${camp.campId}`);
-            }}
-          >
+          <div style={{ position: 'relative' }} onClick={toDetail}>
             <CampImg src={camp.campMainImage} alt="캠프장 메인사진" />
           </div>
-          <CampDescWrap
-            onClick={() => {
-              navigate(`/camp/${camp.campId}`);
-            }}
-          >
+          <CampDescWrap onClick={toDetail}>
             <CampHeadDesc>{camp.campName}</CampHeadDesc>
             <CampDescBody>
               <CampDescLeft>
@@ -88,12 +88,7 @@ const CampItem = ({ camp }: { camp: CampType }) => {
             likeStatus={camp.likeStatus}
             likes={camp.likes}
           />
-          <div
-            style={{ position: 'relative' }}
-            onClick={() => {
-              navigate(`/camp/${camp.campId}`);
-            }}
-          >
+          <div style={{ position: 'relative' }} onClick={toDetail}>
             {camp.campMainImage ? (
               <CampImg
                 src={camp.campMainImage}
@@ -108,11 +103,7 @@ const CampItem = ({ camp }: { camp: CampType }) => {
               <CampImg src={noMainImg} alt="캠프장 메인사진" />
             )}
           </div>
-          <CampDescWrap
-            onClick={() => {
-              navigate(`/camp/${camp.campId}`);
-            }}
-          >
+          <CampDescWrap onClick={toDetail}>
             <CampHeadDesc>{camp.campName}</CampHeadDesc>
             <CampDescBody>
               <CampDescLeft>

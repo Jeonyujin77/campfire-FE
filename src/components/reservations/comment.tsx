@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __deleteCampReview, __modifyCampReview } from '../../apis/campApi';
 import { __getUser } from '../../apis/userApi';
@@ -42,6 +43,10 @@ const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {
 
   // 리뷰 수정
   const onModifyReview = (reviewId: number) => {
+    ReactGa.event({
+      category: '디테일페이지 버튼',
+      action: '리뷰 수정',
+    });
     if (comment === '') {
       alert('리뷰 입력후 수정해주세요.');
       return;
@@ -66,6 +71,10 @@ const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {
 
   // 리뷰 삭제
   const onDeleteReview = (reviewId: number) => {
+    ReactGa.event({
+      category: '디테일페이지 버튼',
+      action: '리뷰 삭제',
+    });
     if (window.confirm('삭제하시겠습니까?')) {
       dispatch(__deleteCampReview({ campId, reviewId })).then(res => {
         const { type, payload } = res;

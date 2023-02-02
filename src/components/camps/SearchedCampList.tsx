@@ -1,6 +1,7 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import ReactGa from 'react-ga';
 //인터페이스
 import { CampType } from '../../interfaces/camp';
 import Button from '../common/Button';
@@ -16,9 +17,17 @@ const SearchedCampList = ({ campList }: { campList: CampType[] }) => {
     setCamps(campList);
   }, [campList]);
 
+  const listOrMap = () => {
+    ReactGa.event({
+      category: '검색 페이지',
+      action: '지도로보기, 리스트로보기 버튼',
+    });
+    setToggleMap(!toggleMap);
+  };
+
   return camps?.length !== 0 ? (
     <>
-      <Button bgColor="#ffece0" onClick={() => setToggleMap(!toggleMap)}>
+      <Button bgColor="#ffece0" onClick={listOrMap}>
         {toggleMap ? '리스트로 보기' : '지도로 보기'}
       </Button>
       {toggleMap ? (

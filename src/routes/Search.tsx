@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { RootState, useAppDispatch } from '../redux/store';
 import { useSelector } from 'react-redux';
+import ReactGa from 'react-ga';
 //api
 import { __searchCampsByKeyword } from '../apis/campApi';
 import { addSearchedCampList } from '../redux/modules/campSlice';
@@ -95,6 +96,10 @@ const Search = () => {
     amenities: string[],
     envs: string[],
   ) => {
+    ReactGa.event({
+      category: '검색 페이지',
+      action: '검색 버튼으로 검색',
+    });
     dispatch(
       __searchCampsByKeyword({
         search: searchKey,
@@ -129,12 +134,20 @@ const Search = () => {
     amenities: string[],
     envs: string[],
   ) => {
+    ReactGa.event({
+      category: '검색 페이지',
+      action: '돋보기 버튼 클릭으로 검색',
+    });
     searchCampsByKeyword(searchKey, types, themes, amenities, envs);
   };
 
   //엔터키 인식
   const keyPressHandler = (e: React.KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter') {
+      ReactGa.event({
+        category: '검색 페이지',
+        action: '키보드 엔터로 검색',
+      });
       searchHandler(searchKey, types, themes, amenities, envs);
     }
   };
