@@ -33,10 +33,10 @@ export interface PutUserInfo {
 }
 
 // 유저 회원탈퇴 관련정보
-export interface DeleteUser {
-  userId: number | undefined;
-  password: string;
-}
+// export interface DeleteUser {
+//   userId: number | undefined;
+//   password: string;
+// }
 
 // 유저 예약내역 관련정보
 export interface ReservationList {

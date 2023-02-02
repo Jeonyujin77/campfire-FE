@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  DeleteUser,
   LikesCamp,
   PutUserInfo,
   SocialUserInfo,
@@ -136,13 +135,9 @@ export const __putUser = createAsyncThunk(
 // 회원탈퇴하기
 export const __withdrawalUser = createAsyncThunk(
   'withdrawalUser',
-  async (payload: DeleteUser, thunkAPI) => {
-    const { userId, password } = payload;
-    console.log(password);
+  async (payload, thunkAPI) => {
     try {
-      const response = await api.delete(`/api/users/${userId}`, {
-        data: { password },
-      });
+      const response = await api.delete(`/api/users`);
       console.log(response);
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue(response.data);
@@ -296,6 +291,70 @@ export const __Socialsignup = createAsyncThunk(
         const { accesstoken, refreshtoken }: any = response.headers;
         localStorage.setItem('accessToken', accesstoken);
         localStorage.setItem('refreshToken', refreshtoken);
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+//아이디 비밀번호 찾기 인증번호 발급받기
+export const __getCertifiNumToFindIdPw = createAsyncThunk(
+  'getCertifiNumToFindIdPw',
+  async (payload: string, thunkAPI) => {
+    try {
+      const response = await api.get<any>(`/api/users/sms/${payload}`);
+
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+//아이디 비밀번호 찾기 인증번호 검증하기
+export const __certifiTestToFindIdPw = createAsyncThunk(
+  'certifiTestToFindIdPw',
+  async (payload: any, thunkAPI) => {
+    try {
+      const response = await api.post<any>(`/api/users/sms/verify`, payload);
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+//아이디 불러오기
+export const __getUserEmail = createAsyncThunk(
+  'getUserEmail',
+  async (payload: string, thunkAPI) => {
+    try {
+      const response = await api.get<any>(
+        `/api/users/find/userEmail?phoneNumber=${payload}`,
+      );
+
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 수정페이지 정보수정하기
+export const __putPassword = createAsyncThunk(
+  'putPassword',
+  async (payload: any, thunkAPI) => {
+    try {
+      const response = await api.put(`/api/users/update/userPW`, payload);
+      if (response.status === 201) {
         return thunkAPI.fulfillWithValue(response.data);
       }
     } catch (error) {
