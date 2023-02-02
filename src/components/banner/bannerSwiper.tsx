@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper';
+import ReactGa from 'react-ga';
 // Swiper css
 import 'swiper/css';
 //이미지
@@ -10,8 +11,12 @@ import reservation from '../../asset/banner/reservation.png';
 
 const BannerSwiper = () => {
   const Imgs = [
-    { img: event, href: 'https://forms.gle/PgDn7qxoJYzkmyet6' },
-    { img: reservation, href: '/premiumcamps' },
+    {
+      img: event,
+      href: 'https://forms.gle/PgDn7qxoJYzkmyet6',
+      action: '이벤트배너',
+    },
+    { img: reservation, href: '/premiumcamps', action: '프리미엄배너' },
   ];
   return (
     <StyledSwiper
@@ -26,6 +31,10 @@ const BannerSwiper = () => {
         <StyledSwiperSlide key={Math.random()}>
           <CampImg
             onClick={() => {
+              ReactGa.event({
+                category: '배너 클릭',
+                action: `${image.action}`,
+              });
               window.location.href = `${image.href}`;
             }}
             src={image.img}
