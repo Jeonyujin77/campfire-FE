@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __getUser } from '../apis/userApi';
 //컴포넌트
@@ -82,6 +83,10 @@ const MyPage = () => {
 
   // 로그아웃
   const logOut = () => {
+    ReactGa.event({
+      category: '마이 페이지',
+      action: '로그아웃',
+    });
     localStorage.clear();
     navigate('/');
     window.location.reload();

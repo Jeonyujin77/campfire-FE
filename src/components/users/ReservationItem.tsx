@@ -1,6 +1,7 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useState, memo } from 'react';
+import ReactGa from 'react-ga';
 //인터페이스
 import { Reservation } from '../../interfaces/Users';
 import Button from '../common/Button';
@@ -25,6 +26,10 @@ const ReservationItem = ({ book }: { book: Reservation }) => {
           borderRadius="29px"
           onClick={() => {
             if (display === 0) {
+              ReactGa.event({
+                category: '마이 페이지',
+                action: '예약내용 상세보기',
+              });
               setDisplay(1);
             } else if (display === 1) {
               setDisplay(0);

@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch } from '../../redux/store';
+import ReactGa from 'react-ga';
 //api
 import { __likeCampByParams } from '../../apis/campApi';
 import {
@@ -68,14 +69,22 @@ const Liked = ({
     setLike(likeStatus);
   }, []);
 
+  const likeBtn = () => {
+    likeCamp(campId);
+    ReactGa.event({
+      category: '찜하기 버튼',
+      action: '찜하기',
+    });
+  };
+
   return (
     <>
       {like ? (
-        <Back onClick={() => likeCamp(campId)}>
+        <Back onClick={likeBtn}>
           <LikedImg src={Likedheart} />
         </Back>
       ) : (
-        <UnLBack onClick={() => likeCamp(campId)}>
+        <UnLBack onClick={likeBtn}>
           <UnLikedImg src={unLikedheart} />
         </UnLBack>
       )}

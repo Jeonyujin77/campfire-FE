@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 import dayjs from 'dayjs';
+import ReactGa from 'react-ga';
 //api
 import { __getSiteByParams } from '../apis/campApi';
 import { __reserveCamps } from '../apis/reservationApi';
@@ -173,6 +174,10 @@ const ReservationDescpage = () => {
           {showInfo ? (
             <CloseBtn
               onClick={() => {
+                ReactGa.event({
+                  category: '예약페이지 버튼',
+                  action: '상품소개 열기, 닫기',
+                });
                 setShowInfo(!showInfo);
               }}
             >
@@ -182,6 +187,10 @@ const ReservationDescpage = () => {
           ) : (
             <OpenBtn
               onClick={() => {
+                ReactGa.event({
+                  category: '예약페이지 버튼',
+                  action: '상품소개 열기, 닫기',
+                });
                 setShowInfo(!showInfo);
               }}
             >
@@ -206,6 +215,10 @@ const ReservationDescpage = () => {
             <>
               <CloseBtn
                 onClick={() => {
+                  ReactGa.event({
+                    category: '예약페이지 버튼',
+                    action: '주의사항 열기, 닫기',
+                  });
                   setShowCaution(!showCaution);
                 }}
               >
@@ -216,6 +229,10 @@ const ReservationDescpage = () => {
           ) : (
             <OpenBtn
               onClick={() => {
+                ReactGa.event({
+                  category: '예약페이지 버튼',
+                  action: '주의사항 열기, 닫기',
+                });
                 setShowCaution(!showCaution);
               }}
             >
@@ -227,6 +244,10 @@ const ReservationDescpage = () => {
         <ReservationPageNav>
           <Button
             onClick={() => {
+              ReactGa.event({
+                category: '예약페이지 버튼',
+                action: '캠핑장 예약신청 버튼',
+              });
               return;
             }}
             width="1100px"

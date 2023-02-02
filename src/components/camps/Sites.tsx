@@ -1,6 +1,7 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
+import ReactGa from 'react-ga';
 //인터페이스
 import { SiteListsRes } from '../../interfaces/camp';
 
@@ -26,6 +27,10 @@ const Sites = ({
         <SiteWrap
           bookStatus={site.bookStatus}
           onClick={() => {
+            ReactGa.event({
+              category: '디테일페이지 버튼',
+              action: '캠핑장 사이트 선택',
+            });
             navigate(`/camp/${params}/sitedesc/${site.siteId}`, {
               state: { dateState: dateObj, countState: countObj },
             });
