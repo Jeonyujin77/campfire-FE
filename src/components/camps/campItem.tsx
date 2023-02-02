@@ -166,10 +166,10 @@ const ItemWrap = styled.div`
 const PremiumImg = styled.img`
   position: absolute;
   z-index: 500;
-  top: 10px;
-  left: 10px;
-  width: 50px;
-  height: 21px;
+  top: 5px;
+  left: 9px;
+  width: 93px;
+  height: 40px;
   border-radius: 7px;
 `;
 
