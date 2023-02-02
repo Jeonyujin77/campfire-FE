@@ -15,6 +15,7 @@ import Search from '../routes/Search';
 import SocialSignup from '../routes/SocialSignup';
 import Wrapper from '../routes/Wrapper';
 import useAnalytics from '../hooks/useAnalytics';
+import FindUser from '../routes/FindUser';
 
 const Router = () => {
   const { initialized } = useAnalytics();
@@ -39,6 +40,7 @@ const Router = () => {
             <Route path="api/auths/naver" element={<OAuthNaver />} />
             <Route path="api/auths/google" element={<OAuthGoogle />} />
             <Route path="/socialsignup" element={<SocialSignup />} />
+            <Route path="/finduser" element={<FindUser />} />
           </Routes>
         </Wrapper>
       </Layout>

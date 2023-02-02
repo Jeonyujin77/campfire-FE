@@ -24,11 +24,8 @@ const WithdrawalModal = ({
 }: Withdrawal) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [password, setPassword, passwordHandler] = useInput('');
-  const [userId, setUserId] = useState<number>();
 
   useEffect(() => {
-    setUserId(Number(localStorage.getItem('userId')));
     if (isWithdrawalOpen) {
       document.body.style.overflow = 'hidden';
     }
@@ -36,7 +33,6 @@ const WithdrawalModal = ({
 
   const onClose = () => {
     setIsWithdrawalOpen(!isWithdrawalOpen);
-    setPassword('');
     document.body.style.overflow = 'auto';
   };
 
@@ -53,13 +49,6 @@ const WithdrawalModal = ({
           </ModalCloseBtn>
         </ModalHeader>
         <p>CAMPFIRE를 탈퇴하시겠습니까?</p>
-        <p>비밀번호를 입력해주세요</p>
-        <Input
-          width="270px"
-          height="37px"
-          onChange={passwordHandler}
-          value={password}
-        />
         <Button
           width="286px"
           height="37px"
@@ -71,15 +60,26 @@ const WithdrawalModal = ({
                 category: '마이 페이지',
                 action: '회원탈퇴',
               });
-              dispatch(
-                __withdrawalUser({ userId: userId, password: password }),
-              ).then(res => {
+              dispatch(__withdrawalUser()).then(res => {
                 const { type, payload } = res;
                 if (type === 'withdrawalUser/fulfilled') {
-                  alert(`${payload.message}`);
-                  localStorage.clear();
-                  navigate('/');
-                  window.location.reload();
+                  if (
+                    payload.provider === 'kakao' ||
+                    payload.provider === 'google' ||
+                    payload.provider === 'naver'
+                  ) {
+                    alert(
+                      `탈퇴가 완료되었습니다.\n${payload.provider}에서 서비스 연결을 끊으면 완전히 탈퇴됩니다.`,
+                    );
+                    localStorage.clear();
+                    navigate('/');
+                    window.location.reload();
+                  } else {
+                    alert(`${payload.message}`);
+                    localStorage.clear();
+                    navigate('/');
+                    window.location.reload();
+                  }
                 }
                 if (type === 'withdrawalUser/rejected') {
                   alert(`${payload.response.data.errorMessage}`);
