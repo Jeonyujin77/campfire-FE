@@ -23,7 +23,7 @@ const ImgSwiper = ({ campMainImage, campSubImages }: DetailCampDesc) => {
       {campMainImage ? (
         <StyledSwiper
           modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={20}
+          spaceBetween={0}
           slidesPerView={1}
           autoplay={{ delay: 4000 }}
           navigation
