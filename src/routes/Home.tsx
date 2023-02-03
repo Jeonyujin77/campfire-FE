@@ -8,6 +8,8 @@ import CampItemList from '../components/camps/campItemList';
 //이미지
 import upArrowOrange from '../asset/upArrowOrange.png';
 import BannerSwiper from '../components/banner/bannerSwiper';
+import ReviewRank from '../components/rank/ReviewRank';
+import LikeRank from '../components/rank/LikeRank';
 
 const Home = () => {
   //페이지 이동 시 스크롤바 상단으로 이동
@@ -43,6 +45,10 @@ const Home = () => {
         </div>
       </HomeTitle>
       <BannerSwiper />
+      <RankWrap>
+        <LikeRank />
+        <ReviewRank />
+      </RankWrap>
       <CampItemList />
     </Wrap>
   );
@@ -81,6 +87,18 @@ const HomeTitle = styled.div`
 
   @media (max-width: 600px) {
     font-size: 18px;
+  }
+`;
+
+const RankWrap = styled.div`
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
   }
 `;
 
