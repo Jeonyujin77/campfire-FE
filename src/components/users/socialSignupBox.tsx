@@ -190,21 +190,43 @@ const SocialSignupBox = ({
           </div>
           <div>
             <Span>
-              <Input
-                value={telNum}
-                onChange={telNumHandler}
-                onBlur={setTelValidFlag}
-                name="phoneNumber"
-                required
-                type="tel"
-                placeholder="-를 제외한 숫자만 입력해주세요."
-                width="352px"
-                height="59px"
-                fontSize="20px"
-                borderRadius="20px 0px 0px 20px"
-                bgColor="#D9D9D9"
-              />
-              <InputBtn onClick={certifiNumGet}>인증번호 발송</InputBtn>
+              {certifiStatus ? (
+                <Input
+                  value={telNum}
+                  onChange={telNumHandler}
+                  onBlur={setTelValidFlag}
+                  name="phoneNumber"
+                  required
+                  readOnly
+                  type="tel"
+                  placeholder="-를 제외한 숫자만 입력해주세요."
+                  width="352px"
+                  height="59px"
+                  fontSize="20px"
+                  borderRadius="20px 0px 0px 20px"
+                  bgColor="#D9D9D9"
+                />
+              ) : (
+                <Input
+                  value={telNum}
+                  onChange={telNumHandler}
+                  onBlur={setTelValidFlag}
+                  name="phoneNumber"
+                  required
+                  type="tel"
+                  placeholder="-를 제외한 숫자만 입력해주세요."
+                  width="352px"
+                  height="59px"
+                  fontSize="20px"
+                  borderRadius="20px 0px 0px 20px"
+                  bgColor="#D9D9D9"
+                />
+              )}
+              {certifiStatus ? (
+                <InputBtn></InputBtn>
+              ) : (
+                <InputBtn onClick={certifiNumGet}>인증번호 발송</InputBtn>
+              )}
             </Span>
           </div>
           <ErrWrap>
@@ -318,6 +340,10 @@ const InputBtn = styled.span`
   text-align: center;
   @media (max-width: 1200px) {
     font-size: 13px;
+    img {
+      width: 30px;
+      height: 30px;
+    }
   }
 `;
 

@@ -1,7 +1,7 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
 import ReactGa from 'react-ga';
 //api
@@ -28,6 +28,7 @@ import { EMAIL_NOT_VALID, PW_NOT_VALID } from '../../constant/message';
 
 const LoginBox = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   // 아이디, 비밀번호
   const [email, setEmail, emailHandler] = useInput('');
   const [password, setPassword, passwordHandler] = useInput('');
@@ -201,8 +202,33 @@ const LoginBox = () => {
         관리자모드
       </Button>
       <BottomText>
-        <div>아직 회원이 아니시라면? </div>
-        <ToLogin to="/signup">회원가입하기</ToLogin>
+        <div style={{ display: 'flex', gap: '5px', marginBottom: '5px' }}>
+          <div
+            style={{ fontWeight: 'bold', cursor: 'pointer' }}
+            onClick={() =>
+              navigate('/finduser', {
+                state: { to: 'id' },
+              })
+            }
+          >
+            아이디 찾기
+          </div>{' '}
+          /{' '}
+          <div
+            style={{ fontWeight: 'bold', cursor: 'pointer' }}
+            onClick={() =>
+              navigate('/finduser', {
+                state: { to: 'password' },
+              })
+            }
+          >
+            비밀번호 찾기
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '5px' }}>
+          <div>아직 회원이 아니시라면? </div>
+          <ToLogin to="/signup">회원가입하기</ToLogin>
+        </div>
       </BottomText>
     </Wrap>
   );
@@ -317,7 +343,7 @@ const BottomText = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   gap: 10px;
 `;
 

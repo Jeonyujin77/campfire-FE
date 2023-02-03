@@ -29,6 +29,21 @@ export const __getCampsByPageno = createAsyncThunk(
   },
 );
 
+// 프리미엄 캠핑장 가져오기
+export const __getPremiumCamps = createAsyncThunk(
+  'getPremiumCamps',
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get<any>(`api/events/premium`);
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 // 디테일페이지 타겟데이터 가져오기
 export const __getCampsByParams = createAsyncThunk(
   'getCampsByParams',

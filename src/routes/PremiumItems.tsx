@@ -4,12 +4,11 @@ import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 //컴포넌트
 import CheckAuth from '../components/common/CheckAuth';
-import CampItemList from '../components/camps/campItemList';
 //이미지
 import upArrowOrange from '../asset/upArrowOrange.png';
-import BannerSwiper from '../components/banner/bannerSwiper';
+import PremiumCampsList from '../components/camps/premiumCampsList';
 
-const Home = () => {
+const PremiumItems = () => {
   //페이지 이동 시 스크롤바 상단으로 이동
   const { pathname } = useLocation();
   useEffect(() => {
@@ -42,8 +41,7 @@ const Home = () => {
           />
         </div>
       </HomeTitle>
-      <BannerSwiper />
-      <CampItemList />
+      <PremiumCampsList />
     </Wrap>
   );
 };
@@ -84,4 +82,4 @@ const HomeTitle = styled.div`
   }
 `;
 
-export default Home;
+export default PremiumItems;
