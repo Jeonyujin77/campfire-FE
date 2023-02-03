@@ -52,10 +52,10 @@ const MyLikeList = (props: MLProps) => {
             <img src={closePopBtn} alt="닫기" width="19px" />
           </ModalCloseBtn>
         </ModalHeader>
-        {likeList ? (
+        {likeList?.Likes[0] ? (
           likeList.Likes.map(like => <LikeItem key={like.likeId} like={like} />)
         ) : (
-          <></>
+          <EmptyLikeList>찜한 캠핑장이 없습니다!</EmptyLikeList>
         )}
       </ModalWrap>
     </>
@@ -113,6 +113,11 @@ const ModalCloseBtn = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+`;
+
+const EmptyLikeList = styled.div`
+  font-size: 25px;
+  font-weight: bold;
 `;
 
 export default MyLikeList;

@@ -100,3 +100,13 @@ export interface SearchCampsByKeyword {
   amenities: string[];
   envs: string[];
 }
+
+export interface LikeRankTypes {
+  campName: string;
+  campId: number;
+}
+
+export interface ReviewRankTypes {
+  campName: string;
+  campId: number;
+}

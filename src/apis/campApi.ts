@@ -232,3 +232,33 @@ export const __searchCampsByKeyword = createAsyncThunk(
     }
   },
 );
+
+// 찜하기 순위 캠핑장조회
+export const __getLikeRank = createAsyncThunk(
+  'getLikeRank',
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get(`api/events/likes`);
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 리뷰 순위 캠핑장조회
+export const __getReviewRank = createAsyncThunk(
+  'getReviewRank',
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get(`api/events/reviews`);
+      if (response.status === 200) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
