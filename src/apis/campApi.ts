@@ -194,13 +194,14 @@ export const __getCampReviews = createAsyncThunk(
 export const __searchCampsByKeyword = createAsyncThunk(
   'searchCampsByKeyword',
   async (payload: SearchCampsByKeyword, thunkAPI) => {
-    const { search, types, themes, amenities, envs } = payload;
+    const { search, types, themes, amenities, envs, location } = payload;
     // console.log('----------------------------------');
     // console.log('검색어', search);
     // console.log('숙소유형', types.toString());
     // console.log('테마', themes.toString());
     // console.log('주요시설', amenities.toString());
     // console.log('환경', envs.toString());
+    // console.log('지역', location);
 
     // 검색어
     const searchQuery = search !== '' ? `search=${search}` : 'search';
@@ -218,10 +219,12 @@ export const __searchCampsByKeyword = createAsyncThunk(
     // 자연환경
     const envsQuery =
       envs.toString() !== '' ? `envs=${envs.toString()}` : 'envs';
+    // 검색어
+    const locationQuery = location !== '' ? `location=${location}` : 'location';
 
     try {
       const response = await api.get(
-        `api/search/camps?${searchQuery}&${typesQuery}&${themesQuery}&${amenitiesQuery}&${envsQuery}`,
+        `api/search/camps?${searchQuery}&${typesQuery}&${themesQuery}&${amenitiesQuery}&${envsQuery}&${locationQuery}`,
       );
 
       if (response.status === 201) {

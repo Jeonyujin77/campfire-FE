@@ -21,6 +21,7 @@ import TabPanel from '../components/common/TabPanel';
 import {
   AMENITIES_LIST,
   ENV_LIST,
+  LOCATION_LIST,
   THEME_LIST,
   TYPE_LIST,
 } from '../constant/camps';
@@ -37,6 +38,7 @@ const Search = () => {
   const [envs, setEnvs] = useState<string[]>([]); // 자연환경
   const [themes, setThemes] = useState<string[]>([]); // 테마
   const [types, setTypes] = useState<string[]>([]); // 테마
+  const [location, setLocation] = useState<string>(''); // 지역
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,8 +50,8 @@ const Search = () => {
     setEnvs([]);
     setThemes([]);
     setTypes([]);
-
-    searchCampsByKeyword('', [], [], [], []);
+    setLocation('');
+    searchCampsByKeyword('', [], [], [], [], '');
   }, []);
 
   // 부대시설 체크박스
@@ -70,6 +72,11 @@ const Search = () => {
   // 숙소유형 체크박스
   const onTypesChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChecked(e, types, setTypes);
+  };
+
+  // 지역 라디오박스
+  const onLocationChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
   };
 
   // 탭 변경 이벤트
@@ -95,11 +102,13 @@ const Search = () => {
     themes: string[],
     amenities: string[],
     envs: string[],
+    location: string,
   ) => {
     ReactGa.event({
       category: '검색 페이지',
       action: '검색 버튼으로 검색',
     });
+
     dispatch(
       __searchCampsByKeyword({
         search: searchKey,
@@ -107,6 +116,7 @@ const Search = () => {
         themes,
         amenities,
         envs,
+        location,
       }),
     ).then(res => {
       const { type, payload } = res;
@@ -133,12 +143,13 @@ const Search = () => {
     themes: string[],
     amenities: string[],
     envs: string[],
+    location: string,
   ) => {
     ReactGa.event({
       category: '검색 페이지',
       action: '돋보기 버튼 클릭으로 검색',
     });
-    searchCampsByKeyword(searchKey, types, themes, amenities, envs);
+    searchCampsByKeyword(searchKey, types, themes, amenities, envs, location);
   };
 
   //엔터키 인식
@@ -148,7 +159,7 @@ const Search = () => {
         category: '검색 페이지',
         action: '키보드 엔터로 검색',
       });
-      searchHandler(searchKey, types, themes, amenities, envs);
+      searchHandler(searchKey, types, themes, amenities, envs, location);
     }
   };
 
@@ -164,7 +175,14 @@ const Search = () => {
           />
           <SearchIcon
             onClick={() => {
-              searchHandler(searchKey, types, themes, amenities, envs);
+              searchHandler(
+                searchKey,
+                types,
+                themes,
+                amenities,
+                envs,
+                location,
+              );
             }}
             src={searchIcon}
             alt="돋보기아이콘"
@@ -182,6 +200,7 @@ const Search = () => {
                 <Tab label="테마" {...a11yProps(1)} />
                 <Tab label="주요시설" {...a11yProps(2)} />
                 <Tab label="자연환경" {...a11yProps(3)} />
+                <Tab label="지역" {...a11yProps(4)} />
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -248,10 +267,26 @@ const Search = () => {
                 </label>
               ))}
             </TabPanel>
+            <TabPanel value={value} index={4}>
+              {LOCATION_LIST.map(item => (
+                <label key={item.id}>
+                  <input
+                    type="radio"
+                    name="location_radio"
+                    value={item.data}
+                    onChange={onLocationChecked}
+                    checked={
+                      location !== '' && location === item.data ? true : false
+                    }
+                  />
+                  {item.data}
+                </label>
+              ))}
+            </TabPanel>
           </Box>
           <SearchButton
             onClick={() =>
-              searchHandler(searchKey, types, themes, amenities, envs)
+              searchHandler(searchKey, types, themes, amenities, envs, location)
             }
           >
             검색

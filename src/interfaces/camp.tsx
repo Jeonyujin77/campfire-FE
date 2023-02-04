@@ -99,6 +99,7 @@ export interface SearchCampsByKeyword {
   themes: string[];
   amenities: string[];
   envs: string[];
+  location: string;
 }
 
 export interface LikeRankTypes {

@@ -48,3 +48,23 @@ export const TYPE_LIST = [
   { id: 'TYPE8', data: '자동차야영장' },
   { id: 'TYPE9', data: '기타' },
 ];
+
+// 지역
+export const LOCATION_LIST = [
+  { id: 'LOCATION0', data: '경기도' },
+  { id: 'LOCATION1', data: '강원도' },
+  { id: 'LOCATION2', data: '충청북도' },
+  { id: 'LOCATION3', data: '충청남도' },
+  { id: 'LOCATION4', data: '경상북도' },
+  { id: 'LOCATION5', data: '경상남도' },
+  { id: 'LOCATION6', data: '전라북도' },
+  { id: 'LOCATION7', data: '전라남도' },
+  { id: 'LOCATION8', data: '서울' },
+  { id: 'LOCATION9', data: '인천' },
+  { id: 'LOCATION10', data: '대전' },
+  { id: 'LOCATION11', data: '광주' },
+  { id: 'LOCATION12', data: '대구' },
+  { id: 'LOCATION13', data: '울산' },
+  { id: 'LOCATION14', data: '부산' },
+  { id: 'LOCATION15', data: '제주' },
+];
