@@ -110,8 +110,13 @@ const DetailPage = () => {
       action: '번호복사',
     });
     try {
-      navigator.clipboard.writeText(camp.phoneNumber);
-      alert('클립보드에 번호가 복사되었습니다.');
+      const user = navigator.userAgent;
+      if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
+        document.location.href = `tel:${camp.phoneNumber}`;
+      } else {
+        navigator.clipboard.writeText(camp.phoneNumber);
+        alert('클립보드에 번호가 복사되었습니다.');
+      }
     } catch (e) {
       alert('복사에 실패하였습니다.');
     }
