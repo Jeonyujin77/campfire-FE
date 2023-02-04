@@ -51,7 +51,7 @@ const Button = ({
       borderRadius={borderRadius}
       fontSize={fontSize}
       fontWeight={fontWeight}
-      onClick={() => onClick()}
+      onClick={onClick}
       display={display}
       margin={margin}
       fontFamily={fontFamily}
@@ -60,8 +60,8 @@ const Button = ({
       mwidth={mwidth}
       gap={gap}
       hBgColor={hBgColor}
-      onMouseOver={() => onMouseOver()}
-      onMouseOut={() => onMouseOut()}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
     >
       {children}
     </Btn>

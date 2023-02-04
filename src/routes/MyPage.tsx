@@ -388,6 +388,11 @@ const BottomBtns = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media (max-width: 1200px) {
+    button {
+      width: 140px;
+    }
+  }
 `;
 
 const BtnIcon = styled.img`
