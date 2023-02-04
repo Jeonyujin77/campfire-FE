@@ -1,19 +1,19 @@
 export const emailValid = (email: string) => {
-  let regExp =
-    /^[a-z0-9]{4,16}@.[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
+  let regExp = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
   return regExp.test(email);
 };
 
 export const nicknameValid = (nickname: string) => {
-  let regExp = /^[a-z0-9-\s]{4,16}$/;
+  let regExp = /^[a-zㄱ-ㅎ가-힣0-9-\s]{4,16}$/;
 
   return regExp.test(nickname);
 };
 
 export const pwValid = (pw: string) => {
   // 비밀번호 8~16자 영문 대 소문자, 숫자, 특수문자
-  let regExp = /^[a-zA-Z\\d`~!@#$%^&*()-_=+]{8,16}$/;
+  let regExp =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
 
   return regExp.test(pw);
 };

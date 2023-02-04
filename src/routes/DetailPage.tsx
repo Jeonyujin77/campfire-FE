@@ -261,9 +261,11 @@ const DetailPage = () => {
                 campId={params}
               />
               {isCmtOpen ? (
-                <CmtBox onClick={() => isCmtOpenChange()}>{'접기 '}</CmtBox>
+                <CmtBox onClick={() => isCmtOpenChange()}>
+                  {'리뷰숨기기'}
+                </CmtBox>
               ) : (
-                <CmtBox onClick={() => isCmtOpenChange()}>{'열기 '}</CmtBox>
+                <CmtBox onClick={() => isCmtOpenChange()}>{'리뷰보기'}</CmtBox>
               )}
             </DescWrap>
           </Wrap>

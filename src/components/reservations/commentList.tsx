@@ -52,8 +52,9 @@ const CommentList = (props: CommentProps) => {
           setComments([...comments, ...payload.reviews]);
           setIsClicked(false);
         }
+
         // 조회 결과가 없는 경우 더보기버튼 숨김
-        else {
+        if (reviews.length < 5) {
           setMoreCnt(false);
         }
       }

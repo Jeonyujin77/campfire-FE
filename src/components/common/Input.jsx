@@ -10,7 +10,7 @@ const StInput = styled.input`
   height: ${props => props.height};
   border: ${props => (props.border ? props.border : '1px solid #dadada')};
   border-radius: ${props => (props.borderRadius ? props.borderRadius : '4px')};
-  padding: 3px 0 3px 8px;
+  padding: 3px 0 3px 20px;
   min-width: 150px;
   font-size: ${props => (props.fontSize ? props.fontSize : '12px')};
   background-color: ${props => props.bgColor};
