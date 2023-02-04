@@ -287,10 +287,10 @@ const ProfileModify = () => {
 };
 
 const Wrap = styled.div`
-  margin: 200px auto;
+  margin: 150px auto;
   width: 1200px;
   max-height: 100%;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding-top: 10px;
   display: flex;
   align-items: center;
