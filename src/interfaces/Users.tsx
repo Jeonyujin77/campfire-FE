@@ -28,15 +28,14 @@ export interface UserLogin {
 
 // 유저 정보수정 관련정보
 export interface PutUserInfo {
-  userId: number;
   formData: FormData;
 }
 
-// 유저 회원탈퇴 관련정보
-// export interface DeleteUser {
-//   userId: number | undefined;
-//   password: string;
-// }
+// 유저 정보수정 관련정보
+export interface PutUserNoImgInfo {
+  userName: string;
+  profileImg: string | null;
+}
 
 // 유저 예약내역 관련정보
 export interface ReservationList {

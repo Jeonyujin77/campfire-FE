@@ -5,7 +5,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../redux/store';
 import ReactGa from 'react-ga';
 //api
-import { __checkNickDup, __getUser, __putUser } from '../apis/userApi';
+import {
+  __checkNickDup,
+  __getUser,
+  __putNoImgUser,
+  __putUser,
+} from '../apis/userApi';
 //훅
 import useInputValid from '../hooks/useInputValid';
 // import { convertURLtoFile } from '../hooks/convertURLtoFIle';
@@ -29,11 +34,11 @@ const ProfileModify = () => {
   const [prevName, setPrevName] = useState(''); //비교할 이전이름
   const [userName, setUserName] = useState(''); //사용자 이름
   const [phoneNumber, setPhoneNumber] = useState(''); //전화번호
-  const [profileImg, setProfileImg] = useState<File | string | null>(); //이미지 input
+  const [profileImg, setProfileImg] = useState<File | string | null>(null); //이미지 input
   const [represent, setRepresent] = useState<any>(); //보여줄 사진
   // const [prevFile, setPrevFile] = useState<File | string | null | any>(); //이전 적용되어있던 사진파일
 
-  const [nickDupFlag, setNickDupFlag] = useState(false); // 닉네임중복확인 flag
+  const [nickDupFlag, setNickDupFlag] = useState(true); // 닉네임중복확인 flag
   const [userNameValidFlag, userNameFlagHandler] = useInputValid(
     userName,
     userNameValid,
@@ -85,14 +90,6 @@ const ProfileModify = () => {
     });
     if (userName === '') return;
 
-    if (userName === prevName) {
-      setNickDupFlag(true);
-      alert(
-        '이전에 사용한 닉네임입니다. \n같은 닉네임을 사용하시려면 수정 완료를 눌러주세요',
-      );
-      return;
-    }
-
     dispatch(__checkNickDup(userName)).then(res => {
       const { type, payload } = res;
       if (type === 'checkNickDup/fulfilled') {
@@ -105,7 +102,6 @@ const ProfileModify = () => {
     });
   };
 
-  // let fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf)$/;
   const ImgChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value: any = e.target?.files?.[0];
     //값이 들어왔을 때 검사
@@ -120,7 +116,7 @@ const ProfileModify = () => {
         return;
       }
       //사이즈 넘으면 change안됨
-      if (value.size > 4 * 1024 * 1024) {
+      if (value.size > 5 * 1024 * 1024) {
         alert('이미지 크기는 최대 5MB입니다!');
         return;
       }
@@ -134,9 +130,19 @@ const ProfileModify = () => {
     };
   };
 
+  //닉네임 changehandler, 바꾸면 중복확인을 false로 바꿈
   const nameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
+    setNickDupFlag(false);
   };
+  //서버에서 닉네임을 받아온 후, 설정되어있던 이름과 바꾸는 이름이 같다면 중복검사 된걸로
+  useEffect(() => {
+    if (userName) {
+      if (prevName === userName) {
+        setNickDupFlag(true);
+      }
+    }
+  }, [userName]);
 
   const SubmitProfile = () => {
     ReactGa.event({
@@ -144,16 +150,8 @@ const ProfileModify = () => {
       action: '수정 완료 클릭',
     });
     //데이터 안넣을 때 유효성 검사
-    if (!profileImg) {
-      alert('프로필 이미지를 작성해주세요!');
-      return;
-    }
     if (!userName) {
       alert('사용자 이름을 작성해주세요!');
-      return;
-    }
-    if (!phoneNumber) {
-      alert('전화번호를 작성해주세요!');
       return;
     }
     if (!nickDupFlag) {
@@ -175,7 +173,6 @@ const ProfileModify = () => {
       formData.append('profileImg', profileImg);
       dispatch(
         __putUser({
-          userId: Number(localStorage.getItem('userId')),
           formData: formData,
         }),
       ).then(res => {
@@ -184,6 +181,25 @@ const ProfileModify = () => {
           alert(payload.message);
           navigate('/mypage');
         } else if (type === 'putUser/rejected') {
+          alert(payload.message);
+          navigate('/mypage');
+        }
+      });
+    }
+
+    //이미지를 넣지 않고 수정완료를 했을 때
+    if (userName && !profileImg && userNameValidFlag && nickDupFlag) {
+      dispatch(
+        __putNoImgUser({
+          userName,
+          profileImg,
+        }),
+      ).then(res => {
+        const { type, payload } = res;
+        if (type === 'putNoImgUser/fulfilled') {
+          alert(payload.message);
+          navigate('/mypage');
+        } else if (type === 'putNoImgUser/rejected') {
           alert(payload.message);
           navigate('/mypage');
         }

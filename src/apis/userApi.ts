@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   LikesCamp,
   PutUserInfo,
+  PutUserNoImgInfo,
   SocialUserInfo,
   UserInfo,
   UserLogin,
@@ -103,7 +104,7 @@ export const __getUser = createAsyncThunk(
   'getUser',
   async (payload: number, thunkAPI) => {
     try {
-      const response = await api.get(`/api/users/${payload}`);
+      const response = await api.get(`/api/users/`);
       if (response.status === 200) {
         return thunkAPI.fulfillWithValue(response.data);
       }
@@ -117,11 +118,27 @@ export const __getUser = createAsyncThunk(
 export const __putUser = createAsyncThunk(
   'putUser',
   async (payload: PutUserInfo, thunkAPI) => {
-    const { userId, formData } = payload;
+    const { formData } = payload;
     try {
-      const response = await api.put(`/api/users/${userId}`, formData, {
+      const response = await api.put(`/api/users/`, formData, {
         headers: { 'content-type': 'multipart/form-data' },
       });
+      console.log(response);
+      if (response.status === 201) {
+        return thunkAPI.fulfillWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+// 수정페이지 이미지없이 정보수정하기
+export const __putNoImgUser = createAsyncThunk(
+  'putNoImgUser',
+  async (payload: PutUserNoImgInfo, thunkAPI) => {
+    try {
+      const response = await api.put(`/api/users/`, payload);
       console.log(response);
       if (response.status === 201) {
         return thunkAPI.fulfillWithValue(response.data);

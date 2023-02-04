@@ -138,7 +138,7 @@ const LoginBox = () => {
             )}
           </SpanPswd>
           <ErrWrap>
-            {!pwValidFlag ? <ErrorText>{PW_NOT_VALID}</ErrorText> : <></>}
+            {/* {!pwValidFlag ? <ErrorText>{PW_NOT_VALID}</ErrorText> : <></>} */}
           </ErrWrap>
         </InputWrap>
         <Button
