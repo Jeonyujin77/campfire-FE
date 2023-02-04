@@ -91,7 +91,7 @@ const LoginBox = () => {
             <Input
               type="email"
               width="394px"
-              placeholder="아이디(ID)"
+              placeholder="아이디(Email)"
               height="59px"
               fontSize="20px"
               borderRadius="20px 20px 20px 20px"
@@ -373,9 +373,9 @@ const SocialLoginBtn = styled.div<{
     font-weight: bold;
   }
   @media (max-width: 1200px) {
-    width: 80%;
+    width: 67%;
     p {
-      margin: 0px 20px 0px 30px;
+      margin: 0px 4px 0px 14px;
       font-size: 15px;
     }
   }

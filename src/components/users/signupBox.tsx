@@ -209,9 +209,22 @@ const SignupBox = () => {
           alert(`${payload.response.data.errorMessage}`);
         }
       });
-    } else {
+    } else if (!emailDupFlag) {
       localStorage.clear();
-      alert('중복확인 및 입력 형식을 확인해주세요.');
+      alert('이메일 중복확인을 해주세요.');
+      return;
+    } else if (!nickDupFlag) {
+      localStorage.clear();
+      alert('닉네임 중복확인을 해주세요.');
+      return;
+    } else if (!pwChkValidFlag) {
+      localStorage.clear();
+      alert('비밀번호와 비밀번호 재확인이 일치하지 않습니다.');
+      return;
+    } else if (!getCertifiStatus || !certifiStatus) {
+      localStorage.clear();
+      alert('인증번호 확인을 해주세요.');
+      return;
     }
   };
 
@@ -220,6 +233,7 @@ const SignupBox = () => {
       <SignupWrap>
         <InputWrap>
           <div>
+            <label>이메일</label>
             <Span>
               <Input
                 required
@@ -235,13 +249,18 @@ const SignupBox = () => {
                 borderRadius="20px 0px 0px 20px"
                 bgColor="#D9D9D9"
               />
-              <InputBtn onClick={checkEmailDup}>중복확인</InputBtn>
+              {emailValidFlag && email !== '' ? (
+                <InputBtn onClick={checkEmailDup}>중복확인</InputBtn>
+              ) : (
+                <InputBtnDisabled>중복확인</InputBtnDisabled>
+              )}
             </Span>
           </div>
           <ErrWrap>
             {!emailValidFlag ? <Guide>{EMAIL_NOT_VALID}</Guide> : <></>}
           </ErrWrap>
           <div>
+            <label>닉네임</label>
             <Span>
               <Input
                 required
@@ -257,13 +276,18 @@ const SignupBox = () => {
                 borderRadius="20px 0px 0px 20px"
                 bgColor="#D9D9D9"
               />
-              <InputBtn onClick={checkNickDup}>중복확인</InputBtn>
+              {nickValidFlag && nickname !== '' ? (
+                <InputBtn onClick={checkNickDup}>중복확인</InputBtn>
+              ) : (
+                <InputBtnDisabled>중복확인</InputBtnDisabled>
+              )}
             </Span>
           </div>
           <ErrWrap>
             {!nickValidFlag ? <Guide>{NICK_NOT_VALID}</Guide> : <></>}
           </ErrWrap>
           <div>
+            <label>비밀번호</label>
             <SpanPswd>
               <Input
                 value={password}
@@ -302,6 +326,7 @@ const SignupBox = () => {
             {!pwValidFlag ? <Guide>{PW_NOT_VALID}</Guide> : <></>}
           </ErrWrap>
           <div>
+            <label>비밀번호 확인</label>
             <SpanPswd>
               <Input
                 value={passwordCheck}
@@ -340,6 +365,7 @@ const SignupBox = () => {
             {!pwChkValidFlag ? <Guide>{PWCHK_NOT_VALID}</Guide> : <></>}
           </ErrWrap>
           <div>
+            <label>전화번호</label>
             <Span>
               {certifiStatus ? (
                 <Input
@@ -375,8 +401,10 @@ const SignupBox = () => {
               )}
               {certifiStatus ? (
                 <InputBtn></InputBtn>
-              ) : (
+              ) : telValidFlag && telNum !== '' ? (
                 <InputBtn onClick={certifiNumGet}>인증번호 발송</InputBtn>
+              ) : (
+                <InputBtnDisabled>인증번호 발송</InputBtnDisabled>
               )}
             </Span>
           </div>
@@ -446,7 +474,7 @@ const Wrap = styled.form`
   flex-direction: column;
 `;
 
-const SignupWrap = styled.form`
+const SignupWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -466,10 +494,16 @@ const InputWrap = styled.div`
   align-items: center;
   padding: 10px;
   width: 450px;
-  height: 500px;
+  /* height: 500px; */
   font-size: 25px;
   gap: 5px;
   margin-bottom: 10px;
+
+  label {
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+  }
   @media (max-width: 1200px) {
     width: 100%;
     height: 95%;
@@ -488,6 +522,26 @@ const InputBtn = styled.span`
   align-items: center;
   justify-content: center;
   text-align: center;
+  @media (max-width: 1200px) {
+    font-size: 13px;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+`;
+
+const InputBtnDisabled = styled(InputBtn)`
+  width: 60px;
+  height: 30px;
+  margin-right: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: grey;
+  cursor: unset;
   @media (max-width: 1200px) {
     font-size: 13px;
     img {
