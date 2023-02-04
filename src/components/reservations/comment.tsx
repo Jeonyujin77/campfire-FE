@@ -18,28 +18,10 @@ const Comment = ({ commentInfo }: { commentInfo: CommentInfo }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const loggedInUserId = localStorage.getItem('userId');
-  const { content, userId, updatedAt, reviewId, campId } = commentInfo;
-  const [userName, setUserName] = useState('');
-  const [profileImg, setProfileImg] = useState('');
+  const { content, userId, updatedAt, reviewId, campId, userName, profileImg } =
+    commentInfo;
   const [isModify, setIsModify] = useState(false);
   const [comment, setComment, commentHandler] = useInput('');
-
-  useEffect(() => {
-    dispatch(__getUser(userId)).then(res => {
-      const { type, payload } = res;
-      // 조회 성공
-      if (type === 'getUser/fulfilled') {
-        const { userName, profileImg } = payload.user;
-        setUserName(userName);
-        setProfileImg(profileImg);
-      }
-      // 에러처리
-      else if (type === 'getUser/rejected') {
-        alert(`${payload.response.data.errorMessage}`);
-        navigate(-1);
-      }
-    });
-  }, []);
 
   // 리뷰 수정
   const onModifyReview = (reviewId: number) => {
