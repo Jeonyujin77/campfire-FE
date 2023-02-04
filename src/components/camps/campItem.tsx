@@ -128,14 +128,6 @@ const CampItem = ({ camp }: { camp: CampType }) => {
                     />
                     <StarRate>{camp.likes}</StarRate>
                   </div>
-                  <div style={{ display: 'flex', gap: '5px' }}>
-                    <img
-                      style={{ width: '22px', height: '22px' }}
-                      src={reviewIcon}
-                      alt="하트"
-                    />
-                    <StarRate>{countR()}</StarRate>
-                  </div>
                 </CampDescR>
               </CampDescRight>
             </CampDescBody>
@@ -204,7 +196,7 @@ const CampHeadDesc = styled.div`
 const CampDescBody = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const CampDescLeft = styled.div`

@@ -54,7 +54,7 @@ const ProfileModify = () => {
   }, [pathname]);
 
   useEffect(() => {
-    dispatch(__getUser(Number(localStorage.getItem('userId')))).then(res => {
+    dispatch(__getUser()).then(res => {
       const { type, payload } = res;
       //   console.log(type, payload);
       if (type === 'getUser/fulfilled') {
@@ -240,7 +240,11 @@ const ProfileModify = () => {
                   onChange={nameChange}
                   onBlur={userNameFlagHandler}
                 />
-                <InputBtn onClick={checkNickDup}>중복확인</InputBtn>
+                {nickDupFlag ? (
+                  <InputBtn />
+                ) : (
+                  <InputBtn onClick={checkNickDup}>중복확인</InputBtn>
+                )}
               </InputBox>
               <div style={{ height: '30px' }}>
                 {!userNameValidFlag ? <Guide>{NICK_NOT_VALID}</Guide> : <></>}

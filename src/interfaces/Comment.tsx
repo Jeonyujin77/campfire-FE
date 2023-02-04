@@ -21,4 +21,6 @@ export interface CommentInfo {
   userId: number;
   createdAt: string;
   updatedAt: string;
+  userName: string;
+  profileImg: string;
 }

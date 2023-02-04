@@ -102,7 +102,7 @@ export const __signin = createAsyncThunk(
 // 수정페이지 정보가져오기
 export const __getUser = createAsyncThunk(
   'getUser',
-  async (payload: number, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/api/users/`);
       if (response.status === 200) {

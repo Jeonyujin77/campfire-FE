@@ -17,6 +17,10 @@ interface ButtonProps {
   color?: string;
   hColor?: string;
   mwidth?: string;
+  gap?: string;
+  hBgColor?: string;
+  onMouseOver?: any;
+  onMouseOut?: any;
 }
 
 const Button = ({
@@ -34,6 +38,10 @@ const Button = ({
   color,
   hColor,
   mwidth,
+  gap,
+  hBgColor,
+  onMouseOver,
+  onMouseOut,
 }: ButtonProps) => {
   return (
     <Btn
@@ -50,6 +58,10 @@ const Button = ({
       color={color}
       hColor={hColor}
       mwidth={mwidth}
+      gap={gap}
+      hBgColor={hBgColor}
+      onMouseOver={() => onMouseOver()}
+      onMouseOut={() => onMouseOut()}
     >
       {children}
     </Btn>
@@ -73,9 +85,11 @@ const Btn = styled.button<ButtonProps>`
   display: ${({ display }) => (display ? display : 'inline-block')};
   align-items: center;
   justify-content: center;
+  gap: ${({ gap }) => gap};
   &:hover {
     filter: brightness(95%);
     color: ${({ hColor }) => (hColor ? hColor : 'black')};
+    background-color: ${({ hBgColor }) => hBgColor};
   }
   @media (max-width: 1200px) {
     width: ${({ mwidth }) => mwidth};
