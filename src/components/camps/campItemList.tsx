@@ -104,7 +104,7 @@ const Wrap = styled.div`
 `;
 
 const ListWrap = styled.div`
-  margin-top: 50px;
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
