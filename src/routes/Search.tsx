@@ -344,6 +344,12 @@ const SearchIcon = styled.img`
 `;
 
 const SearchCatTab = styled.div`
+  div.MuiTabs-flexContainer {
+    button {
+      width: 20%;
+      min-width: 0;
+    }
+  }
   button.Mui-selected {
     color: #ff7a50;
   }
