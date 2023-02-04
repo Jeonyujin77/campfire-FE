@@ -262,7 +262,7 @@ const Wrap = styled.div`
   gap: 10px;
   @media (max-width: 1200px) {
     width: 100%;
-    margin: 100px auto;
+    margin: 20px auto;
   }
 `;
 
