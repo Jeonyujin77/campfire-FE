@@ -55,7 +55,7 @@ const MyPage = () => {
 
   // 사용자 정보 조회
   const getUser = () => {
-    dispatch(__getUser(Number(localStorage.getItem('userId')))).then(res => {
+    dispatch(__getUser()).then(res => {
       const { type, payload } = res;
 
       if (type === 'getUser/fulfilled') {
