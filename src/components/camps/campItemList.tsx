@@ -85,7 +85,7 @@ const CampItemList = () => {
         ))}
       </ListWrap>
       {campList?.length !== 0 ? (
-        <Footer ref={setTarget}>{isLoaded && <br />}▽ 더보기</Footer>
+        <Footer ref={setTarget}>{isLoaded && <br />}</Footer>
       ) : (
         <>등록된 캠핑장이 없습니다.</>
       )}
