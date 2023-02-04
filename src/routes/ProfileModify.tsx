@@ -54,7 +54,7 @@ const ProfileModify = () => {
   }, [pathname]);
 
   useEffect(() => {
-    dispatch(__getUser(Number(localStorage.getItem('userId')))).then(res => {
+    dispatch(__getUser()).then(res => {
       const { type, payload } = res;
       //   console.log(type, payload);
       if (type === 'getUser/fulfilled') {

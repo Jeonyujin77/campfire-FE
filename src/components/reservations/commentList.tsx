@@ -84,7 +84,7 @@ const CommentList = (props: CommentProps) => {
       localStorage.getItem('refreshToken') &&
       localStorage.getItem('userId')
     ) {
-      dispatch(__getUser(loggedInUserId)).then(res => {
+      dispatch(__getUser()).then(res => {
         const { type, payload } = res;
         if (type === 'getUser/fulfilled') {
           const {
