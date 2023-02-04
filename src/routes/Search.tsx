@@ -306,6 +306,7 @@ const Wrap = styled.div`
   min-height: 100vh;
   @media (max-width: 1200px) {
     width: 100%;
+    margin-top: 0;
   }
 `;
 
@@ -348,6 +349,7 @@ const SearchCatTab = styled.div`
     button {
       width: 20%;
       min-width: 0;
+      padding: 5px;
     }
   }
   button.Mui-selected {
