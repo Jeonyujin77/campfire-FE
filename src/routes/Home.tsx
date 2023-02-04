@@ -86,7 +86,7 @@ const HomeTitle = styled.div`
   }
 
   @media (max-width: 600px) {
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
 
