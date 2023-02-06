@@ -47,7 +47,7 @@ const ShowBtnWrap = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 30px;
-  background-color: rgb(254, 128, 44);
+  background-color: #d9d9d9;
   display: flex;
   align-items: center;
   justify-content: center;
