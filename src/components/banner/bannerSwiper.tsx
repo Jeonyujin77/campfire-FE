@@ -1,10 +1,11 @@
 //라이브러리
 import styled from '@emotion/styled';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from 'swiper';
+import { Navigation, Pagination, Autoplay } from 'swiper';
 import ReactGa from 'react-ga';
 // Swiper css
 import 'swiper/css';
+import '../reservations/imgSwiper.css';
 //이미지
 import event from '../../asset/banner/event.png';
 import reservation from '../../asset/banner/reservation.png';
@@ -20,9 +21,10 @@ const BannerSwiper = () => {
   ];
   return (
     <StyledSwiper
-      modules={[Pagination, Autoplay]}
+      modules={[Navigation, Pagination, Autoplay]}
       spaceBetween={0}
       slidesPerView={1}
+      navigation
       autoplay={{ delay: 5000 }}
       pagination={{ clickable: true }}
       loop={true}
@@ -55,6 +57,7 @@ const StyledSwiper = styled(Swiper)`
   text-align: center;
   border-radius: 20px;
   margin-top: 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   @media (max-width: 1200px) {
     width: 100%;
     height: 500px;
