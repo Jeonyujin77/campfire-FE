@@ -232,8 +232,10 @@ const SocialSignupBox = ({
                     <InputBtn>
                       <img src={greenChecked} alt="체크" />
                     </InputBtn>
-                  ) : (
+                  ) : telValidFlag && telNum !== '' ? (
                     <InputBtn onClick={certifiTest}>인증번호 확인</InputBtn>
+                  ) : (
+                    <InputBtnDisabled>인증번호 발송</InputBtnDisabled>
                   )}
                 </Span>
               </div>
@@ -321,6 +323,26 @@ const InputBtn = styled.span`
   align-items: center;
   justify-content: center;
   text-align: center;
+  @media (max-width: 1200px) {
+    font-size: 13px;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+`;
+
+const InputBtnDisabled = styled(InputBtn)`
+  width: 60px;
+  height: 30px;
+  margin-right: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: grey;
+  cursor: unset;
   @media (max-width: 1200px) {
     font-size: 13px;
     img {
