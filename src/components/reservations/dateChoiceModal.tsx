@@ -76,12 +76,30 @@ const DateChoiceModal = (props: MProps) => {
         />
         <ModalBottom>
           <Button
-            onClick={selectCompleted}
+            onClick={() => {
+              props.setIsOpen(!props.isOpen);
+            }}
             margin="0px"
             bgColor="#fe802c"
+            width="135px"
+            height="43px"
+            fontSize="18px"
+            color="white"
             fontWeight="bold"
           >
-            선택완료
+            취소
+          </Button>
+          <Button
+            onClick={selectCompleted}
+            margin="0px"
+            bgColor="#A1C182"
+            width="135px"
+            height="43px"
+            fontSize="18px"
+            color="white"
+            fontWeight="bold"
+          >
+            완료
           </Button>
         </ModalBottom>
       </ModalWrap>
@@ -109,11 +127,12 @@ const ModalWrap = styled.div<{ isOpen: boolean }>`
   left: calc(50vw - 150px);
   background-color: white;
   width: 340px;
-  height: 370px;
+  min-height: 370px;
+  max-height: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  padding: 20px 5px;
   gap: 5px;
   z-index: 2000;
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
@@ -141,7 +160,8 @@ const ModalBottom = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  gap: 10px;
 `;
 
 export default DateChoiceModal;

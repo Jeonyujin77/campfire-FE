@@ -97,7 +97,7 @@ const RankWrap = styled.div`
   justify-content: center;
   gap: 30px;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 800px) {
     flex-direction: column;
   }
 `;
