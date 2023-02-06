@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { __naverLogin } from '../apis/userApi';
+import Loading from '../components/common/Loading';
 import { useAppDispatch } from '../redux/store';
 
 const OAuthNaver = () => {
@@ -40,7 +41,8 @@ const OAuthNaver = () => {
   useEffect(() => {
     naverLogin(loginData);
   }, []);
-  return <div>NaverLogin</div>;
+
+  return <Loading />;
 };
 
 export default OAuthNaver;
