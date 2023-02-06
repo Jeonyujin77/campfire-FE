@@ -9,7 +9,7 @@ const Logo = () => {
 
 const Image = styled.img`
   width: 286px;
-  height: 43px;
+  height: 37.5px;
   cursor: pointer;
 
   @media (max-width: 1200px) {
