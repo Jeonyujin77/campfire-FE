@@ -196,7 +196,6 @@ const TextBody = styled.div`
 const TextFoot = styled.div`
   display: flex;
   justify-content: space-between;
-  /* width: 800px; */
   @media (max-width: 1200px) {
     width: 100%;
     font-size: 14px;

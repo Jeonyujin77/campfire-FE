@@ -1,16 +1,13 @@
 //라이브러리
 import styled from '@emotion/styled';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/store';
 import ReactGa from 'react-ga';
 //api
 import { __withdrawalUser } from '../../apis/userApi';
-//훅
-import useInput from '../../hooks/useInput';
 //컴포넌트
 import Button from '../common/Button';
-import Input from '../common/Input';
 import closePopBtn from '../../asset/closePopupBtn.png';
 
 interface Withdrawal {

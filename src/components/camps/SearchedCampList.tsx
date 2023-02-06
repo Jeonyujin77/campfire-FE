@@ -53,7 +53,6 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* border: 1px solid red; */
   max-height: 100%;
   min-height: 100vh;
 `;

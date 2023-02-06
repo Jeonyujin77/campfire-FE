@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { __getReviewRank } from '../../apis/campApi';
-import { ReviewRankTypes } from '../../interfaces/camp';
 import { useAppDispatch } from '../../redux/store';
 import ReactGa from 'react-ga';
+import { __getReviewRank } from '../../apis/campApi';
+import { ReviewRankTypes } from '../../interfaces/camp';
+import rankReview from '../../asset/rank/rankReview.png';
 
 const ReviewRank = () => {
   const navigate = useNavigate();
@@ -28,7 +29,10 @@ const ReviewRank = () => {
 
   return (
     <Wrap>
-      <Title>리뷰가 많은 캠핑장</Title>
+      <Title>
+        <img src={rankReview} alt="리뷰아이콘" />
+        리뷰가 많은 캠핑장
+      </Title>
       <RankWrap>
         {items?.map((item, i) => (
           <RankItem
@@ -64,9 +68,22 @@ const Wrap = styled.div`
 `;
 
 const Title = styled.div`
+  background-color: #a1c182;
+  border-radius: 22.5px;
   font-size: 25px;
   font-weight: bold;
-  margin: 0px 0px 19px 10px;
+  margin: 0px 0px 7px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0px;
+  gap: 5px;
+  color: white;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const RankWrap = styled.div`
@@ -80,6 +97,10 @@ const RankWrap = styled.div`
   overflow: hidden;
   font-weight: bold;
   gap: 3px;
+  @media (max-width: 1200px) {
+    padding-bottom: 3px;
+    overflow-x: scroll;
+  }
 `;
 
 const RankItem = styled.div`
@@ -92,19 +113,41 @@ const RankItem = styled.div`
   align-items: center;
   justify-content: flex-start;
   padding-left: 10px;
+  background-color: #e8e8e8;
   :hover {
-    background-color: #e8e8e8;
+    background-color: #a1c182;
+    color: white;
+  }
+  @media (max-width: 1200px) {
+    width: 130px;
+  }
+  @media (max-width: 800px) {
+    width: 200px;
+  }
+  @media (max-width: 600px) {
+    width: 150px;
+  }
+  @media (max-width: 400px) {
+    width: 130px;
   }
 `;
 
 const RankItemNum = styled.div`
   color: #fe802c;
+
+  @media (max-width: 1200px) {
+    font-size: 15px;
+  }
 `;
 
 const RankItemName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  @media (max-width: 1200px) {
+    font-size: 15px;
+  }
 `;
 
 export default ReviewRank;

@@ -19,8 +19,6 @@ import ReservationItem from './ReservationItem';
 //이미지
 import closePopupBtn from '../../asset/reserveModalCloseBtn.png';
 import ReservationItemDetail from './ReservationItemDetail';
-import ReservationItemCancelDetail from './ReservationItemCancelDetail';
-import ReservationItemCompletedDetail from './ReservationItemCompletedDetail';
 
 interface MRProps {
   isOpen: boolean;
@@ -153,7 +151,7 @@ const MyReservationModal = (props: MRProps) => {
           {selectCompleted ? (
             completedBooks ? (
               completedBooks.expiredBooks.map(book => (
-                <ReservationItemCompletedDetail
+                <ReservationItemDetail
                   key={book.bookId}
                   book={book}
                   status={1}
@@ -168,7 +166,7 @@ const MyReservationModal = (props: MRProps) => {
           {selectCanceled ? (
             canceledBooks ? (
               canceledBooks.cancelBooks.map(book => (
-                <ReservationItemCancelDetail
+                <ReservationItemDetail
                   key={book.bookId}
                   book={book}
                   status={-1}

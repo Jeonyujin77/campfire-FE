@@ -105,9 +105,36 @@ export interface SearchCampsByKeyword {
 export interface LikeRankTypes {
   campName: string;
   campId: number;
+  likes: number;
 }
 
 export interface ReviewRankTypes {
   campName: string;
   campId: number;
+  countReviews: number;
+}
+
+export interface PremiumCamps {
+  premium: [
+    {
+      campId: number;
+      hostId: number;
+      campName: string;
+      campAddress: string;
+      campMainImage?: string;
+      campSubImages?: [string];
+      campDesc: string;
+      typeLists: [string];
+      checkIn: string;
+      checkOut: string;
+      likes: number;
+      likeStatus: boolean;
+      mapX: string;
+      mapY: string;
+      premium: boolean;
+      countReviews: number;
+      createdAt: string;
+      updateAt: string;
+    },
+  ];
 }

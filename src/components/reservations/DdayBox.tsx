@@ -46,14 +46,12 @@ const DdayTextWrap = styled.div`
 const DdayText = styled.div`
   font-size: 30px;
   font-weight: bold;
-  /* width: 100px; */
 `;
 
 const VerticlalLine = styled.div`
   border-left: 2px solid #fe802c;
   width: 1px;
   height: 33px;
-  /* margin-right: 5px; */
 `;
 
 export default DdayBox;

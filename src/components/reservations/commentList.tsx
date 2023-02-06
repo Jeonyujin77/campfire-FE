@@ -26,7 +26,6 @@ const CommentList = (props: CommentProps) => {
   const [moreCnt, setMoreCnt] = useState(true);
   const [comments, setComments] = useState<CommentInfo[]>([]);
   const { campId } = props;
-  const loggedInUserId = Number(localStorage.getItem('userId'));
   const [loggedInUserName, setLoggedInUserName] = useState('');
   const [loggedInUserImg, setLoggedInUserImg] = useState('');
 
@@ -160,7 +159,6 @@ const CommentTitle = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  /* text-align: left; */
   font-size: 22px;
   font-weight: bold;
   @media (max-width: 1200px) {
@@ -172,7 +170,6 @@ const CommentTitleDiv = styled.div`
   margin: 5px;
   max-width: 100%;
   min-width: calc(50% + 12.5px);
-  /* border: 1px solid black; */
   display: flex;
   justify-content: space-between;
   align-items: center;

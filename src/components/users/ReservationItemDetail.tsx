@@ -5,6 +5,7 @@ import { Reservation } from '../../interfaces/Users';
 import { useAppDispatch } from '../../redux/store';
 import styled from '@emotion/styled';
 import Button from '../common/Button';
+import { useNavigate } from 'react-router-dom';
 
 const ReservationItemDetail = ({
   book,
@@ -14,6 +15,7 @@ const ReservationItemDetail = ({
   status: number;
 }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   //예약취소버튼함수
   const cancleR = useCallback(
@@ -97,18 +99,36 @@ const ReservationItemDetail = ({
                   book.checkOutDate.split(' ')[0]}
               </span>
             </p>
-            <p>
-              <label>예약상태</label>
-              {book.confirmBook ? (
+            {status === 0 ? (
+              <p>
+                <label>예약상태</label>
+                {book.confirmBook ? (
+                  <span style={{ color: '#13da01', fontWeight: 'bold' }}>
+                    예약 확정
+                  </span>
+                ) : (
+                  <span style={{ color: '#ff0000', fontWeight: 'bold' }}>
+                    예약 대기중
+                  </span>
+                )}
+              </p>
+            ) : null}
+            {status === 1 ? (
+              <p>
+                <label>예약상태</label>
                 <span style={{ color: '#13da01', fontWeight: 'bold' }}>
-                  예약 확정
+                  이용 완료
                 </span>
-              ) : (
+              </p>
+            ) : null}
+            {status === -1 ? (
+              <p>
+                <label>예약상태</label>
                 <span style={{ color: '#ff0000', fontWeight: 'bold' }}>
-                  예약 대기중
+                  예약 취소
                 </span>
-              )}
-            </p>
+              </p>
+            ) : null}
             {status === 0 ? (
               <>
                 <hr style={{ border: '1px solid #D9D9D9' }} />
@@ -119,6 +139,21 @@ const ReservationItemDetail = ({
                     책임지지 않습니다. 꼭 읽어주세요.
                   </span>
                 </p>
+              </>
+            ) : (
+              <></>
+            )}
+            {status === 1 ? (
+              <>
+                <Button
+                  bgColor="#A1C182"
+                  margin="0px"
+                  onClick={() => {
+                    navigate(`/camp/${book.campId}`);
+                  }}
+                >
+                  리뷰남기기
+                </Button>
               </>
             ) : (
               <></>

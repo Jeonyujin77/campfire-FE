@@ -7,35 +7,19 @@ import ReactGa from 'react-ga';
 //api
 import {
   __certifiTest,
-  __checkEmailDup,
-  __checkNickDup,
   __getCertifiNum,
-  __signup,
   __Socialsignup,
 } from '../../apis/userApi';
 //훅
 import useInput from '../../hooks/useInput';
 import useInputValid from '../../hooks/useInputValid';
-import {
-  emailValid,
-  nicknameValid,
-  pwValid,
-  telValid,
-} from '../../utils/RegExp';
+import { telValid } from '../../utils/RegExp';
 //컴포넌트
 import Button from '../common/Button';
 import Input from '../../components/common/Input';
 //이미지
-import pwHide from '../../asset/pwHide.png';
-import pwShow from '../../asset/pwShow.png';
 import greenChecked from '../../asset/socialInfo/greenChecked.png';
-import {
-  EMAIL_NOT_VALID,
-  NICK_NOT_VALID,
-  PWCHK_NOT_VALID,
-  PW_NOT_VALID,
-  TELNUM_NOT_VALID,
-} from '../../constant/message';
+import { TELNUM_NOT_VALID } from '../../constant/message';
 
 interface SocialState {
   kakaoemail: string;
@@ -53,7 +37,6 @@ const SocialSignupBox = ({
   kakaosnsId,
 }: SocialState) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   // 번호
   const [telNum, setTelNum, telNumHandler] = useInput(''); // 전화번호
@@ -81,7 +64,7 @@ const SocialSignupBox = ({
       dispatch(__getCertifiNum(telNum)).then(res => {
         const { type, payload } = res;
         if (type === 'getCertifiNum/fulfilled') {
-          alert('인증번호가 발송되었습니다.');
+          alert('해당 번호로 인증번호가 발송되었습니다.');
           setGetCertifiStatus(true);
         } else if (type === 'getCertifiNum/rejected') {
           alert(`${payload.response.data.errorMessage}`);
@@ -249,8 +232,10 @@ const SocialSignupBox = ({
                     <InputBtn>
                       <img src={greenChecked} alt="체크" />
                     </InputBtn>
-                  ) : (
+                  ) : telValidFlag && telNum !== '' ? (
                     <InputBtn onClick={certifiTest}>인증번호 확인</InputBtn>
+                  ) : (
+                    <InputBtnDisabled>인증번호 발송</InputBtnDisabled>
                   )}
                 </Span>
               </div>
@@ -338,6 +323,26 @@ const InputBtn = styled.span`
   align-items: center;
   justify-content: center;
   text-align: center;
+  @media (max-width: 1200px) {
+    font-size: 13px;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+`;
+
+const InputBtnDisabled = styled(InputBtn)`
+  width: 60px;
+  height: 30px;
+  margin-right: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: grey;
+  cursor: unset;
   @media (max-width: 1200px) {
     font-size: 13px;
     img {
