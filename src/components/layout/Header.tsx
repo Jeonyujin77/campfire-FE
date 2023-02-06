@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import TopButton from '../common/TopButton';
 import Logo from '../common/Logo';
 //이미지
-import HeaderImg from '../../asset/HeaderImg.png';
 import { Link } from 'react-router-dom';
 import headerBgLeft from '../../asset/headerImg/headerBgLeft.png';
 import headerBgRight from '../../asset/headerImg/headerBgRight.png';
@@ -129,17 +128,12 @@ const HeaderComponent = styled.div`
   width: 100%;
   height: 112px;
   background-color: #fe802c;
-  /* background-image: url(${HeaderImg});
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-size: cover; */
   display: flex;
   align-items: flex-end;
   text-align: center;
   justify-content: space-between;
   flex-wrap: wrap;
   color: black;
-  /* padding: 10px 0px; */
 
   @media (max-width: 1200px) {
     height: 50px;
@@ -153,8 +147,6 @@ const HeaderLeftImg = styled.img`
   z-index: 1100;
   width: 128px;
   height: 94px;
-  /* height: 100%; */
-  /* border: 1px solid black; */
   bottom: 0px;
   left: 0px;
 
@@ -168,8 +160,6 @@ const HeaderRightImg = styled.img`
   z-index: 1100;
   width: 266px;
   height: 80px;
-  /* height: 100%; */
-  /* border: 1px solid black; */
   bottom: 0px;
   right: 0px;
 

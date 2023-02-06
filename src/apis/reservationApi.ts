@@ -94,20 +94,3 @@ export const __reserveCanceled = createAsyncThunk(
     }
   },
 );
-
-// 특정유저 예약 특정사이트 정보
-// export const __reserveUserTarget = createAsyncThunk(
-//   'reserveUserTarget',
-//   async (payload: number, thunkAPI) => {
-//     try {
-//       const response = await api.get<Reservation>(
-//         `/api/books/users/checkbooks/${payload}`,
-//       );
-//       if (response.status === 200) {
-//         return thunkAPI.fulfillWithValue(response.data);
-//       }
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue(error);
-//     }
-//   },
-// );

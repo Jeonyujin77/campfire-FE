@@ -24,7 +24,7 @@ import kakao_logo from '../../asset/kakao_logo.png';
 import naver_logo from '../../asset/naver_logo.png';
 import pwHide from '../../asset/pwHide.png';
 import pwShow from '../../asset/pwShow.png';
-import { EMAIL_NOT_VALID, PW_NOT_VALID } from '../../constant/message';
+import { EMAIL_NOT_VALID } from '../../constant/message';
 
 const LoginBox = () => {
   const dispatch = useAppDispatch();
@@ -137,9 +137,7 @@ const LoginBox = () => {
               </PswdShow>
             )}
           </SpanPswd>
-          <ErrWrap>
-            {/* {!pwValidFlag ? <ErrorText>{PW_NOT_VALID}</ErrorText> : <></>} */}
-          </ErrWrap>
+          <ErrWrap></ErrWrap>
         </InputWrap>
         <Button
           width="400px"

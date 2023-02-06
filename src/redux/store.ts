@@ -1,13 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import campSlice from './modules/campSlice';
-import reservationSlice from './modules/reservationSlice';
-import userSlice from './modules/userSlice';
 import { useDispatch } from 'react-redux';
 
 const rootReducer = combineReducers({
-  user: userSlice.reducer,
   camp: campSlice.reducer,
-  reservation: reservationSlice.reducer,
 });
 
 export const store = configureStore({

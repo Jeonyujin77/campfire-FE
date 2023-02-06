@@ -494,7 +494,6 @@ const InputWrap = styled.div`
   align-items: center;
   padding: 10px;
   width: 450px;
-  /* height: 500px; */
   font-size: 25px;
   gap: 5px;
   margin-bottom: 10px;

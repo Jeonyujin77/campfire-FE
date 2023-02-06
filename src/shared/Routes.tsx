@@ -5,7 +5,6 @@ import ReservationDescpage from '../routes/ReservationDescpage';
 import MyPage from '../routes/MyPage';
 import Signup from '../routes/Signup';
 import Login from '../routes/Login';
-// import ReservationPage from '../routes/ReservationPage';
 import Main from '../routes/Main';
 import ProfileModify from '../routes/ProfileModify';
 import OAuthKakao from '../routes/OAuthKakao';
