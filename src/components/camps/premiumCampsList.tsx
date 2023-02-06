@@ -61,11 +61,4 @@ const ListWrap = styled.div`
   gap: 20px;
 `;
 
-const Footer = styled.div`
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export default PremiumCampsList;

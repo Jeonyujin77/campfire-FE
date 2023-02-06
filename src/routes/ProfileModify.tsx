@@ -13,7 +13,6 @@ import {
 } from '../apis/userApi';
 //훅
 import useInputValid from '../hooks/useInputValid';
-// import { convertURLtoFile } from '../hooks/convertURLtoFIle';
 import {
   nicknameValid as userNameValid,
   telValid as phoneNumberValid,
@@ -36,7 +35,6 @@ const ProfileModify = () => {
   const [phoneNumber, setPhoneNumber] = useState(''); //전화번호
   const [profileImg, setProfileImg] = useState<File | string | null>(null); //이미지 input
   const [represent, setRepresent] = useState<any>(); //보여줄 사진
-  // const [prevFile, setPrevFile] = useState<File | string | null | any>(); //이전 적용되어있던 사진파일
 
   const [nickDupFlag, setNickDupFlag] = useState(true); // 닉네임중복확인 flag
   const [userNameValidFlag, userNameFlagHandler] = useInputValid(
@@ -64,13 +62,9 @@ const ProfileModify = () => {
           profileImg,
         }: { userName: string; phoneNumber: string; profileImg: string } =
           payload.user;
-        //   console.log(userName, phoneNumber, profileImg);
         setUserName(userName);
         setPhoneNumber(phoneNumber);
         setPrevName(userName);
-        // url file 컨버터 작동해야 함
-        // setProfileImg(profileImg);
-        // let a = convertURLtoFile(profileImg);
         if (profileImg !== undefined) {
           setRepresent(profileImg);
         }
@@ -224,7 +218,6 @@ const ProfileModify = () => {
                   id="ex_file"
                   type="file"
                   accept="image/*"
-                  // value={a}
                 />
               </ImgInputWrap>
             </Imgwrap>

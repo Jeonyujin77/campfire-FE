@@ -7,35 +7,19 @@ import ReactGa from 'react-ga';
 //api
 import {
   __certifiTest,
-  __checkEmailDup,
-  __checkNickDup,
   __getCertifiNum,
-  __signup,
   __Socialsignup,
 } from '../../apis/userApi';
 //훅
 import useInput from '../../hooks/useInput';
 import useInputValid from '../../hooks/useInputValid';
-import {
-  emailValid,
-  nicknameValid,
-  pwValid,
-  telValid,
-} from '../../utils/RegExp';
+import { telValid } from '../../utils/RegExp';
 //컴포넌트
 import Button from '../common/Button';
 import Input from '../../components/common/Input';
 //이미지
-import pwHide from '../../asset/pwHide.png';
-import pwShow from '../../asset/pwShow.png';
 import greenChecked from '../../asset/socialInfo/greenChecked.png';
-import {
-  EMAIL_NOT_VALID,
-  NICK_NOT_VALID,
-  PWCHK_NOT_VALID,
-  PW_NOT_VALID,
-  TELNUM_NOT_VALID,
-} from '../../constant/message';
+import { TELNUM_NOT_VALID } from '../../constant/message';
 
 interface SocialState {
   kakaoemail: string;
@@ -53,7 +37,6 @@ const SocialSignupBox = ({
   kakaosnsId,
 }: SocialState) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   // 번호
   const [telNum, setTelNum, telNumHandler] = useInput(''); // 전화번호
