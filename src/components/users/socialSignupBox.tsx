@@ -64,7 +64,7 @@ const SocialSignupBox = ({
       dispatch(__getCertifiNum(telNum)).then(res => {
         const { type, payload } = res;
         if (type === 'getCertifiNum/fulfilled') {
-          alert('인증번호가 발송되었습니다.');
+          alert('해당 번호로 인증번호가 발송되었습니다.');
           setGetCertifiStatus(true);
         } else if (type === 'getCertifiNum/rejected') {
           alert(`${payload.response.data.errorMessage}`);
