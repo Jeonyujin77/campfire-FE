@@ -4,6 +4,7 @@ import { useAppDispatch } from '../redux/store';
 //api
 import { __kakaoLogin } from '../apis/userApi';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../components/common/Loading';
 
 //카카오페이지에서 작업하고 리다이렉트되는 곳
 const OAuthKakao = () => {
@@ -44,7 +45,7 @@ const OAuthKakao = () => {
     kakaoLogin(code);
   }, []);
 
-  return <div>kakao</div>;
+  return <Loading />;
 };
 
 export default OAuthKakao;
