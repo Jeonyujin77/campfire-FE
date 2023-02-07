@@ -20,6 +20,7 @@ import Input from '../../components/common/Input';
 //이미지
 import greenChecked from '../../asset/socialInfo/greenChecked.png';
 import { TELNUM_NOT_VALID } from '../../constant/message';
+import Timer from '../common/Timer';
 
 interface SocialState {
   kakaoemail: string;
@@ -53,6 +54,9 @@ const SocialSignupBox = ({
   const [certifiStatus, setCertifiStatus] = useState(false);
   //인증 유무를 나타내는 텍스트
   const [certifiText, setCertifiText] = useState('');
+  //인증번호 타이머 상태
+  const [minutes, setMinutes] = useState('');
+  const [seconds, setSeconds] = useState('');
 
   //인증번호 요청
   const certifiNumGet = () => {
@@ -64,6 +68,8 @@ const SocialSignupBox = ({
       dispatch(__getCertifiNum(telNum)).then(res => {
         const { type, payload } = res;
         if (type === 'getCertifiNum/fulfilled') {
+          setMinutes('2');
+          setSeconds('59');
           alert('해당 번호로 인증번호가 발송되었습니다.');
           setGetCertifiStatus(true);
         } else if (type === 'getCertifiNum/rejected') {
@@ -207,8 +213,10 @@ const SocialSignupBox = ({
               )}
               {certifiStatus ? (
                 <InputBtn></InputBtn>
-              ) : (
+              ) : telValidFlag && telNum !== '' ? (
                 <InputBtn onClick={certifiNumGet}>인증번호 발송</InputBtn>
+              ) : (
+                <InputBtnDisabled>인증번호 발송</InputBtnDisabled>
               )}
             </Span>
           </div>
@@ -232,13 +240,21 @@ const SocialSignupBox = ({
                     <InputBtn>
                       <img src={greenChecked} alt="체크" />
                     </InputBtn>
-                  ) : telValidFlag && telNum !== '' ? (
-                    <InputBtn onClick={certifiTest}>인증번호 확인</InputBtn>
                   ) : (
-                    <InputBtnDisabled>인증번호 발송</InputBtnDisabled>
+                    <InputBtn onClick={certifiTest}>인증번호 확인</InputBtn>
                   )}
                 </Span>
               </div>
+              {getCertifiStatus && !certifiStatus ? (
+                <Timer
+                  minutes={minutes}
+                  seconds={seconds}
+                  setMinutes={setMinutes}
+                  setSeconds={setSeconds}
+                />
+              ) : (
+                <></>
+              )}
               <ErrWrap>
                 {certifiStatus ? (
                   <Guide color="#13da01" fontWeight="bold">

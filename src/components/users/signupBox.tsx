@@ -35,6 +35,7 @@ import {
   PW_NOT_VALID,
   TELNUM_NOT_VALID,
 } from '../../constant/message';
+import Timer from '../common/Timer';
 
 const SignupBox = () => {
   const dispatch = useAppDispatch();
@@ -131,6 +132,9 @@ const SignupBox = () => {
   const [certifiStatus, setCertifiStatus] = useState(false);
   //인증 유무를 나타내는 텍스트
   const [certifiText, setCertifiText] = useState('');
+  //인증번호 타이머 상태
+  const [minutes, setMinutes] = useState('');
+  const [seconds, setSeconds] = useState('');
 
   //인증번호 요청
   const certifiNumGet = () => {
@@ -142,10 +146,18 @@ const SignupBox = () => {
       dispatch(__getCertifiNum(telNum)).then(res => {
         const { type, payload } = res;
         if (type === 'getCertifiNum/fulfilled') {
+          setMinutes('2');
+          setSeconds('59');
           alert('해당 번호로 인증번호가 발송되었습니다.');
           setGetCertifiStatus(true);
         } else if (type === 'getCertifiNum/rejected') {
           alert(`${payload.response.data.errorMessage}`);
+          if (
+            payload.response.data.errorMessage === '요청횟수 초과되었습니다.'
+          ) {
+            alert('비정상적인 접근으로 2시간동안 인증번호 발송이 제한됩니다.');
+            navigate('/');
+          }
         }
       });
     }
@@ -249,7 +261,7 @@ const SignupBox = () => {
                 borderRadius="20px 0px 0px 20px"
                 bgColor="#D9D9D9"
               />
-              {emailValidFlag && email !== '' ? (
+              {emailValidFlag && email !== '' && !emailDupFlag ? (
                 <InputBtn onClick={checkEmailDup}>중복확인</InputBtn>
               ) : (
                 <InputBtnDisabled>중복확인</InputBtnDisabled>
@@ -276,7 +288,7 @@ const SignupBox = () => {
                 borderRadius="20px 0px 0px 20px"
                 bgColor="#D9D9D9"
               />
-              {nickValidFlag && nickname !== '' ? (
+              {nickValidFlag && nickname !== '' && !nickDupFlag ? (
                 <InputBtn onClick={checkNickDup}>중복확인</InputBtn>
               ) : (
                 <InputBtnDisabled>중복확인</InputBtnDisabled>
@@ -433,6 +445,16 @@ const SignupBox = () => {
                   )}
                 </Span>
               </div>
+              {getCertifiStatus && !certifiStatus ? (
+                <Timer
+                  minutes={minutes}
+                  seconds={seconds}
+                  setMinutes={setMinutes}
+                  setSeconds={setSeconds}
+                />
+              ) : (
+                <></>
+              )}
               <ErrWrap>
                 {certifiStatus ? (
                   <Guide color="#13da01" fontWeight="bold">
