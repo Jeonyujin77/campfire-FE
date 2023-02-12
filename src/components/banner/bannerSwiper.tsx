@@ -12,11 +12,6 @@ import reservation from '../../asset/banner/reservation.png';
 
 const BannerSwiper = () => {
   const Imgs = [
-    {
-      img: event,
-      href: 'https://forms.gle/PgDn7qxoJYzkmyet6',
-      action: '이벤트배너',
-    },
     { img: reservation, href: '/premiumcamps', action: '프리미엄배너' },
   ];
   return (
