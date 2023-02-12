@@ -13,7 +13,7 @@ const BannerSwiper = () => {
   const Imgs = [
     { img: reservation, href: '/premiumcamps', action: '프리미엄배너' },
   ];
-  return (
+  return Imgs.length !== 1 ? ( //이벤트 배너가 1개일 때 img태그로 출력되도록 처리
     <StyledSwiper
       modules={[Navigation, Pagination, Autoplay]}
       spaceBetween={0}
@@ -38,6 +38,17 @@ const BannerSwiper = () => {
         </StyledSwiperSlide>
       ))}
     </StyledSwiper>
+  ) : (
+    <CampImg
+      onClick={() => {
+        ReactGa.event({
+          category: '배너 클릭',
+          action: `${Imgs[0].action}`,
+        });
+        window.location.href = `${Imgs[0].href}`;
+      }}
+      src={Imgs[0].img}
+    />
   );
 };
 
