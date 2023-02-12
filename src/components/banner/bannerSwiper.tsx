@@ -7,7 +7,6 @@ import ReactGa from 'react-ga';
 import 'swiper/css';
 import '../reservations/imgSwiper.css';
 //이미지
-import event from '../../asset/banner/event.png';
 import reservation from '../../asset/banner/reservation.png';
 
 const BannerSwiper = () => {
