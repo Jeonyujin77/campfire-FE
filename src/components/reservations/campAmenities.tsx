@@ -20,6 +20,7 @@ import trampolineIcon from '../../asset/amenities/trampolineIcon.png';
 import trailIcon from '../../asset/amenities/trailIcon.png';
 import playgroundIcon from '../../asset/amenities/playgroundIcon.png';
 import playfieldIcon from '../../asset/amenities/playfieldIcon.png';
+import defaultIcon from '../../asset/amenities/defaultIcon.png';
 
 interface AmenityProps {
   children?: ReactNode;
@@ -53,7 +54,11 @@ const CampAmenities = ({ children, amenity }: AmenityProps) => {
   ]);
   return (
     <Amenity>
-      {srcs.get(amenity) ? <Icon src={srcs.get(amenity)} alt="" /> : <></>}
+      {srcs.get(amenity) ? (
+        <Icon src={srcs.get(amenity)} alt="" />
+      ) : (
+        <Icon src={defaultIcon} alt="" />
+      )}
       {amenity}
     </Amenity>
   );
