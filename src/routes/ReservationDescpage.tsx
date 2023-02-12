@@ -71,7 +71,9 @@ const ReservationDescpage = () => {
     dispatch(__reserveCamps(reserveInfo)).then(res => {
       const { type, payload } = res;
       if (type === 'reserveCamps/fulfilled') {
-        alert(`${payload.message}`);
+        alert(
+          `예약 신청이 완료되었습니다.\n호스트가 예약을 확정하면 예약이 완료되며,\n관련 사항은 마이페이지에서 확인 가능합니다.`,
+        );
         window.location.href = '/';
       } else if (type === 'reserveCamps/rejected') {
         alert(`${payload.response.data.errorMessage}`);
