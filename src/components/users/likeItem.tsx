@@ -86,7 +86,8 @@ const CampTitle = styled.div`
 `;
 
 const CampDesc = styled.p`
-  font-size: 14px;
+  font-size: 15px;
+  word-break: keep-all;
   padding: 0;
   margin: 0;
   line-height: 1.5;
